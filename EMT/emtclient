@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# MET gui startup script for development (can use but doesn't require jar)
+#
+
+JAVA=java
+DBHOST=localhost
+DBNAME=met02
+USER=outsider
+PASS=password
+MYSQL=/usr/bin/mysql
+WORDLIST=/misc/demo/metdemo/etc/hotlist.txt
+ALIASES=/misc/demo/metdemo/etc/aliases
+
+export CLASSPATH=.:mail.jar:activation.jar:or124.jar:mmmysql2.jar:chapman.jar:weka.jar:emt.jar
+
+$JAVA metdemo/winGui -h $DBHOST -db $DBNAME -u $USER -p $PASS -mysql $MYSQL -alias $ALIASES -w $WORDLIST $@

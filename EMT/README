@@ -1,0 +1,98 @@
+Email Mining Toolkit.
+Version 3.9 README Oct 2008
+
+This README file describes first time setup.
+
+please see EMTUserManual_???.pdf and EMTTechManual_???.pdf for additional Info. about the toolkit.
+
+pre-req:
+1) This application requires the following to be installed:
+
+a) Java 1.5 or better  
+	(see: http://java.sun.com Note: J2SE-JRE is also fine)
+	you can check if java is installed correcly by going to a terminal/command prompt and typing "java -version"
+
+b) Optional:
+
+For analyzing very large data sets, if the java database (default) is noticeably slow:
+    
+    -Mysql 5 or later
+	(http://www.mysql.com)
+	-use the tools provided by mysql for setting the MYSQL for root user and permissions.
+	-NOTE: if possible you need to specify latin1 character support or  (bug in mysql with 1000 byte key limit) not UTF.	
+	-IMPORTANT: setup to MYISAM database type when prompted. during installation.
+	
+	-after installation you will setup a root account, this can be used for emt or a user account can be setup. 
+	 User accounts need to be granted permission to operate on newer databases, one can use the GUI server
+	 setup program to set this up.
+	
+	-ALSO NEED TO SET 
+	 max_allowed_packet=12000000
+	 IN YOUR my.ini file to allow for larger email attachments.
+		
+	-postgres database can be used instead of mysql
+			need to download and install postgress from their website.
+	
+
+2)
+
+Note: For converting outlook and outlook express the following files are required:
+	-readdbx.exe on windows, readdbx on linux.
+	-cygwin1.dll (windows)
+	-readpst.exe on windows, readpst on linux (note broken for outlook 2003).
+        This should be included as part of the install package.
+3)
+For FIRST TIME USE:
+
+type in a command window:
+
+"java -jar emt.jar"
+
+
+the first time you run emt a configuration window will pop up, please
+note fill in the relevant data for db hookup and click on "save"
+it will restart, now you can go the step 4.
+
+For upgrades:
+
+please delete any *.info files from the home directory.
+
+4)
+
+A batch file called emtclient.bat is created in the last step.
+Use the emtclient.bat (or your own version of this) created by step 3, to run emt.
+please note that if you have less than 256 meg ram, please edit this file to reflect this. 
+
+enjoy!
+------------------------------------------------
+F.A.Q:
+
+1) Can I use an old emt database.
+
+A: Depending on which version you are running, its best to reimport the data
+into emt. 
+
+2) On Linux, when processing asian outlook files I get weird exceptions about "java.nio.charset.CoderResult.throwException"
+
+A: set the LANG environment variable to handle extended characters in the following manner:
+export LANG=en_US.UTF-8
+
+3) I've started EMT, but it seems frozen since it never switches to EMT and all it says is:
+"Done date setup in Message window:"
+
+A: try to hit the "enter" button. If that doesnt work, please hit ctrl + c
+to cancel and try to restart
+
+4) EMT Froze, I've restarted and am given choices, which one should I choose.
+
+A: first try to click on "ignore" and see if EMT starts. If that doesnt work, try to click on "clean data". if that doesn't work
+you might need to empty the database to restart, please see question 5, on how to let us know about it.
+
+
+5) What if something else goes wrong:
+
+A: if its a loading frozen problem, try to give it a little time, as certain cache files are created the first time around, if its a cache problem, you will need to delete all the .info files to fix it
+check the help button, user manual or tech manual. 
+Or else email: Shlomo@cs.columbia.edu
+Include the version, operating system, java version, and the error message and describtion.
+Please make the subject "EMT problem"

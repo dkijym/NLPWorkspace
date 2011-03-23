@@ -1,0 +1,25 @@
+# default-domain mydomain.com
+default-domain mydomain.com
+
+# in this section, put users that you never want aliased
+# never-alias user root
+never-alias user root
+
+# in this section, put domains that you never want aliased
+# never-alias domain mydomain
+
+# in this section put domains where you want to ignore machine names
+# ignore-machine-name mydomain.com
+#ignore-machine-name mydomain.com
+#ignore-machine-name myotherdomain.com
+#ignore-machine-name anotherdomain.com
+
+# domain aliases
+# domain aliasdomain realdomain
+#domain myotherdomain.com mydomain.com
+#domain anotherdomain.com mydomain.com
+
+# individual user aliases
+# user aliasaccount realaccount
+#user sal@mydomain.com sstolfo@mydomain.com
+#user sal@externaldomain.com sal@mydomain.com

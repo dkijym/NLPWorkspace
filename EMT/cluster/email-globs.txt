@@ -1,0 +1,67 @@
+# Globals Definition
+
+#Set Verbose mode
+VERBOSE FALSE
+
+#Make Program Cluster Input
+CLUSTER_DATA TRUE
+
+#Make Predictions to Closest Cluster
+CLOSEST_CLUSTER_PREDICTION TRUE
+
+#Make Predictions by Counting Elements within D
+MULTIPLE_CLUSTER_PREDICTIONS TRUE
+
+#Don't store members of clusters
+STORE_DATA TRUE
+
+#Print Info on New Cluster
+PRINT_NEW_CLUSTER TRUE
+
+#Set Cluster WIDTH
+CLUSTER_WIDTH 1.0
+
+#Set the Special Symbols
+IGNORE_SYMBOL NONE
+UNKNOWN_SYMBOL ??
+
+#Set Whether the Program Allows Unknown Symbols
+ALLOW_UNKNOWN_SYMBOLS TRUE
+
+#The input Symbols.
+NUM_COLUMNS 2
+
+
+#Set the Kernel
+KERNEL_TYPE STANDARD_KERNEL
+
+#Polynomial Kernel and parameters
+#KERNEL_TYPE POLYNOMIAL_KERNEL
+#KERNEL_POLYNOMIAL_DEGREE 2
+#KERNEL_POLYNOMIAL_OFFSET 1.0
+
+#RBF Kernel and Parameters
+#KERNEL_TYPE RBF_KERNEL
+#KERNEL_RBF_VARIANCE 1.0
+
+#Set the Column Information
+
+#Symbolic Features
+
+COLUMN_TYPE 1:SYMBOL
+FEATURE_WEIGHTS 1:1.0
+COLUMN_SYMBOL_FILENAME 1:C1.txt
+
+COLUMN_TYPE 2:SYMBOL
+FEATURE_WEIGHTS 2:1.0
+COLUMN_SYMBOL_FILENAME 1:C2.txt
+
+
+
+#COLUMN_TYPE 25:NUMERICAL
+#FEATURE_WEIGHTS 25:0.0
+#COLUMN_MEAN_VALUE 25:25352.7837573386
+#COLUMN_STD_DEV 25:11706.5155950193
+
+
+

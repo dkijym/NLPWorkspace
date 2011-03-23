@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/Code/Java/javamail-1.4.3/lib/mailapi.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/C:/Users/reuben/Code/Java/javamail-1.4.3/docs/javadocs/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/chapman.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/colt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/commons-collections-3.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/concurrent.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/dsn.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/imap.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/jcommon-1.0.14.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/jfreechart-1.0.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/jtds-1.2.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/jtds-1.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/jung-1.7.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/lucene-core-2.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/mail-1.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/mljava.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/piccolo.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/piccolox.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/poi-3.0-alpha3-20061212.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/pop3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/postgresql-8.3-603.jdbc3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/resolver.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/slyt-1.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/smtp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/substance.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/workspace/EMT/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="src/metdemo/Testing/junit-4.1.jar"/>
+	<classpathentry kind="con" path="DERBY_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/reuben/Code/Java/db-derby-10.7.1.1-lib/db-derby-10.7.1.1-lib/lib/derby.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+# MET gui startup script for development (can use but doesn't require jar)
+#
+ETC=/metdemo/metdemo2/etc
+LIB=.
+BIN=.
+
+JAVA=/usr/bin/java
+DBHOST=blackberry
+DBNAME=met03
+USER=outsider
+PASS=pleaze9enter
+MYSQL=/usr/bin/mysql
+WORDLIST=metdemo/hotlist.txt
+ALIASES=metdemo/aliases
+
+export CLASSPATH=.:$LIB/or124.jar:$LIB/mmmysql.jar:$LIB/chapman.jar:$LIB/weka.jar:$BIN/emt.jar
+
+$JAVA metdemo/Charlie1Driver $@

@@ -1,0 +1,31 @@
+EMT Source file readme - 2007
+
+
+@author Shlomo Hershkop
+
+
+welcome to the EMT source code.
+
+EMT has been an ongoing effort since 2001, as such, things were created, modified, tweaked, retweaked, etc
+other sections were added for specific requirements and never visited again.
+
+originally there was a live system known as met coded in perl this was a system for tracking and analyzing attachments from email communication
+
+it was modified for offline, and coded in java, that was EMT version 1 
+
+to explore: start looking at winGui.java in the main metdemo directory
+
+the welcome screen divides the different parts of EMT into logical groups
+
+to compile on windows:
+	install java 1.5+, make sure its in the path
+	run: build.bat		this will compile the .java source into .class files
+	run: makejar.bat	this will collect the .class files, and manifest file into single emt.jar file
+	assuming you have all library jar files in lib subdirectory
+	
+	first time running: see emt README (or double click on emt.jar)
+	next times: run the emtclient.bat file created
+for large collections of emails, also install and setup mysql
+
+to compile on linux/mac:
+	edit the build.bat and makejar to replace the ';' with ':' (file seperators on unix.mac)

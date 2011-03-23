@@ -1,0 +1,207 @@
+Here is the API for LiBDBX++. This is a C++ wrapper around the C LibDBX Api
+
+**************
+Class CDBX
+**************
+
+This contains 12 methods and is the handler for DBX files.
+
+CDBX() 
+- Constructor
+
+~CDBX() 
+- Destructor
+
+int open (const char* name) 
+- Open a file specified by a filename. If this object already has a
+file open, the open file is closed. Returns 1 on error, and 0 on
+success
+
+int open (FILE *stream)
+- Create a dbx class around an already open file stream. Any file open
+by this class will be closed first. Returns 1 on error and 0 on
+success
+
+void close ()
+- Close the currently open dbx file.
+
+CItem * get (int index, int flags)
+- Fetches the item as reffered to in index. Possible value for flags
+is DBX_FLAG_BODY which will load the body of an email at the same
+time. Returns a CItem on success, or NULL on failure.
+
+CItem * next (int flags)
+- Fetches the next item in the dbx file. This is an alternative to
+requesting each index position using get(). An internal counter is
+kept. Returns a CItem on success, or NULL on failure.
+
+void reset()
+- Resets the internal counter used in the next() method.
+
+int type()
+- Returns DBX_TYPE_EMAIL if this is an email archive, or
+DBX_TYPE_FOLDER if this is a folder archive.
+
+void getBody(int start, char **ptr)
+- Fetches the body of an email. It will allocate the space, and store
+the char * pointer in the variable pointed to by ptr.
+
+CEmail getBody(CEmail *email)
+- Fetches the body of an email and stores it in the object. A
+reference to the email object is returned. No new objects are created.
+
+int indexCount()
+- Returns the number of items in the index for this dbx file.
+
+*************
+Class CItem
+*************
+
+5 methods and 1 property. This is the base class for emails and
+folders. It is used to pass these items around generically.
+
+int type
+- Property describing what this object contains. Possible values are:
+  - DBX_TYPE_EMAIL
+  - DBX_TYPE_NEWS 
+  - DBX_TYPE_FOLDER
+  - DBX_TYPE_VOID
+
+CItem()
+- Constructor
+
+~CItem()
+- Destructor
+
+CEmail * toEmail()
+- Casts this object as a CEmail* and returns the result.
+
+CFolder * to Folder()
+- Casts this object as a CFolder* and returns the result. These 2
+functions are dangerous as no checking is done.
+
+void set (void* data)
+- Sets the internal structure to point to data.
+
+int structOK()
+- Returns 1 if the internal structure is NOT equal to NULL. Otherwise
+0 is returned.
+
+**************
+Class CEmail
+**************
+
+This represents an email.
+
+CEmail()
+- Constructor
+
+~CEmail()
+- Destructor
+
+void set (void* data)
+- Sets the internal email data to point to this data struct
+
+void clearbody()
+- Removes the email's body from memory
+
+int structOK()
+- Checks that the internal structure of the object is not
+null. Returns 1 on not NULL and 0 if NULL.
+
+int id()
+- Returns the id of this email
+
+FILETIME *date()
+- Returns a win32 FILETIME struct of the emails date
+
+char *body()
+- Returns the email's body
+
+char *messageid()
+- Returns the Messageid of the email
+
+char *parent_message_ids()
+- Returns the Messageids of the parent email(s) as a single string
+
+char *psubject()
+- Returns the processed subject line. Has any Re: or Fwd: removed from
+the subject
+
+char *recip_address()
+- Returns the Recipient's address
+
+char *recip_name()
+- Returns the Recipient's Name
+
+char *sender_address()
+- Returns the Sender's address
+
+char *sender_name()
+- Returns the Sender's name
+
+char *subject()
+- Returns the unaltered subject of the email
+
+char *oe_account_name()
+- Returns the name of the account used to fetch this email
+
+char *oe_account_num()
+- Returns a string representation of the account number used to fetch
+this email (eg "00000001")
+
+char *fetch_server()
+- Returns the name of the server where this email was fetched from
+
+int isSeen()
+- Returns 0 if the email has not been seen, else returns 1
+
+***************
+Class CFolder
+***************
+
+This represents a folder fetched from Outlook's Folder.dbx file.
+
+CFolder * next
+- Property pointing to the next CFolder in the tree. At present, these
+must be built by the programmer and are not built by the library.
+     X
+     |-->
+     |
+     NEXT
+
+CFolder * child
+- Property pointing to the first of this folder's children. If you
+wish to find the subsequent children, follow the next pointer of the
+children.
+
+	X
+	|-->CHILD
+	|
+
+
+CFolder()
+- Constructor
+
+~CFolder()
+- Destructor
+
+void set (void *)
+- Sets the internal structure to point to this folder structure.
+
+int structOK()
+- Returns 1 if the internal structure is not NULL. Otherwise 0 is
+returned.
+
+int id()
+- Returns the ID of the folder. If the ID is 0 then this is the first folder.
+
+char *fname()
+- Returns the filename that this folder is associated with
+
+char *name()
+- Returns the Descriptive name of this folder.
+
+int parentid()
+- Returns the id of this folder's parent folder. 
+

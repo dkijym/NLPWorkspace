@@ -1,0 +1,155 @@
+LibDBX v1.0.3
+=============
+Fix to readdbx and readoe. Doesn't enter an infinite loop like it used
+to after the previous fix.
+
+Dave Smith
+
+LibDBX v1.0.2
+=============
+Fix to readdbx and readoe. Now prefixes and lines beginning "From "
+with a '>'. Thanks to Jordan Russel for this fix.
+
+Dave Smith
+
+LibDBX v1.0.1
+=============
+Small update to fix crash when an email exists that doesn't have *any*
+body or header. Don't know why such things exist, but I must cater for
+what Outlook Express conjures up!
+
+Dave Smith
+
+
+LibDBX v1.0
+===========
+Ok, it is good. It is very good! We can now read all the important
+stuff, and read it in a proper manner too. New functionality includes
+the ability to see if the email has been read. A big bonus. There are
+still fields in the header that are not understood, but I don't
+believe they are important ones.
+
+If you want to use the LibDBX 'C' or 'C++' stuff, then I suggest you
+copy the files into your project directory and include the header
+files. There is no intention of creating Shared Libraries for these
+functions. You ARE encouraged to use it!
+
+Dave Smith
+
+
+LibDBX v0.2.1
+=============
+
+Only a small change this time around. I have added C++ wrapper
+functions for all the  libdbx functions. Read README.libdbx++ for
+details of how to use it. I have also remove lots of memory leaks from
+the code. I don't think there are any more now. 
+
+later...
+
+Dave Smith
+
+
+LibDBX v0.2
+===========
+
+Welcome back! The library routines have been enhanced and the included
+utilities have been tidied up a bit. I think they need a bit of
+explanation though, as this was lacking in the previous release.
+
+readoe
+------
+
+readoe - Extract emails from MS Outlook Express 5.0 directory into mbox format files
+Usage: readoe [OPTIONS] -i INDIR -o OUTDIR
+Options:
+        -h, --help             display this help and exit
+        -V, --version          output version information and exit
+        -i, --indir "indir"    input directory containing "Folders.dbx"
+        -o, --outdir "outdir"  directory to put converted files. Files will be named the
+                               same as the input ones. eg. Inbox.dbx
+        -q, --quiet            display no extra information whilst
+	processing
+
+This program requires two arguments to operate - indir and outdir. The
+outdir *must* already exist. An example of usage could be this:
+
+$ readoe -i "/mnt/c/Program Files/Outlook Express/" -o ~/emails/
+
+This will then proceed to convert all the dbx files that Outlook uses
+into mbox files. This program does *not* just convert *all* the dbx
+files in the Outlook directory, just those from the folders.dbx
+file. If you wish to convert arbitary DBX files, use the readdbx
+program.
+
+readdbx
+-------
+
+readdbx - Extract emails from MS Outlook Express 5.0 DBX files into mbox format.
+File is taken from stdin unless -f is specified.
+Output emails are written to stdout unless -o is specified
+ 
+Usage: readdbx [OPTIONS]
+Options:
+        -h, --help           display this help and exit
+        -V, --version        output version information and exit
+        -f, --file "file"    input DBX file
+        -o, --output "file"  file to write mbox format to
+        -q, --quiet          don't display extra information
+
+It has been noted by many that just typing readdbx by itself results
+in an error. This is because the program is attempting to read from
+stdin, and is not finding enough data. This program can be used in any
+of the following ways:
+
+$ readdbx < ~/dbx/inbox.dbx > ~/mbox/inbox
+
+$ readdbx -f ~/dbx/inbox.dbx > ~/mbox/inbox
+
+$ readdbx -f ~/dbx/inbox.dbx -o ~/mbox/inbox
+
+All these do exactly the same. They read from the file inbox.dbx and
+output to the file inbox. They will display information about each
+email to stderr as it is processed. This can be disabled using the -q
+option.
+
+
+
+I hope this clears things up a bit for you all :)
+
+Dave Smith
+
+
+LibDBX v0.1
+===========
+
+Welcome. This has been *very* hard work to figure out the structures of a DBX
+file, and there is still lots of work to do. Currently, the indexes of the 
+files are built successfully. You are able to extract Emails and information 
+from normal dbx files and also you can extract some of the information from 
+Folders.dbx. When the library is is told to open this file, it will recognize 
+it and pass back items of DBXFOLDER.
+
+There is no API documentation yet, that is still a way off. All I can say is
+this version works. It has no problems with large emails, or large email boxes.
+
+The code in readoe.c is able to open the Folders.dbx file and export all the 
+mailboxes into individual unix mailboxes. The ordering of the emails might be 
+the same as when they were in Outlook. The source path and destination path 
+are defined in the source at the moment, so you will have to change them there 
+to make them work.
+
+The code in readdbx.c is able to open a single dbx file and prints all the 
+information in the structures that we build.
+
+These code items are only examples of how the code is to be used. We would be 
+grateful if this code could make it into *many* other utilities to provide a 
+much needed user interface.
+
+Hopefully, the test code will help you to understand how this library works, 
+and how we intend to keep the interface. We want it to be straight forward.
+
+Well, we wish you all the best of luck
+
+
+

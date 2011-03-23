@@ -1,0 +1,2 @@
+jar cfm emt.jar Manifest.txt metdemo/*.class metdemo/Finance/*.class metdemo/search/*.class metdemo/dataStructures/*.class metdemo/Attach/*.class metdemo/AlertTools/*.class metdemo/CliqueTools/*.class metdemo/DataBase/*.class metdemo/MachineLearning/*.class metdemo/Tables/*.class metdemo/Tools/*.class metdemo/Window/*.class metdemo/Parser/*.class metdemo/experiment/*.class metdemo/Docflow/*.class metdemo/Docflow/Sparse/*.class metdemo/images/*.gif metdemo/images/*.png
+

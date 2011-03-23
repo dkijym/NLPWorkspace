@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: metdemo.winGui
+Class-Path: . lib/slyt-1.0.3.jar lib/jtds-1.2.2.jar lib/postgresql-8.3-603.jdbc3.jar lib/derby-10.4.2.0.jar lib/mail-1.4.1.jar lib/mysql-connector-java-5.0.8-bin.jar lib/activation.jar lib/chapman.jar lib/jcommon-1.0.14.jar lib/jfreechart-1.0.11.jar lib/lucene-core-2.4.0.jar lib/colt.jar lib/commons-collections-3.2.jar lib/jung-1.7.6.jar lib/mljava/jar lib/resolver.jar lib/xercesImpl.jar lib/xml-apis.jar lib/concurrent.jar lib/substance.jar lib/piccolo.jar lib/piccolox.jar lib/poi-3.0-alpha3-20061212.jar
+
