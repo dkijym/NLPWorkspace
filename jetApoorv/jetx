@@ -1,0 +1,5 @@
+#!/bin/bash
+#  run jet, specifying class and arguments
+#java -cp jet-all-1.4.0.jar -Xmx800m -server $1 $2 $3 $4 $5 $6 $7 $8
+java -cp foo.jar:apoorvJet.jar:./joda-time-1.6.2.jar:.trove-2.1.jar:/home/reuben/trove-2.1.0:/home/reuben/trove-2.1.0/src:./trove.jar:./apoorvJet.jar -Xmx800m $1 $2 $3 $4 $5 $6 $7 $8
+#java -cp apoorvJet.jar -Xmx800m $1 $2 $3 $4 $5 $6 $7 $8

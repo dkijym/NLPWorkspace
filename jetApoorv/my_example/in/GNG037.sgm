@@ -1,0 +1,30 @@
+<query template-number="11" query-id="GNG037">
+		<query-text>Find people who are mutual acquaintances of [Dragan Ilic] and [Nikola Maljkovic]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Dragan Ilic</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Person">
+			<arg-value>Nikola Maljkovic</arg-value>
+		</query-arg>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+		</context>
+	</query>

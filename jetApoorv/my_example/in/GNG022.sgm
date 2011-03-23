@@ -1,0 +1,35 @@
+<query template-number="16" query-id="GNG022">
+		<query-text>Describe attacks in [the Gaza Strip] giving location (as specific as possible), date, and number of dead and injured.</query-text>
+		<query-arg arg-num="1" arg-type="Location">
+			<arg-value>the Gaza Strip</arg-value>
+		</query-arg>
+		<query-date date-type="Activity">
+			<start-date>01 January 2005</start-date>
+			<end-date>31 January 2005</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<related-words>
+				<term>Palestinians</term>
+				<term>Israel</term>
+			</related-words>
+		</context>
+	</query>

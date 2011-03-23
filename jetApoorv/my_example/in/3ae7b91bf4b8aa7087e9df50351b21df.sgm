@@ -1,0 +1,1 @@
+<query query-id="3ae7b91bf4b8aa7087e9df50351b21df" template-number="16"><query-text>Describe attacks in [London] giving location (as specific as possible), date, and number of dead and injured.</query-text><query-arg arg-num="1" arg-type="Location"><arg-value>London</arg-value></query-arg><context/></query>

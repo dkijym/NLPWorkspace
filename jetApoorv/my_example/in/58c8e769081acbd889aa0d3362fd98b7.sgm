@@ -1,0 +1,1 @@
+<query query-id="58c8e769081acbd889aa0d3362fd98b7" template-number="6"><query-text>Describe the relationship of [Madonna] to [Sean Penn]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Madonna</arg-value></query-arg><query-arg arg-num="2" arg-type="Person"><arg-value>Sean Penn</arg-value></query-arg><context/></query>

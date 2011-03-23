@@ -1,0 +1,32 @@
+<query template-number="5" query-id="GNG040">
+		<query-text>Find statements made by or attributed to [Debbie Hersman] on [a train crash in South Carolina]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Debbie Hersman</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Topic">
+			<arg-value>a train crash in South Carolina</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>01 January 2005</start-date>
+			<end-date>28 February 2005</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>CNN</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>LAT</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+				<source>AFA</source>
+				<source>ANN</source>
+				<source>UMM</source>
+				<source>XIA</source>
+			</source-type>
+			<related-words>
+				<term>National Transportation Safety Board</term>
+			</related-words>
+		</context>
+	</query>

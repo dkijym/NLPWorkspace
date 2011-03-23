@@ -1,0 +1,38 @@
+<query template-number="4" query-id="GNG028">
+		<query-text>Provide information on [Ansar al-Islam]</query-text>
+		<query-arg arg-num="1" arg-type="Organization">
+			<arg-value>Ansar al-Islam</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>01 March 2003</start-date>
+			<end-date>30 April 2003</end-date>
+		</query-date>
+		<context>
+			<location>
+				<loc>Iraq</loc>
+			</location>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<related-words>
+				<term>terrorist group</term>
+				<term>bio-warfare</term>
+			</related-words>
+		</context>
+	</query>

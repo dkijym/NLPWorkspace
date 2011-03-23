@@ -1,0 +1,253 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     *  Copyright 2001-2005 Stephen Colebourne<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     *  Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<FONT color="green">005</FONT>     *  you may not use this file except in compliance with the License.<a name="line.5"></a>
+<FONT color="green">006</FONT>     *  You may obtain a copy of the License at<a name="line.6"></a>
+<FONT color="green">007</FONT>     *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<FONT color="green">009</FONT>     *<a name="line.9"></a>
+<FONT color="green">010</FONT>     *  Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<FONT color="green">011</FONT>     *  distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<FONT color="green">012</FONT>     *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<FONT color="green">013</FONT>     *  See the License for the specific language governing permissions and<a name="line.13"></a>
+<FONT color="green">014</FONT>     *  limitations under the License.<a name="line.14"></a>
+<FONT color="green">015</FONT>     */<a name="line.15"></a>
+<FONT color="green">016</FONT>    package org.joda.time;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    /**<a name="line.18"></a>
+<FONT color="green">019</FONT>     * Defines a partial time that does not support every datetime field, and is<a name="line.19"></a>
+<FONT color="green">020</FONT>     * thus a local time.<a name="line.20"></a>
+<FONT color="green">021</FONT>     * &lt;p><a name="line.21"></a>
+<FONT color="green">022</FONT>     * A &lt;code>ReadablePartial&lt;/code> supports a subset of those fields on the chronology.<a name="line.22"></a>
+<FONT color="green">023</FONT>     * It cannot be compared to a &lt;code>ReadableInstant&lt;/code>, as it does not fully<a name="line.23"></a>
+<FONT color="green">024</FONT>     * specify an instant in time. The time it does specify is a local time, and does<a name="line.24"></a>
+<FONT color="green">025</FONT>     * not include a time zone.<a name="line.25"></a>
+<FONT color="green">026</FONT>     * &lt;p><a name="line.26"></a>
+<FONT color="green">027</FONT>     * A &lt;code>ReadablePartial&lt;/code> can be converted to a &lt;code>ReadableInstant&lt;/code><a name="line.27"></a>
+<FONT color="green">028</FONT>     * using the &lt;code>toDateTime&lt;/code> method. This works by providing a full base<a name="line.28"></a>
+<FONT color="green">029</FONT>     * instant that can be used to 'fill in the gaps' and specify a time zone.<a name="line.29"></a>
+<FONT color="green">030</FONT>     *<a name="line.30"></a>
+<FONT color="green">031</FONT>     * @author Stephen Colebourne<a name="line.31"></a>
+<FONT color="green">032</FONT>     * @since 1.0<a name="line.32"></a>
+<FONT color="green">033</FONT>     */<a name="line.33"></a>
+<FONT color="green">034</FONT>    public interface ReadablePartial {<a name="line.34"></a>
+<FONT color="green">035</FONT>    <a name="line.35"></a>
+<FONT color="green">036</FONT>        /**<a name="line.36"></a>
+<FONT color="green">037</FONT>         * Gets the number of fields that this partial supports.<a name="line.37"></a>
+<FONT color="green">038</FONT>         *<a name="line.38"></a>
+<FONT color="green">039</FONT>         * @return the number of fields supported<a name="line.39"></a>
+<FONT color="green">040</FONT>         */<a name="line.40"></a>
+<FONT color="green">041</FONT>        int size();<a name="line.41"></a>
+<FONT color="green">042</FONT>    <a name="line.42"></a>
+<FONT color="green">043</FONT>        /**<a name="line.43"></a>
+<FONT color="green">044</FONT>         * Gets the field type at the specified index.<a name="line.44"></a>
+<FONT color="green">045</FONT>         *<a name="line.45"></a>
+<FONT color="green">046</FONT>         * @param index  the index to retrieve<a name="line.46"></a>
+<FONT color="green">047</FONT>         * @return the field at the specified index<a name="line.47"></a>
+<FONT color="green">048</FONT>         * @throws IndexOutOfBoundsException if the index is invalid<a name="line.48"></a>
+<FONT color="green">049</FONT>         */<a name="line.49"></a>
+<FONT color="green">050</FONT>        DateTimeFieldType getFieldType(int index);<a name="line.50"></a>
+<FONT color="green">051</FONT>    <a name="line.51"></a>
+<FONT color="green">052</FONT>        /**<a name="line.52"></a>
+<FONT color="green">053</FONT>         * Gets the field at the specified index.<a name="line.53"></a>
+<FONT color="green">054</FONT>         *<a name="line.54"></a>
+<FONT color="green">055</FONT>         * @param index  the index to retrieve<a name="line.55"></a>
+<FONT color="green">056</FONT>         * @return the field at the specified index<a name="line.56"></a>
+<FONT color="green">057</FONT>         * @throws IndexOutOfBoundsException if the index is invalid<a name="line.57"></a>
+<FONT color="green">058</FONT>         */<a name="line.58"></a>
+<FONT color="green">059</FONT>        DateTimeField getField(int index);<a name="line.59"></a>
+<FONT color="green">060</FONT>    <a name="line.60"></a>
+<FONT color="green">061</FONT>        /**<a name="line.61"></a>
+<FONT color="green">062</FONT>         * Gets the value at the specified index.<a name="line.62"></a>
+<FONT color="green">063</FONT>         *<a name="line.63"></a>
+<FONT color="green">064</FONT>         * @param index  the index to retrieve<a name="line.64"></a>
+<FONT color="green">065</FONT>         * @return the value of the field at the specified index<a name="line.65"></a>
+<FONT color="green">066</FONT>         * @throws IndexOutOfBoundsException if the index is invalid<a name="line.66"></a>
+<FONT color="green">067</FONT>         */<a name="line.67"></a>
+<FONT color="green">068</FONT>        int getValue(int index);<a name="line.68"></a>
+<FONT color="green">069</FONT>    <a name="line.69"></a>
+<FONT color="green">070</FONT>        /**<a name="line.70"></a>
+<FONT color="green">071</FONT>         * Gets the chronology of the partial which is never null.<a name="line.71"></a>
+<FONT color="green">072</FONT>         * &lt;p><a name="line.72"></a>
+<FONT color="green">073</FONT>         * The {@link Chronology} is the calculation engine behind the partial and<a name="line.73"></a>
+<FONT color="green">074</FONT>         * provides conversion and validation of the fields in a particular calendar system.<a name="line.74"></a>
+<FONT color="green">075</FONT>         * <a name="line.75"></a>
+<FONT color="green">076</FONT>         * @return the chronology, never null<a name="line.76"></a>
+<FONT color="green">077</FONT>         */<a name="line.77"></a>
+<FONT color="green">078</FONT>        Chronology getChronology();<a name="line.78"></a>
+<FONT color="green">079</FONT>    <a name="line.79"></a>
+<FONT color="green">080</FONT>        /**<a name="line.80"></a>
+<FONT color="green">081</FONT>         * Gets the value of one of the fields.<a name="line.81"></a>
+<FONT color="green">082</FONT>         * &lt;p><a name="line.82"></a>
+<FONT color="green">083</FONT>         * The field type specified must be one of those that is supported by the partial.<a name="line.83"></a>
+<FONT color="green">084</FONT>         *<a name="line.84"></a>
+<FONT color="green">085</FONT>         * @param field  a DateTimeFieldType instance that is supported by this partial<a name="line.85"></a>
+<FONT color="green">086</FONT>         * @return the value of that field<a name="line.86"></a>
+<FONT color="green">087</FONT>         * @throws IllegalArgumentException if the field is null or not supported<a name="line.87"></a>
+<FONT color="green">088</FONT>         */<a name="line.88"></a>
+<FONT color="green">089</FONT>        int get(DateTimeFieldType field);<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>        /**<a name="line.91"></a>
+<FONT color="green">092</FONT>         * Checks whether the field type specified is supported by this partial.<a name="line.92"></a>
+<FONT color="green">093</FONT>         *<a name="line.93"></a>
+<FONT color="green">094</FONT>         * @param field  the field to check, may be null which returns false<a name="line.94"></a>
+<FONT color="green">095</FONT>         * @return true if the field is supported<a name="line.95"></a>
+<FONT color="green">096</FONT>         */<a name="line.96"></a>
+<FONT color="green">097</FONT>        boolean isSupported(DateTimeFieldType field);<a name="line.97"></a>
+<FONT color="green">098</FONT>    <a name="line.98"></a>
+<FONT color="green">099</FONT>        /**<a name="line.99"></a>
+<FONT color="green">100</FONT>         * Converts this partial to a full datetime by resolving it against another<a name="line.100"></a>
+<FONT color="green">101</FONT>         * datetime.<a name="line.101"></a>
+<FONT color="green">102</FONT>         * &lt;p><a name="line.102"></a>
+<FONT color="green">103</FONT>         * This method takes the specified datetime and sets the fields from this<a name="line.103"></a>
+<FONT color="green">104</FONT>         * instant on top. The chronology from the base instant is used.<a name="line.104"></a>
+<FONT color="green">105</FONT>         * &lt;p><a name="line.105"></a>
+<FONT color="green">106</FONT>         * For example, if this partial represents a time, then the result of this<a name="line.106"></a>
+<FONT color="green">107</FONT>         * method will be the datetime from the specified base instant plus the<a name="line.107"></a>
+<FONT color="green">108</FONT>         * time from this partial.<a name="line.108"></a>
+<FONT color="green">109</FONT>         *<a name="line.109"></a>
+<FONT color="green">110</FONT>         * @param baseInstant  the instant that provides the missing fields, null means now<a name="line.110"></a>
+<FONT color="green">111</FONT>         * @return the combined datetime<a name="line.111"></a>
+<FONT color="green">112</FONT>         */<a name="line.112"></a>
+<FONT color="green">113</FONT>        DateTime toDateTime(ReadableInstant baseInstant);<a name="line.113"></a>
+<FONT color="green">114</FONT>    <a name="line.114"></a>
+<FONT color="green">115</FONT>        //-----------------------------------------------------------------------<a name="line.115"></a>
+<FONT color="green">116</FONT>        /**<a name="line.116"></a>
+<FONT color="green">117</FONT>         * Compares this partial with the specified object for equality based<a name="line.117"></a>
+<FONT color="green">118</FONT>         * on the supported fields, chronology and values.<a name="line.118"></a>
+<FONT color="green">119</FONT>         * &lt;p><a name="line.119"></a>
+<FONT color="green">120</FONT>         * Two instances of ReadablePartial are equal if they have the same<a name="line.120"></a>
+<FONT color="green">121</FONT>         * chronology, same field types (in same order) and same values.<a name="line.121"></a>
+<FONT color="green">122</FONT>         *<a name="line.122"></a>
+<FONT color="green">123</FONT>         * @param partial  the object to compare to<a name="line.123"></a>
+<FONT color="green">124</FONT>         * @return true if equal<a name="line.124"></a>
+<FONT color="green">125</FONT>         */<a name="line.125"></a>
+<FONT color="green">126</FONT>        boolean equals(Object partial);<a name="line.126"></a>
+<FONT color="green">127</FONT>    <a name="line.127"></a>
+<FONT color="green">128</FONT>        /**<a name="line.128"></a>
+<FONT color="green">129</FONT>         * Gets a hash code for the partial that is compatible with the <a name="line.129"></a>
+<FONT color="green">130</FONT>         * equals method.<a name="line.130"></a>
+<FONT color="green">131</FONT>         * &lt;p><a name="line.131"></a>
+<FONT color="green">132</FONT>         * The formula used must be:<a name="line.132"></a>
+<FONT color="green">133</FONT>         * &lt;pre><a name="line.133"></a>
+<FONT color="green">134</FONT>         *  int total = 157;<a name="line.134"></a>
+<FONT color="green">135</FONT>         *  for (int i = 0; i &lt; fields.length; i++) {<a name="line.135"></a>
+<FONT color="green">136</FONT>         *      total = 23 * total + values[i];<a name="line.136"></a>
+<FONT color="green">137</FONT>         *      total = 23 * total + fieldTypes[i].hashCode();<a name="line.137"></a>
+<FONT color="green">138</FONT>         *  }<a name="line.138"></a>
+<FONT color="green">139</FONT>         *  total += chronology.hashCode();<a name="line.139"></a>
+<FONT color="green">140</FONT>         *  return total;<a name="line.140"></a>
+<FONT color="green">141</FONT>         * &lt;/pre><a name="line.141"></a>
+<FONT color="green">142</FONT>         *<a name="line.142"></a>
+<FONT color="green">143</FONT>         * @return a suitable hash code<a name="line.143"></a>
+<FONT color="green">144</FONT>         */<a name="line.144"></a>
+<FONT color="green">145</FONT>        int hashCode();<a name="line.145"></a>
+<FONT color="green">146</FONT>    <a name="line.146"></a>
+<FONT color="green">147</FONT>    // NOTE: This method should have existed in Joda-Time v1.0.<a name="line.147"></a>
+<FONT color="green">148</FONT>    // We STRONGLY recommend that all implementations of ReadablePartial<a name="line.148"></a>
+<FONT color="green">149</FONT>    // implement this method, as per AbstractPartial.<a name="line.149"></a>
+<FONT color="green">150</FONT>    // The simplest way to do this is to extend AbstractPartial.<a name="line.150"></a>
+<FONT color="green">151</FONT>    // v2.0 of Joda-Time will include this method in this interface.<a name="line.151"></a>
+<FONT color="green">152</FONT>    //    //-----------------------------------------------------------------------<a name="line.152"></a>
+<FONT color="green">153</FONT>    //    /**<a name="line.153"></a>
+<FONT color="green">154</FONT>    //     * Compares this partial with another returning an integer<a name="line.154"></a>
+<FONT color="green">155</FONT>    //     * indicating the order.<a name="line.155"></a>
+<FONT color="green">156</FONT>    //     * &lt;p><a name="line.156"></a>
+<FONT color="green">157</FONT>    //     * The fields are compared in order, from largest to smallest.<a name="line.157"></a>
+<FONT color="green">158</FONT>    //     * The first field that is non-equal is used to determine the result.<a name="line.158"></a>
+<FONT color="green">159</FONT>    //     * Thus a YearHour partial will first be compared on the year, and then<a name="line.159"></a>
+<FONT color="green">160</FONT>    //     * on the hour.<a name="line.160"></a>
+<FONT color="green">161</FONT>    //     * &lt;p><a name="line.161"></a>
+<FONT color="green">162</FONT>    //     * The specified object must be a partial instance whose field types<a name="line.162"></a>
+<FONT color="green">163</FONT>    //     * match those of this partial. If the parial instance has different<a name="line.163"></a>
+<FONT color="green">164</FONT>    //     * fields then a ClassCastException is thrown.<a name="line.164"></a>
+<FONT color="green">165</FONT>    //     *<a name="line.165"></a>
+<FONT color="green">166</FONT>    //     * @param partial  an object to check against<a name="line.166"></a>
+<FONT color="green">167</FONT>    //     * @return negative if this is less, zero if equal, positive if greater<a name="line.167"></a>
+<FONT color="green">168</FONT>    //     * @throws ClassCastException if the partial is the wrong class<a name="line.168"></a>
+<FONT color="green">169</FONT>    //     *  or if it has field types that don't match<a name="line.169"></a>
+<FONT color="green">170</FONT>    //     * @throws NullPointerException if the partial is null<a name="line.170"></a>
+<FONT color="green">171</FONT>    //     * @since 2.0<a name="line.171"></a>
+<FONT color="green">172</FONT>    //     */<a name="line.172"></a>
+<FONT color="green">173</FONT>    //    int compareTo(Object partial);<a name="line.173"></a>
+<FONT color="green">174</FONT>    <a name="line.174"></a>
+<FONT color="green">175</FONT>        //-----------------------------------------------------------------------<a name="line.175"></a>
+<FONT color="green">176</FONT>        /**<a name="line.176"></a>
+<FONT color="green">177</FONT>         * Get the value as a String in a recognisable ISO8601 format, only<a name="line.177"></a>
+<FONT color="green">178</FONT>         * displaying supported fields.<a name="line.178"></a>
+<FONT color="green">179</FONT>         * &lt;p><a name="line.179"></a>
+<FONT color="green">180</FONT>         * The string output is in ISO8601 format to enable the String<a name="line.180"></a>
+<FONT color="green">181</FONT>         * constructor to correctly parse it.<a name="line.181"></a>
+<FONT color="green">182</FONT>         *<a name="line.182"></a>
+<FONT color="green">183</FONT>         * @return the value as an ISO8601 string<a name="line.183"></a>
+<FONT color="green">184</FONT>         */<a name="line.184"></a>
+<FONT color="green">185</FONT>        String toString();<a name="line.185"></a>
+<FONT color="green">186</FONT>    <a name="line.186"></a>
+<FONT color="green">187</FONT>    }<a name="line.187"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

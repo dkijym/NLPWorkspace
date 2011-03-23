@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<!DOCTYPE source_file SYSTEM "apf.v5.1.1.dtd">
+<source_file URI="Thread100038.sgm" SOURCE="news" TYPE="text" AUTHOR="NYU">
+<document DOCID="Thread100038">
+  <entity ID="null-1" TYPE="ORG" SUBTYPE="Commercial" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-1-0">
+      <extent>
+        <charseq START="6" END="9">CPUC</charseq>
+      </extent>
+      <head>
+        <charseq START="6" END="9">CPUC</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-1">
+      <extent>
+        <charseq START="243" END="246">CPUC</charseq>
+      </extent>
+      <head>
+        <charseq START="243" END="246">CPUC</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="CPUC">
+        <charseq START="6" END="9">CPUC</charseq>
+      </name>
+      <name NAME="CPUC">
+        <charseq START="243" END="246">CPUC</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-2" TYPE="ORG" SUBTYPE="Commercial" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-2-0">
+      <extent>
+        <charseq START="14" END="20">El Paso</charseq>
+      </extent>
+      <head>
+        <charseq START="14" END="20">El Paso</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-1">
+      <extent>
+        <charseq START="251" END="257">El Paso</charseq>
+      </extent>
+      <head>
+        <charseq START="251" END="257">El Paso</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="El Paso">
+        <charseq START="14" END="20">El Paso</charseq>
+      </name>
+      <name NAME="El Paso">
+        <charseq START="251" END="257">El Paso</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-3" TYPE="PER" SUBTYPE="Individual" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-3-0">
+      <extent>
+        <charseq START="28" END="35">Attached</charseq>
+      </extent>
+      <head>
+        <charseq START="28" END="35">Attached</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Attached">
+        <charseq START="28" END="35">Attached</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-4" TYPE="PER" SUBTYPE="Individual" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-4-0">
+      <extent>
+        <charseq START="100" END="116">Kimberly A. Curry</charseq>
+      </extent>
+      <head>
+        <charseq START="100" END="116">Kimberly A. Curry</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Kimberly A. Curry">
+        <charseq START="100" END="116">Kimberly A. Curry</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-5" TYPE="ORG" SUBTYPE="Educational" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-5-0">
+      <extent>
+        <charseq START="118" END="138">Bracewell &amp; Patterson</charseq>
+      </extent>
+      <head>
+        <charseq START="118" END="138">Bracewell &amp; Patterson</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Bracewell & Patterson">
+        <charseq START="118" END="138">Bracewell &amp; Patterson</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-6" TYPE="ORG" SUBTYPE="Commercial" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-6-0">
+      <extent>
+        <charseq START="162" END="171">N.W.
+Suite</charseq>
+      </extent>
+      <head>
+        <charseq START="162" END="171">N.W.
+Suite</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="N.W. Suite">
+        <charseq START="162" END="171">N.W.
+Suite</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+</document>
+</source_file>

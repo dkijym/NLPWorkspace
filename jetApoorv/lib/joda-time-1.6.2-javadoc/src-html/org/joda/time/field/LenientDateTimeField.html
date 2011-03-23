@@ -1,0 +1,143 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     *  Copyright 2001-2007 Stephen Colebourne<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     *  Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<FONT color="green">005</FONT>     *  you may not use this file except in compliance with the License.<a name="line.5"></a>
+<FONT color="green">006</FONT>     *  You may obtain a copy of the License at<a name="line.6"></a>
+<FONT color="green">007</FONT>     *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<FONT color="green">009</FONT>     *<a name="line.9"></a>
+<FONT color="green">010</FONT>     *  Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<FONT color="green">011</FONT>     *  distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<FONT color="green">012</FONT>     *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<FONT color="green">013</FONT>     *  See the License for the specific language governing permissions and<a name="line.13"></a>
+<FONT color="green">014</FONT>     *  limitations under the License.<a name="line.14"></a>
+<FONT color="green">015</FONT>     */<a name="line.15"></a>
+<FONT color="green">016</FONT>    package org.joda.time.field;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.joda.time.Chronology;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.joda.time.DateTimeField;<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>    /**<a name="line.21"></a>
+<FONT color="green">022</FONT>     * Converts a strict DateTimeField into a lenient one. By being lenient, the<a name="line.22"></a>
+<FONT color="green">023</FONT>     * set method accepts out of bounds values, performing an addition instead.<a name="line.23"></a>
+<FONT color="green">024</FONT>     * &lt;p><a name="line.24"></a>
+<FONT color="green">025</FONT>     * LenientDateTimeField is thread-safe and immutable.<a name="line.25"></a>
+<FONT color="green">026</FONT>     *<a name="line.26"></a>
+<FONT color="green">027</FONT>     * @author Brian S O'Neill<a name="line.27"></a>
+<FONT color="green">028</FONT>     * @see org.joda.time.chrono.LenientChronology<a name="line.28"></a>
+<FONT color="green">029</FONT>     * @see StrictDateTimeField<a name="line.29"></a>
+<FONT color="green">030</FONT>     * @since 1.0<a name="line.30"></a>
+<FONT color="green">031</FONT>     */<a name="line.31"></a>
+<FONT color="green">032</FONT>    public class LenientDateTimeField extends DelegatedDateTimeField {<a name="line.32"></a>
+<FONT color="green">033</FONT>    <a name="line.33"></a>
+<FONT color="green">034</FONT>        private static final long serialVersionUID = 8714085824173290599L;<a name="line.34"></a>
+<FONT color="green">035</FONT>    <a name="line.35"></a>
+<FONT color="green">036</FONT>        private final Chronology iBase;<a name="line.36"></a>
+<FONT color="green">037</FONT>    <a name="line.37"></a>
+<FONT color="green">038</FONT>        /**<a name="line.38"></a>
+<FONT color="green">039</FONT>         * Returns a lenient version of the given field. If it is already lenient,<a name="line.39"></a>
+<FONT color="green">040</FONT>         * then it is returned as-is. Otherwise, a new LenientDateTimeField is<a name="line.40"></a>
+<FONT color="green">041</FONT>         * returned.<a name="line.41"></a>
+<FONT color="green">042</FONT>         */<a name="line.42"></a>
+<FONT color="green">043</FONT>        public static DateTimeField getInstance(DateTimeField field, Chronology base) {<a name="line.43"></a>
+<FONT color="green">044</FONT>            if (field == null) {<a name="line.44"></a>
+<FONT color="green">045</FONT>                return null;<a name="line.45"></a>
+<FONT color="green">046</FONT>            }<a name="line.46"></a>
+<FONT color="green">047</FONT>            if (field instanceof StrictDateTimeField) {<a name="line.47"></a>
+<FONT color="green">048</FONT>                field = ((StrictDateTimeField)field).getWrappedField();<a name="line.48"></a>
+<FONT color="green">049</FONT>            }<a name="line.49"></a>
+<FONT color="green">050</FONT>            if (field.isLenient()) {<a name="line.50"></a>
+<FONT color="green">051</FONT>                return field;<a name="line.51"></a>
+<FONT color="green">052</FONT>            }<a name="line.52"></a>
+<FONT color="green">053</FONT>            return new LenientDateTimeField(field, base);<a name="line.53"></a>
+<FONT color="green">054</FONT>        }<a name="line.54"></a>
+<FONT color="green">055</FONT>    <a name="line.55"></a>
+<FONT color="green">056</FONT>        protected LenientDateTimeField(DateTimeField field, Chronology base) {<a name="line.56"></a>
+<FONT color="green">057</FONT>            super(field);<a name="line.57"></a>
+<FONT color="green">058</FONT>            iBase = base;<a name="line.58"></a>
+<FONT color="green">059</FONT>        }<a name="line.59"></a>
+<FONT color="green">060</FONT>    <a name="line.60"></a>
+<FONT color="green">061</FONT>        public final boolean isLenient() {<a name="line.61"></a>
+<FONT color="green">062</FONT>            return true;<a name="line.62"></a>
+<FONT color="green">063</FONT>        }<a name="line.63"></a>
+<FONT color="green">064</FONT>    <a name="line.64"></a>
+<FONT color="green">065</FONT>        /**<a name="line.65"></a>
+<FONT color="green">066</FONT>         * Set values which may be out of bounds by adding the difference between<a name="line.66"></a>
+<FONT color="green">067</FONT>         * the new value and the current value.<a name="line.67"></a>
+<FONT color="green">068</FONT>         */<a name="line.68"></a>
+<FONT color="green">069</FONT>        public long set(long instant, int value) {<a name="line.69"></a>
+<FONT color="green">070</FONT>            // lenient needs to handle time zone chronologies<a name="line.70"></a>
+<FONT color="green">071</FONT>            // so we do the calculation using local milliseconds<a name="line.71"></a>
+<FONT color="green">072</FONT>            long localInstant = iBase.getZone().convertUTCToLocal(instant);<a name="line.72"></a>
+<FONT color="green">073</FONT>            long difference = FieldUtils.safeSubtract(value, get(instant));<a name="line.73"></a>
+<FONT color="green">074</FONT>            localInstant = getType().getField(iBase.withUTC()).add(localInstant, difference);<a name="line.74"></a>
+<FONT color="green">075</FONT>            return iBase.getZone().convertLocalToUTC(localInstant, false);<a name="line.75"></a>
+<FONT color="green">076</FONT>        }<a name="line.76"></a>
+<FONT color="green">077</FONT>    }<a name="line.77"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

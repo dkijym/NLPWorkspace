@@ -1,0 +1,42 @@
+<query template-number="5" query-id="GNG013">
+		<query-text>Find statements made by or attributed to [Hamid-Reza Asefi] on [al-Qaeda members in Iran]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Hamid-Reza Asefi</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Topic">
+			<arg-value>al-Qaeda members in Iran</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>01 March 2003</start-date>
+			<end-date>01 October 2003</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<equivalent-terms>
+				<term>Hamid-Reza Asefi</term>
+				<term>Iranian Foreign Minister</term>
+			</equivalent-terms>
+			<equivalent-terms>
+				<term>al-Qaeda</term>
+				<term>al-Qaida</term>
+			</equivalent-terms>
+		</context>
+	</query>

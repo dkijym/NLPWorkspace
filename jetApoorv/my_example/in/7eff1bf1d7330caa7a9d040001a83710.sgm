@@ -1,0 +1,1 @@
+<query query-id="7eff1bf1d7330caa7a9d040001a83710" template-number="6"><query-text>Describe the relationship of [Kim Jong Il] to [United States]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Kim Jong Il</arg-value></query-arg><query-arg arg-num="2" arg-type="Organization"><arg-value>United States</arg-value></query-arg><context/></query>

@@ -1,0 +1,12 @@
+Starting ACE Jet...
+5834 patterns loaded
+
+Processing document 1: aliceAllChapters.txt
+>>> Monocase is false
+3 time expressions found.
+Built 0 values.
+RelationCoref: 1 relation mentions
+RelationCoref: 1 relations
+eventCoref: 0 event mentions
+eventCoref: 0 events
+0 values remain after pruning.

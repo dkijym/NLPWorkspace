@@ -1,0 +1,1 @@
+<query query-id="a9ec000e3a1abb2759d2c29c9ce93f5b" template-number="6"><query-text>Describe the relationship of [Oil] to [Suppliers]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Oil</arg-value></query-arg><query-arg arg-num="2" arg-type="Organization"><arg-value>Suppliers</arg-value></query-arg><context/></query>

@@ -1,0 +1,534 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     *  Copyright 2001-2006 Stephen Colebourne<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     *  Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<FONT color="green">005</FONT>     *  you may not use this file except in compliance with the License.<a name="line.5"></a>
+<FONT color="green">006</FONT>     *  You may obtain a copy of the License at<a name="line.6"></a>
+<FONT color="green">007</FONT>     *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<FONT color="green">009</FONT>     *<a name="line.9"></a>
+<FONT color="green">010</FONT>     *  Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<FONT color="green">011</FONT>     *  distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<FONT color="green">012</FONT>     *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<FONT color="green">013</FONT>     *  See the License for the specific language governing permissions and<a name="line.13"></a>
+<FONT color="green">014</FONT>     *  limitations under the License.<a name="line.14"></a>
+<FONT color="green">015</FONT>     */<a name="line.15"></a>
+<FONT color="green">016</FONT>    package org.joda.time.format;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    import java.util.Arrays;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import java.util.Locale;<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>    import org.joda.time.Chronology;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.joda.time.DateTimeField;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.joda.time.DateTimeFieldType;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import org.joda.time.DateTimeUtils;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import org.joda.time.DateTimeZone;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import org.joda.time.DurationField;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import org.joda.time.IllegalFieldValueException;<a name="line.27"></a>
+<FONT color="green">028</FONT>    <a name="line.28"></a>
+<FONT color="green">029</FONT>    /**<a name="line.29"></a>
+<FONT color="green">030</FONT>     * DateTimeParserBucket is an advanced class, intended mainly for parser<a name="line.30"></a>
+<FONT color="green">031</FONT>     * implementations. It can also be used during normal parsing operations to<a name="line.31"></a>
+<FONT color="green">032</FONT>     * capture more information about the parse.<a name="line.32"></a>
+<FONT color="green">033</FONT>     * &lt;p><a name="line.33"></a>
+<FONT color="green">034</FONT>     * This class allows fields to be saved in any order, but be physically set in<a name="line.34"></a>
+<FONT color="green">035</FONT>     * a consistent order. This is useful for parsing against formats that allow<a name="line.35"></a>
+<FONT color="green">036</FONT>     * field values to contradict each other.<a name="line.36"></a>
+<FONT color="green">037</FONT>     * &lt;p><a name="line.37"></a>
+<FONT color="green">038</FONT>     * Field values are applied in an order where the "larger" fields are set<a name="line.38"></a>
+<FONT color="green">039</FONT>     * first, making their value less likely to stick.  A field is larger than<a name="line.39"></a>
+<FONT color="green">040</FONT>     * another when it's range duration is longer. If both ranges are the same,<a name="line.40"></a>
+<FONT color="green">041</FONT>     * then the larger field has the longer duration. If it cannot be determined<a name="line.41"></a>
+<FONT color="green">042</FONT>     * which field is larger, then the fields are set in the order they were saved.<a name="line.42"></a>
+<FONT color="green">043</FONT>     * &lt;p><a name="line.43"></a>
+<FONT color="green">044</FONT>     * For example, these fields were saved in this order: dayOfWeek, monthOfYear,<a name="line.44"></a>
+<FONT color="green">045</FONT>     * dayOfMonth, dayOfYear. When computeMillis is called, the fields are set in<a name="line.45"></a>
+<FONT color="green">046</FONT>     * this order: monthOfYear, dayOfYear, dayOfMonth, dayOfWeek.<a name="line.46"></a>
+<FONT color="green">047</FONT>     * &lt;p><a name="line.47"></a>
+<FONT color="green">048</FONT>     * DateTimeParserBucket is mutable and not thread-safe.<a name="line.48"></a>
+<FONT color="green">049</FONT>     *<a name="line.49"></a>
+<FONT color="green">050</FONT>     * @author Brian S O'Neill<a name="line.50"></a>
+<FONT color="green">051</FONT>     * @author Fredrik Borgh<a name="line.51"></a>
+<FONT color="green">052</FONT>     * @since 1.0<a name="line.52"></a>
+<FONT color="green">053</FONT>     */<a name="line.53"></a>
+<FONT color="green">054</FONT>    public class DateTimeParserBucket {<a name="line.54"></a>
+<FONT color="green">055</FONT>    <a name="line.55"></a>
+<FONT color="green">056</FONT>        /** The chronology to use for parsing. */<a name="line.56"></a>
+<FONT color="green">057</FONT>        private final Chronology iChrono;<a name="line.57"></a>
+<FONT color="green">058</FONT>        private final long iMillis;<a name="line.58"></a>
+<FONT color="green">059</FONT>        <a name="line.59"></a>
+<FONT color="green">060</FONT>        // TimeZone to switch to in computeMillis. If null, use offset.<a name="line.60"></a>
+<FONT color="green">061</FONT>        private DateTimeZone iZone;<a name="line.61"></a>
+<FONT color="green">062</FONT>        private int iOffset;<a name="line.62"></a>
+<FONT color="green">063</FONT>        /** The locale to use for parsing. */<a name="line.63"></a>
+<FONT color="green">064</FONT>        private Locale iLocale;<a name="line.64"></a>
+<FONT color="green">065</FONT>        /** Used for parsing two-digit years. */<a name="line.65"></a>
+<FONT color="green">066</FONT>        private Integer iPivotYear;<a name="line.66"></a>
+<FONT color="green">067</FONT>    <a name="line.67"></a>
+<FONT color="green">068</FONT>        private SavedField[] iSavedFields = new SavedField[8];<a name="line.68"></a>
+<FONT color="green">069</FONT>        private int iSavedFieldsCount;<a name="line.69"></a>
+<FONT color="green">070</FONT>        private boolean iSavedFieldsShared;<a name="line.70"></a>
+<FONT color="green">071</FONT>        <a name="line.71"></a>
+<FONT color="green">072</FONT>        private Object iSavedState;<a name="line.72"></a>
+<FONT color="green">073</FONT>    <a name="line.73"></a>
+<FONT color="green">074</FONT>        /**<a name="line.74"></a>
+<FONT color="green">075</FONT>         * Constucts a bucket.<a name="line.75"></a>
+<FONT color="green">076</FONT>         * <a name="line.76"></a>
+<FONT color="green">077</FONT>         * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time<a name="line.77"></a>
+<FONT color="green">078</FONT>         * @param chrono  the chronology to use<a name="line.78"></a>
+<FONT color="green">079</FONT>         * @param locale  the locale to use<a name="line.79"></a>
+<FONT color="green">080</FONT>         */<a name="line.80"></a>
+<FONT color="green">081</FONT>        public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale) {<a name="line.81"></a>
+<FONT color="green">082</FONT>            this(instantLocal, chrono, locale, null);<a name="line.82"></a>
+<FONT color="green">083</FONT>        }<a name="line.83"></a>
+<FONT color="green">084</FONT>    <a name="line.84"></a>
+<FONT color="green">085</FONT>        /**<a name="line.85"></a>
+<FONT color="green">086</FONT>         * Constucts a bucket, with the option of specifying the pivot year for<a name="line.86"></a>
+<FONT color="green">087</FONT>         * two-digit year parsing.<a name="line.87"></a>
+<FONT color="green">088</FONT>         *<a name="line.88"></a>
+<FONT color="green">089</FONT>         * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time<a name="line.89"></a>
+<FONT color="green">090</FONT>         * @param chrono  the chronology to use<a name="line.90"></a>
+<FONT color="green">091</FONT>         * @param locale  the locale to use<a name="line.91"></a>
+<FONT color="green">092</FONT>         * @param pivotYear  the pivot year to use when parsing two-digit years<a name="line.92"></a>
+<FONT color="green">093</FONT>         * @since 1.1<a name="line.93"></a>
+<FONT color="green">094</FONT>         */<a name="line.94"></a>
+<FONT color="green">095</FONT>        public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale, Integer pivotYear) {<a name="line.95"></a>
+<FONT color="green">096</FONT>            super();<a name="line.96"></a>
+<FONT color="green">097</FONT>            chrono = DateTimeUtils.getChronology(chrono);<a name="line.97"></a>
+<FONT color="green">098</FONT>            iMillis = instantLocal;<a name="line.98"></a>
+<FONT color="green">099</FONT>            iChrono = chrono.withUTC();<a name="line.99"></a>
+<FONT color="green">100</FONT>            iLocale = (locale == null ? Locale.getDefault() : locale);<a name="line.100"></a>
+<FONT color="green">101</FONT>            setZone(chrono.getZone());<a name="line.101"></a>
+<FONT color="green">102</FONT>            iPivotYear = pivotYear;<a name="line.102"></a>
+<FONT color="green">103</FONT>        }<a name="line.103"></a>
+<FONT color="green">104</FONT>    <a name="line.104"></a>
+<FONT color="green">105</FONT>        //-----------------------------------------------------------------------<a name="line.105"></a>
+<FONT color="green">106</FONT>        /**<a name="line.106"></a>
+<FONT color="green">107</FONT>         * Gets the chronology of the bucket, which will be a local (UTC) chronology.<a name="line.107"></a>
+<FONT color="green">108</FONT>         */<a name="line.108"></a>
+<FONT color="green">109</FONT>        public Chronology getChronology() {<a name="line.109"></a>
+<FONT color="green">110</FONT>            return iChrono;<a name="line.110"></a>
+<FONT color="green">111</FONT>        }<a name="line.111"></a>
+<FONT color="green">112</FONT>    <a name="line.112"></a>
+<FONT color="green">113</FONT>        //-----------------------------------------------------------------------<a name="line.113"></a>
+<FONT color="green">114</FONT>        /**<a name="line.114"></a>
+<FONT color="green">115</FONT>         * Returns the locale to be used during parsing.<a name="line.115"></a>
+<FONT color="green">116</FONT>         * <a name="line.116"></a>
+<FONT color="green">117</FONT>         * @return the locale to use<a name="line.117"></a>
+<FONT color="green">118</FONT>         */<a name="line.118"></a>
+<FONT color="green">119</FONT>        public Locale getLocale() {<a name="line.119"></a>
+<FONT color="green">120</FONT>            return iLocale;<a name="line.120"></a>
+<FONT color="green">121</FONT>        }<a name="line.121"></a>
+<FONT color="green">122</FONT>    <a name="line.122"></a>
+<FONT color="green">123</FONT>        //-----------------------------------------------------------------------<a name="line.123"></a>
+<FONT color="green">124</FONT>        /**<a name="line.124"></a>
+<FONT color="green">125</FONT>         * Returns the time zone used by computeMillis, or null if an offset is<a name="line.125"></a>
+<FONT color="green">126</FONT>         * used instead.<a name="line.126"></a>
+<FONT color="green">127</FONT>         */<a name="line.127"></a>
+<FONT color="green">128</FONT>        public DateTimeZone getZone() {<a name="line.128"></a>
+<FONT color="green">129</FONT>            return iZone;<a name="line.129"></a>
+<FONT color="green">130</FONT>        }<a name="line.130"></a>
+<FONT color="green">131</FONT>        <a name="line.131"></a>
+<FONT color="green">132</FONT>        /**<a name="line.132"></a>
+<FONT color="green">133</FONT>         * Set a time zone to be used when computeMillis is called, which<a name="line.133"></a>
+<FONT color="green">134</FONT>         * overrides any set time zone offset.<a name="line.134"></a>
+<FONT color="green">135</FONT>         *<a name="line.135"></a>
+<FONT color="green">136</FONT>         * @param zone the date time zone to operate in, or null if UTC<a name="line.136"></a>
+<FONT color="green">137</FONT>         */<a name="line.137"></a>
+<FONT color="green">138</FONT>        public void setZone(DateTimeZone zone) {<a name="line.138"></a>
+<FONT color="green">139</FONT>            iSavedState = null;<a name="line.139"></a>
+<FONT color="green">140</FONT>            iZone = zone == DateTimeZone.UTC ? null : zone;<a name="line.140"></a>
+<FONT color="green">141</FONT>            iOffset = 0;<a name="line.141"></a>
+<FONT color="green">142</FONT>        }<a name="line.142"></a>
+<FONT color="green">143</FONT>        <a name="line.143"></a>
+<FONT color="green">144</FONT>        //-----------------------------------------------------------------------<a name="line.144"></a>
+<FONT color="green">145</FONT>        /**<a name="line.145"></a>
+<FONT color="green">146</FONT>         * Returns the time zone offset in milliseconds used by computeMillis,<a name="line.146"></a>
+<FONT color="green">147</FONT>         * unless getZone doesn't return null.<a name="line.147"></a>
+<FONT color="green">148</FONT>         */<a name="line.148"></a>
+<FONT color="green">149</FONT>        public int getOffset() {<a name="line.149"></a>
+<FONT color="green">150</FONT>            return iOffset;<a name="line.150"></a>
+<FONT color="green">151</FONT>        }<a name="line.151"></a>
+<FONT color="green">152</FONT>        <a name="line.152"></a>
+<FONT color="green">153</FONT>        /**<a name="line.153"></a>
+<FONT color="green">154</FONT>         * Set a time zone offset to be used when computeMillis is called, which<a name="line.154"></a>
+<FONT color="green">155</FONT>         * overrides the time zone.<a name="line.155"></a>
+<FONT color="green">156</FONT>         */<a name="line.156"></a>
+<FONT color="green">157</FONT>        public void setOffset(int offset) {<a name="line.157"></a>
+<FONT color="green">158</FONT>            iSavedState = null;<a name="line.158"></a>
+<FONT color="green">159</FONT>            iOffset = offset;<a name="line.159"></a>
+<FONT color="green">160</FONT>            iZone = null;<a name="line.160"></a>
+<FONT color="green">161</FONT>        }<a name="line.161"></a>
+<FONT color="green">162</FONT>    <a name="line.162"></a>
+<FONT color="green">163</FONT>        //-----------------------------------------------------------------------<a name="line.163"></a>
+<FONT color="green">164</FONT>        /**<a name="line.164"></a>
+<FONT color="green">165</FONT>         * Returns the pivot year used for parsing two-digit years.<a name="line.165"></a>
+<FONT color="green">166</FONT>         * &lt;p><a name="line.166"></a>
+<FONT color="green">167</FONT>         * If null is returned, this indicates default behaviour<a name="line.167"></a>
+<FONT color="green">168</FONT>         *<a name="line.168"></a>
+<FONT color="green">169</FONT>         * @return Integer value of the pivot year, null if not set<a name="line.169"></a>
+<FONT color="green">170</FONT>         * @since 1.1<a name="line.170"></a>
+<FONT color="green">171</FONT>         */<a name="line.171"></a>
+<FONT color="green">172</FONT>        public Integer getPivotYear() {<a name="line.172"></a>
+<FONT color="green">173</FONT>            return iPivotYear;<a name="line.173"></a>
+<FONT color="green">174</FONT>        }<a name="line.174"></a>
+<FONT color="green">175</FONT>    <a name="line.175"></a>
+<FONT color="green">176</FONT>        /**<a name="line.176"></a>
+<FONT color="green">177</FONT>         * Sets the pivot year to use when parsing two digit years.<a name="line.177"></a>
+<FONT color="green">178</FONT>         * &lt;p><a name="line.178"></a>
+<FONT color="green">179</FONT>         * If the value is set to null, this will indicate that default<a name="line.179"></a>
+<FONT color="green">180</FONT>         * behaviour should be used.<a name="line.180"></a>
+<FONT color="green">181</FONT>         *<a name="line.181"></a>
+<FONT color="green">182</FONT>         * @param pivotYear  the pivot year to use<a name="line.182"></a>
+<FONT color="green">183</FONT>         * @since 1.1<a name="line.183"></a>
+<FONT color="green">184</FONT>         */<a name="line.184"></a>
+<FONT color="green">185</FONT>        public void setPivotYear(Integer pivotYear) {<a name="line.185"></a>
+<FONT color="green">186</FONT>            iPivotYear = pivotYear;<a name="line.186"></a>
+<FONT color="green">187</FONT>        }<a name="line.187"></a>
+<FONT color="green">188</FONT>    <a name="line.188"></a>
+<FONT color="green">189</FONT>        //-----------------------------------------------------------------------<a name="line.189"></a>
+<FONT color="green">190</FONT>        /**<a name="line.190"></a>
+<FONT color="green">191</FONT>         * Saves a datetime field value.<a name="line.191"></a>
+<FONT color="green">192</FONT>         * <a name="line.192"></a>
+<FONT color="green">193</FONT>         * @param field  the field, whose chronology must match that of this bucket<a name="line.193"></a>
+<FONT color="green">194</FONT>         * @param value  the value<a name="line.194"></a>
+<FONT color="green">195</FONT>         */<a name="line.195"></a>
+<FONT color="green">196</FONT>        public void saveField(DateTimeField field, int value) {<a name="line.196"></a>
+<FONT color="green">197</FONT>            saveField(new SavedField(field, value));<a name="line.197"></a>
+<FONT color="green">198</FONT>        }<a name="line.198"></a>
+<FONT color="green">199</FONT>        <a name="line.199"></a>
+<FONT color="green">200</FONT>        /**<a name="line.200"></a>
+<FONT color="green">201</FONT>         * Saves a datetime field value.<a name="line.201"></a>
+<FONT color="green">202</FONT>         * <a name="line.202"></a>
+<FONT color="green">203</FONT>         * @param fieldType  the field type<a name="line.203"></a>
+<FONT color="green">204</FONT>         * @param value  the value<a name="line.204"></a>
+<FONT color="green">205</FONT>         */<a name="line.205"></a>
+<FONT color="green">206</FONT>        public void saveField(DateTimeFieldType fieldType, int value) {<a name="line.206"></a>
+<FONT color="green">207</FONT>            saveField(new SavedField(fieldType.getField(iChrono), value));<a name="line.207"></a>
+<FONT color="green">208</FONT>        }<a name="line.208"></a>
+<FONT color="green">209</FONT>        <a name="line.209"></a>
+<FONT color="green">210</FONT>        /**<a name="line.210"></a>
+<FONT color="green">211</FONT>         * Saves a datetime field text value.<a name="line.211"></a>
+<FONT color="green">212</FONT>         * <a name="line.212"></a>
+<FONT color="green">213</FONT>         * @param fieldType  the field type<a name="line.213"></a>
+<FONT color="green">214</FONT>         * @param text  the text value<a name="line.214"></a>
+<FONT color="green">215</FONT>         * @param locale  the locale to use<a name="line.215"></a>
+<FONT color="green">216</FONT>         */<a name="line.216"></a>
+<FONT color="green">217</FONT>        public void saveField(DateTimeFieldType fieldType, String text, Locale locale) {<a name="line.217"></a>
+<FONT color="green">218</FONT>            saveField(new SavedField(fieldType.getField(iChrono), text, locale));<a name="line.218"></a>
+<FONT color="green">219</FONT>        }<a name="line.219"></a>
+<FONT color="green">220</FONT>        <a name="line.220"></a>
+<FONT color="green">221</FONT>        private void saveField(SavedField field) {<a name="line.221"></a>
+<FONT color="green">222</FONT>            SavedField[] savedFields = iSavedFields;<a name="line.222"></a>
+<FONT color="green">223</FONT>            int savedFieldsCount = iSavedFieldsCount;<a name="line.223"></a>
+<FONT color="green">224</FONT>            <a name="line.224"></a>
+<FONT color="green">225</FONT>            if (savedFieldsCount == savedFields.length || iSavedFieldsShared) {<a name="line.225"></a>
+<FONT color="green">226</FONT>                // Expand capacity or merely copy if saved fields are shared.<a name="line.226"></a>
+<FONT color="green">227</FONT>                SavedField[] newArray = new SavedField<a name="line.227"></a>
+<FONT color="green">228</FONT>                    [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];<a name="line.228"></a>
+<FONT color="green">229</FONT>                System.arraycopy(savedFields, 0, newArray, 0, savedFieldsCount);<a name="line.229"></a>
+<FONT color="green">230</FONT>                iSavedFields = savedFields = newArray;<a name="line.230"></a>
+<FONT color="green">231</FONT>                iSavedFieldsShared = false;<a name="line.231"></a>
+<FONT color="green">232</FONT>            }<a name="line.232"></a>
+<FONT color="green">233</FONT>            <a name="line.233"></a>
+<FONT color="green">234</FONT>            iSavedState = null;<a name="line.234"></a>
+<FONT color="green">235</FONT>            savedFields[savedFieldsCount] = field;<a name="line.235"></a>
+<FONT color="green">236</FONT>            iSavedFieldsCount = savedFieldsCount + 1;<a name="line.236"></a>
+<FONT color="green">237</FONT>        }<a name="line.237"></a>
+<FONT color="green">238</FONT>        <a name="line.238"></a>
+<FONT color="green">239</FONT>        /**<a name="line.239"></a>
+<FONT color="green">240</FONT>         * Saves the state of this bucket, returning it in an opaque object. Call<a name="line.240"></a>
+<FONT color="green">241</FONT>         * restoreState to undo any changes that were made since the state was<a name="line.241"></a>
+<FONT color="green">242</FONT>         * saved. Calls to saveState may be nested.<a name="line.242"></a>
+<FONT color="green">243</FONT>         *<a name="line.243"></a>
+<FONT color="green">244</FONT>         * @return opaque saved state, which may be passed to restoreState<a name="line.244"></a>
+<FONT color="green">245</FONT>         */<a name="line.245"></a>
+<FONT color="green">246</FONT>        public Object saveState() {<a name="line.246"></a>
+<FONT color="green">247</FONT>            if (iSavedState == null) {<a name="line.247"></a>
+<FONT color="green">248</FONT>                iSavedState = new SavedState();<a name="line.248"></a>
+<FONT color="green">249</FONT>            }<a name="line.249"></a>
+<FONT color="green">250</FONT>            return iSavedState;<a name="line.250"></a>
+<FONT color="green">251</FONT>        }<a name="line.251"></a>
+<FONT color="green">252</FONT>        <a name="line.252"></a>
+<FONT color="green">253</FONT>        /**<a name="line.253"></a>
+<FONT color="green">254</FONT>         * Restores the state of this bucket from a previously saved state. The<a name="line.254"></a>
+<FONT color="green">255</FONT>         * state object passed into this method is not consumed, and it can be used<a name="line.255"></a>
+<FONT color="green">256</FONT>         * later to restore to that state again.<a name="line.256"></a>
+<FONT color="green">257</FONT>         *<a name="line.257"></a>
+<FONT color="green">258</FONT>         * @param savedState opaque saved state, returned from saveState<a name="line.258"></a>
+<FONT color="green">259</FONT>         * @return true state object is valid and state restored<a name="line.259"></a>
+<FONT color="green">260</FONT>         */<a name="line.260"></a>
+<FONT color="green">261</FONT>        public boolean restoreState(Object savedState) {<a name="line.261"></a>
+<FONT color="green">262</FONT>            if (savedState instanceof SavedState) {<a name="line.262"></a>
+<FONT color="green">263</FONT>                if (((SavedState) savedState).restoreState(this)) {<a name="line.263"></a>
+<FONT color="green">264</FONT>                    iSavedState = savedState;<a name="line.264"></a>
+<FONT color="green">265</FONT>                    return true;<a name="line.265"></a>
+<FONT color="green">266</FONT>                }<a name="line.266"></a>
+<FONT color="green">267</FONT>            }<a name="line.267"></a>
+<FONT color="green">268</FONT>            return false;<a name="line.268"></a>
+<FONT color="green">269</FONT>        }<a name="line.269"></a>
+<FONT color="green">270</FONT>        <a name="line.270"></a>
+<FONT color="green">271</FONT>        /**<a name="line.271"></a>
+<FONT color="green">272</FONT>         * Computes the parsed datetime by setting the saved fields.<a name="line.272"></a>
+<FONT color="green">273</FONT>         * This method is idempotent, but it is not thread-safe.<a name="line.273"></a>
+<FONT color="green">274</FONT>         *<a name="line.274"></a>
+<FONT color="green">275</FONT>         * @return milliseconds since 1970-01-01T00:00:00Z<a name="line.275"></a>
+<FONT color="green">276</FONT>         * @throws IllegalArgumentException if any field is out of range<a name="line.276"></a>
+<FONT color="green">277</FONT>         */<a name="line.277"></a>
+<FONT color="green">278</FONT>        public long computeMillis() {<a name="line.278"></a>
+<FONT color="green">279</FONT>            return computeMillis(false, null);<a name="line.279"></a>
+<FONT color="green">280</FONT>        }<a name="line.280"></a>
+<FONT color="green">281</FONT>        <a name="line.281"></a>
+<FONT color="green">282</FONT>        /**<a name="line.282"></a>
+<FONT color="green">283</FONT>         * Computes the parsed datetime by setting the saved fields.<a name="line.283"></a>
+<FONT color="green">284</FONT>         * This method is idempotent, but it is not thread-safe.<a name="line.284"></a>
+<FONT color="green">285</FONT>         *<a name="line.285"></a>
+<FONT color="green">286</FONT>         * @param resetFields false by default, but when true, unsaved field values are cleared<a name="line.286"></a>
+<FONT color="green">287</FONT>         * @return milliseconds since 1970-01-01T00:00:00Z<a name="line.287"></a>
+<FONT color="green">288</FONT>         * @throws IllegalArgumentException if any field is out of range<a name="line.288"></a>
+<FONT color="green">289</FONT>         */<a name="line.289"></a>
+<FONT color="green">290</FONT>        public long computeMillis(boolean resetFields) {<a name="line.290"></a>
+<FONT color="green">291</FONT>            return computeMillis(resetFields, null);<a name="line.291"></a>
+<FONT color="green">292</FONT>        }<a name="line.292"></a>
+<FONT color="green">293</FONT>    <a name="line.293"></a>
+<FONT color="green">294</FONT>        /**<a name="line.294"></a>
+<FONT color="green">295</FONT>         * Computes the parsed datetime by setting the saved fields.<a name="line.295"></a>
+<FONT color="green">296</FONT>         * This method is idempotent, but it is not thread-safe.<a name="line.296"></a>
+<FONT color="green">297</FONT>         *<a name="line.297"></a>
+<FONT color="green">298</FONT>         * @param resetFields false by default, but when true, unsaved field values are cleared<a name="line.298"></a>
+<FONT color="green">299</FONT>         * @param text optional text being parsed, to be included in any error message<a name="line.299"></a>
+<FONT color="green">300</FONT>         * @return milliseconds since 1970-01-01T00:00:00Z<a name="line.300"></a>
+<FONT color="green">301</FONT>         * @throws IllegalArgumentException if any field is out of range<a name="line.301"></a>
+<FONT color="green">302</FONT>         * @since 1.3<a name="line.302"></a>
+<FONT color="green">303</FONT>         */<a name="line.303"></a>
+<FONT color="green">304</FONT>        public long computeMillis(boolean resetFields, String text) {<a name="line.304"></a>
+<FONT color="green">305</FONT>            SavedField[] savedFields = iSavedFields;<a name="line.305"></a>
+<FONT color="green">306</FONT>            int count = iSavedFieldsCount;<a name="line.306"></a>
+<FONT color="green">307</FONT>            if (iSavedFieldsShared) {<a name="line.307"></a>
+<FONT color="green">308</FONT>                iSavedFields = savedFields = (SavedField[])iSavedFields.clone();<a name="line.308"></a>
+<FONT color="green">309</FONT>                iSavedFieldsShared = false;<a name="line.309"></a>
+<FONT color="green">310</FONT>            }<a name="line.310"></a>
+<FONT color="green">311</FONT>            sort(savedFields, count);<a name="line.311"></a>
+<FONT color="green">312</FONT>    <a name="line.312"></a>
+<FONT color="green">313</FONT>            long millis = iMillis;<a name="line.313"></a>
+<FONT color="green">314</FONT>            try {<a name="line.314"></a>
+<FONT color="green">315</FONT>                for (int i=0; i&lt;count; i++) {<a name="line.315"></a>
+<FONT color="green">316</FONT>                    millis = savedFields[i].set(millis, resetFields);<a name="line.316"></a>
+<FONT color="green">317</FONT>                }<a name="line.317"></a>
+<FONT color="green">318</FONT>            } catch (IllegalFieldValueException e) {<a name="line.318"></a>
+<FONT color="green">319</FONT>                if (text != null) {<a name="line.319"></a>
+<FONT color="green">320</FONT>                    e.prependMessage("Cannot parse \"" + text + '"');<a name="line.320"></a>
+<FONT color="green">321</FONT>                }<a name="line.321"></a>
+<FONT color="green">322</FONT>                throw e;<a name="line.322"></a>
+<FONT color="green">323</FONT>            }<a name="line.323"></a>
+<FONT color="green">324</FONT>            <a name="line.324"></a>
+<FONT color="green">325</FONT>            if (iZone == null) {<a name="line.325"></a>
+<FONT color="green">326</FONT>                millis -= iOffset;<a name="line.326"></a>
+<FONT color="green">327</FONT>            } else {<a name="line.327"></a>
+<FONT color="green">328</FONT>                int offset = iZone.getOffsetFromLocal(millis);<a name="line.328"></a>
+<FONT color="green">329</FONT>                millis -= offset;<a name="line.329"></a>
+<FONT color="green">330</FONT>                if (offset != iZone.getOffset(millis)) {<a name="line.330"></a>
+<FONT color="green">331</FONT>                    String message =<a name="line.331"></a>
+<FONT color="green">332</FONT>                        "Illegal instant due to time zone offset transition (" + iZone + ')';<a name="line.332"></a>
+<FONT color="green">333</FONT>                    if (text != null) {<a name="line.333"></a>
+<FONT color="green">334</FONT>                        message = "Cannot parse \"" + text + "\": " + message;<a name="line.334"></a>
+<FONT color="green">335</FONT>                    }<a name="line.335"></a>
+<FONT color="green">336</FONT>                    throw new IllegalArgumentException(message);<a name="line.336"></a>
+<FONT color="green">337</FONT>                }<a name="line.337"></a>
+<FONT color="green">338</FONT>            }<a name="line.338"></a>
+<FONT color="green">339</FONT>            <a name="line.339"></a>
+<FONT color="green">340</FONT>            return millis;<a name="line.340"></a>
+<FONT color="green">341</FONT>        }<a name="line.341"></a>
+<FONT color="green">342</FONT>        <a name="line.342"></a>
+<FONT color="green">343</FONT>        /**<a name="line.343"></a>
+<FONT color="green">344</FONT>         * Sorts elements [0,high). Calling java.util.Arrays isn't always the right<a name="line.344"></a>
+<FONT color="green">345</FONT>         * choice since it always creates an internal copy of the array, even if it<a name="line.345"></a>
+<FONT color="green">346</FONT>         * doesn't need to. If the array slice is small enough, an insertion sort<a name="line.346"></a>
+<FONT color="green">347</FONT>         * is chosen instead, but it doesn't need a copy!<a name="line.347"></a>
+<FONT color="green">348</FONT>         * &lt;p><a name="line.348"></a>
+<FONT color="green">349</FONT>         * This method has a modified version of that insertion sort, except it<a name="line.349"></a>
+<FONT color="green">350</FONT>         * doesn't create an unnecessary array copy. If high is over 10, then<a name="line.350"></a>
+<FONT color="green">351</FONT>         * java.util.Arrays is called, which will perform a merge sort, which is<a name="line.351"></a>
+<FONT color="green">352</FONT>         * faster than insertion sort on large lists.<a name="line.352"></a>
+<FONT color="green">353</FONT>         * &lt;p><a name="line.353"></a>
+<FONT color="green">354</FONT>         * The end result is much greater performace when computeMillis is called.<a name="line.354"></a>
+<FONT color="green">355</FONT>         * Since the amount of saved fields is small, the insertion sort is a<a name="line.355"></a>
+<FONT color="green">356</FONT>         * better choice. Additional performance is gained since there is no extra<a name="line.356"></a>
+<FONT color="green">357</FONT>         * array allocation and copying. Also, the insertion sort here does not<a name="line.357"></a>
+<FONT color="green">358</FONT>         * perform any casting operations. The version in java.util.Arrays performs<a name="line.358"></a>
+<FONT color="green">359</FONT>         * casts within the insertion sort loop.<a name="line.359"></a>
+<FONT color="green">360</FONT>         */<a name="line.360"></a>
+<FONT color="green">361</FONT>        private static void sort(Comparable[] array, int high) {<a name="line.361"></a>
+<FONT color="green">362</FONT>            if (high > 10) {<a name="line.362"></a>
+<FONT color="green">363</FONT>                Arrays.sort(array, 0, high);<a name="line.363"></a>
+<FONT color="green">364</FONT>            } else {<a name="line.364"></a>
+<FONT color="green">365</FONT>                for (int i=0; i&lt;high; i++) {<a name="line.365"></a>
+<FONT color="green">366</FONT>                    for (int j=i; j>0 && (array[j-1]).compareTo(array[j])>0; j--) {<a name="line.366"></a>
+<FONT color="green">367</FONT>                        Comparable t = array[j];<a name="line.367"></a>
+<FONT color="green">368</FONT>                        array[j] = array[j-1];<a name="line.368"></a>
+<FONT color="green">369</FONT>                        array[j-1] = t;<a name="line.369"></a>
+<FONT color="green">370</FONT>                    }<a name="line.370"></a>
+<FONT color="green">371</FONT>                }<a name="line.371"></a>
+<FONT color="green">372</FONT>            }<a name="line.372"></a>
+<FONT color="green">373</FONT>        }<a name="line.373"></a>
+<FONT color="green">374</FONT>    <a name="line.374"></a>
+<FONT color="green">375</FONT>        class SavedState {<a name="line.375"></a>
+<FONT color="green">376</FONT>            final DateTimeZone iZone;<a name="line.376"></a>
+<FONT color="green">377</FONT>            final int iOffset;<a name="line.377"></a>
+<FONT color="green">378</FONT>            final SavedField[] iSavedFields;<a name="line.378"></a>
+<FONT color="green">379</FONT>            final int iSavedFieldsCount;<a name="line.379"></a>
+<FONT color="green">380</FONT>            <a name="line.380"></a>
+<FONT color="green">381</FONT>            SavedState() {<a name="line.381"></a>
+<FONT color="green">382</FONT>                this.iZone = DateTimeParserBucket.this.iZone;<a name="line.382"></a>
+<FONT color="green">383</FONT>                this.iOffset = DateTimeParserBucket.this.iOffset;<a name="line.383"></a>
+<FONT color="green">384</FONT>                this.iSavedFields = DateTimeParserBucket.this.iSavedFields;<a name="line.384"></a>
+<FONT color="green">385</FONT>                this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;<a name="line.385"></a>
+<FONT color="green">386</FONT>            }<a name="line.386"></a>
+<FONT color="green">387</FONT>            <a name="line.387"></a>
+<FONT color="green">388</FONT>            boolean restoreState(DateTimeParserBucket enclosing) {<a name="line.388"></a>
+<FONT color="green">389</FONT>                if (enclosing != DateTimeParserBucket.this) {<a name="line.389"></a>
+<FONT color="green">390</FONT>                    return false;<a name="line.390"></a>
+<FONT color="green">391</FONT>                }<a name="line.391"></a>
+<FONT color="green">392</FONT>                enclosing.iZone = this.iZone;<a name="line.392"></a>
+<FONT color="green">393</FONT>                enclosing.iOffset = this.iOffset;<a name="line.393"></a>
+<FONT color="green">394</FONT>                enclosing.iSavedFields = this.iSavedFields;<a name="line.394"></a>
+<FONT color="green">395</FONT>                if (this.iSavedFieldsCount &lt; enclosing.iSavedFieldsCount) {<a name="line.395"></a>
+<FONT color="green">396</FONT>                    // Since count is being restored to a lower count, the<a name="line.396"></a>
+<FONT color="green">397</FONT>                    // potential exists for new saved fields to destroy data being<a name="line.397"></a>
+<FONT color="green">398</FONT>                    // shared by another state. Set this flag such that the array<a name="line.398"></a>
+<FONT color="green">399</FONT>                    // of saved fields is cloned prior to modification.<a name="line.399"></a>
+<FONT color="green">400</FONT>                    enclosing.iSavedFieldsShared = true;<a name="line.400"></a>
+<FONT color="green">401</FONT>                }<a name="line.401"></a>
+<FONT color="green">402</FONT>                enclosing.iSavedFieldsCount = this.iSavedFieldsCount;<a name="line.402"></a>
+<FONT color="green">403</FONT>                return true;<a name="line.403"></a>
+<FONT color="green">404</FONT>            }<a name="line.404"></a>
+<FONT color="green">405</FONT>        }<a name="line.405"></a>
+<FONT color="green">406</FONT>        <a name="line.406"></a>
+<FONT color="green">407</FONT>        static class SavedField implements Comparable {<a name="line.407"></a>
+<FONT color="green">408</FONT>            final DateTimeField iField;<a name="line.408"></a>
+<FONT color="green">409</FONT>            final int iValue;<a name="line.409"></a>
+<FONT color="green">410</FONT>            final String iText;<a name="line.410"></a>
+<FONT color="green">411</FONT>            final Locale iLocale;<a name="line.411"></a>
+<FONT color="green">412</FONT>            <a name="line.412"></a>
+<FONT color="green">413</FONT>            SavedField(DateTimeField field, int value) {<a name="line.413"></a>
+<FONT color="green">414</FONT>                iField = field;<a name="line.414"></a>
+<FONT color="green">415</FONT>                iValue = value;<a name="line.415"></a>
+<FONT color="green">416</FONT>                iText = null;<a name="line.416"></a>
+<FONT color="green">417</FONT>                iLocale = null;<a name="line.417"></a>
+<FONT color="green">418</FONT>            }<a name="line.418"></a>
+<FONT color="green">419</FONT>            <a name="line.419"></a>
+<FONT color="green">420</FONT>            SavedField(DateTimeField field, String text, Locale locale) {<a name="line.420"></a>
+<FONT color="green">421</FONT>                iField = field;<a name="line.421"></a>
+<FONT color="green">422</FONT>                iValue = 0;<a name="line.422"></a>
+<FONT color="green">423</FONT>                iText = text;<a name="line.423"></a>
+<FONT color="green">424</FONT>                iLocale = locale;<a name="line.424"></a>
+<FONT color="green">425</FONT>            }<a name="line.425"></a>
+<FONT color="green">426</FONT>            <a name="line.426"></a>
+<FONT color="green">427</FONT>            long set(long millis, boolean reset) {<a name="line.427"></a>
+<FONT color="green">428</FONT>                if (iText == null) {<a name="line.428"></a>
+<FONT color="green">429</FONT>                    millis = iField.set(millis, iValue);<a name="line.429"></a>
+<FONT color="green">430</FONT>                } else {<a name="line.430"></a>
+<FONT color="green">431</FONT>                    millis = iField.set(millis, iText, iLocale);<a name="line.431"></a>
+<FONT color="green">432</FONT>                }<a name="line.432"></a>
+<FONT color="green">433</FONT>                if (reset) {<a name="line.433"></a>
+<FONT color="green">434</FONT>                    millis = iField.roundFloor(millis);<a name="line.434"></a>
+<FONT color="green">435</FONT>                }<a name="line.435"></a>
+<FONT color="green">436</FONT>                return millis;<a name="line.436"></a>
+<FONT color="green">437</FONT>            }<a name="line.437"></a>
+<FONT color="green">438</FONT>            <a name="line.438"></a>
+<FONT color="green">439</FONT>            /**<a name="line.439"></a>
+<FONT color="green">440</FONT>             * The field with the longer range duration is ordered first, where<a name="line.440"></a>
+<FONT color="green">441</FONT>             * null is considered infinite. If the ranges match, then the field<a name="line.441"></a>
+<FONT color="green">442</FONT>             * with the longer duration is ordered first.<a name="line.442"></a>
+<FONT color="green">443</FONT>             */<a name="line.443"></a>
+<FONT color="green">444</FONT>            public int compareTo(Object obj) {<a name="line.444"></a>
+<FONT color="green">445</FONT>                DateTimeField other = ((SavedField)obj).iField;<a name="line.445"></a>
+<FONT color="green">446</FONT>                int result = compareReverse<a name="line.446"></a>
+<FONT color="green">447</FONT>                    (iField.getRangeDurationField(), other.getRangeDurationField());<a name="line.447"></a>
+<FONT color="green">448</FONT>                if (result != 0) {<a name="line.448"></a>
+<FONT color="green">449</FONT>                    return result;<a name="line.449"></a>
+<FONT color="green">450</FONT>                }<a name="line.450"></a>
+<FONT color="green">451</FONT>                return compareReverse<a name="line.451"></a>
+<FONT color="green">452</FONT>                    (iField.getDurationField(), other.getDurationField());<a name="line.452"></a>
+<FONT color="green">453</FONT>            }<a name="line.453"></a>
+<FONT color="green">454</FONT>            <a name="line.454"></a>
+<FONT color="green">455</FONT>            private int compareReverse(DurationField a, DurationField b) {<a name="line.455"></a>
+<FONT color="green">456</FONT>                if (a == null || !a.isSupported()) {<a name="line.456"></a>
+<FONT color="green">457</FONT>                    if (b == null || !b.isSupported()) {<a name="line.457"></a>
+<FONT color="green">458</FONT>                        return 0;<a name="line.458"></a>
+<FONT color="green">459</FONT>                    }<a name="line.459"></a>
+<FONT color="green">460</FONT>                    return -1;<a name="line.460"></a>
+<FONT color="green">461</FONT>                }<a name="line.461"></a>
+<FONT color="green">462</FONT>                if (b == null || !b.isSupported()) {<a name="line.462"></a>
+<FONT color="green">463</FONT>                    return 1;<a name="line.463"></a>
+<FONT color="green">464</FONT>                }<a name="line.464"></a>
+<FONT color="green">465</FONT>                return -a.compareTo(b);<a name="line.465"></a>
+<FONT color="green">466</FONT>            }<a name="line.466"></a>
+<FONT color="green">467</FONT>        }<a name="line.467"></a>
+<FONT color="green">468</FONT>    }<a name="line.468"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

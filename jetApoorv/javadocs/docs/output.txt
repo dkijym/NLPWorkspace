@@ -1,0 +1,33 @@
+Starting ACE Jet...
+5834 patterns loaded
+
+Processing document 1: example
+>>> Monocase is false
+5 time expressions found.
+Built 2 values.
+RelationCoref: 4 relation mentions
+RelationCoref: 4 relations
+*** Unexpected span order.
+Span1 = wounded
+Span2 = the wounded
+*** Unexpected span order.
+Span1 = wounded
+Span2 = the wounded
+*** Unexpected span order.
+Span1 = wounded
+Span2 = the wounded
+*** Unexpected span order.
+Span1 = wounded
+Span2 = the wounded
+*** Unexpected span order.
+Span1 = wounded
+Span2 = the wounded
+*** Unexpected span order.
+Span1 = wounded
+Span2 = the wounded
+*** Unexpected span order.
+Span1 = wounded
+Span2 = the wounded
+eventCoref: 7 event mentions
+eventCoref: 7 events
+0 values remain after pruning.

@@ -1,0 +1,37 @@
+<query template-number="8" query-id="GNG016">
+		<query-text>Describe the prosecution of [Ali Hassan al-Majid] for [genocide]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Ali Hassan al-Majid</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Crime">
+			<arg-value>genocide</arg-value>
+		</query-arg>
+		<context>
+			<location>
+				<loc>Iraq</loc>
+			</location>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<equivalent-terms>
+				<term>Ali Hassan al-Majid</term>
+				<term>Chemical Ali</term>
+			</equivalent-terms>
+		</context>
+	</query>

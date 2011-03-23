@@ -1,0 +1,29 @@
+<query template-number="9" query-id="GNG042">
+		<query-text>How did [the Dominican Republic] react to [Spain withdrawing its troops from Iraq]</query-text>
+		<query-arg arg-num="1" arg-type="Country">
+			<arg-value>the Dominican Republic</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Event">
+			<arg-value>Spain withdrawing its troops from Iraq</arg-value>
+		</query-arg>
+		<query-date date-type="Activity">
+			<start-date>01 April 2004</start-date>
+			<end-date>30 April 2004</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>ALJ</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>LAT</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+				<source>AFA</source>
+				<source>ANN</source>
+				<source>UMM</source>
+				<source>XIA</source>
+			</source-type>
+		</context>
+	</query>

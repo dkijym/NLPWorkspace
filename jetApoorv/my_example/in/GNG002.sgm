@@ -1,0 +1,39 @@
+<query template-number="5" query-id="GNG002">
+		<query-text>Find statements made by or attributed to [Dick Cheney] on [the accidental shooting of Harry Whittington]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Dick Cheney</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Topic">
+			<arg-value>the accidental shooting of Harry Whittington</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>13 February 2006</start-date>
+			<end-date>15 February 2006</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<equivalent-terms>
+				<term>Dick Cheney</term>
+				<term>United States Vice President</term>
+				<term>Richard Cheney</term>
+			</equivalent-terms>
+		</context>
+	</query>

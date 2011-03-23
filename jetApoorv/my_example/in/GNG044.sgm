@@ -1,0 +1,26 @@
+<query template-number="1" query-id="GNG044">
+		<query-text>List facts about [hunger strikes by Palestinians in Israeli jails]</query-text>
+		<query-arg arg-num="1" arg-type="Event">
+			<arg-value>hunger strikes by Palestinians in Israeli jails</arg-value>
+		</query-arg>
+		<query-date date-type="Activity">
+			<start-date>01 August 2004</start-date>
+			<end-date>31 August 2004</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>ALR</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>LAT</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+				<source>AFA</source>
+				<source>ANN</source>
+				<source>UMM</source>
+				<source>XIA</source>
+			</source-type>
+		</context>
+	</query>

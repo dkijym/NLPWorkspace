@@ -1,0 +1,1 @@
+<query query-id="7c368bb378ba9282b546209a520096ba" template-number="8"><query-text>Describe the prosecution of [Simpson] for [anything]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Simpson</arg-value></query-arg><query-arg arg-num="2" arg-type="Crime"><arg-value>anything</arg-value></query-arg><context/></query>

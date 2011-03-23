@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!DOCTYPE source_file SYSTEM "apf.v5.1.1.dtd">
+<source_file URI="Thread100002.sgm" SOURCE="news" TYPE="text" AUTHOR="NYU">
+<document DOCID="Thread100002">
+  <entity ID="null-1" TYPE="GPE" SUBTYPE="Population-Center" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-1-0" ROLE="LOC">
+      <extent>
+        <charseq START="17" END="22">Prague</charseq>
+      </extent>
+      <head>
+        <charseq START="17" END="22">Prague</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-1" ROLE="GPE">
+      <extent>
+        <charseq START="482" END="487">Prague</charseq>
+      </extent>
+      <head>
+        <charseq START="482" END="487">Prague</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-2" ROLE="GPE">
+      <extent>
+        <charseq START="993" END="998">Prague</charseq>
+      </extent>
+      <head>
+        <charseq START="993" END="998">Prague</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Prague">
+        <charseq START="17" END="22">Prague</charseq>
+      </name>
+      <name NAME="Prague">
+        <charseq START="482" END="487">Prague</charseq>
+      </name>
+      <name NAME="Prague">
+        <charseq START="993" END="998">Prague</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-2" TYPE="PER" SUBTYPE="Individual" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-2-0">
+      <extent>
+        <charseq START="30" END="36">Scooter</charseq>
+      </extent>
+      <head>
+        <charseq START="30" END="36">Scooter</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Scooter">
+        <charseq START="30" END="36">Scooter</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-3" TYPE="PER" SUBTYPE="Individual" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-3-0">
+      <extent>
+        <charseq START="131" END="135">Peggy</charseq>
+      </extent>
+      <head>
+        <charseq START="131" END="135">Peggy</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-3-1">
+      <extent>
+        <charseq START="1046" END="1050">Peggy</charseq>
+      </extent>
+      <head>
+        <charseq START="1046" END="1050">Peggy</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Peggy">
+        <charseq START="131" END="135">Peggy</charseq>
+      </name>
+      <name NAME="Peggy">
+        <charseq START="1046" END="1050">Peggy</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-4" TYPE="ORG" SUBTYPE="Commercial" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-4-0">
+      <extent>
+        <charseq START="441" END="444">Care</charseq>
+      </extent>
+      <head>
+        <charseq START="441" END="444">Care</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Care">
+        <charseq START="441" END="444">Care</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-5" TYPE="PER" SUBTYPE="Individual" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-5-0">
+      <extent>
+        <charseq START="1449" END="1453">Scott</charseq>
+      </extent>
+      <head>
+        <charseq START="1449" END="1453">Scott</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Scott">
+        <charseq START="1449" END="1453">Scott</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+</document>
+</source_file>

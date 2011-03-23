@@ -1,0 +1,119 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     *  Copyright 2001-2005 Stephen Colebourne<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     *  Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<FONT color="green">005</FONT>     *  you may not use this file except in compliance with the License.<a name="line.5"></a>
+<FONT color="green">006</FONT>     *  You may obtain a copy of the License at<a name="line.6"></a>
+<FONT color="green">007</FONT>     *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<FONT color="green">009</FONT>     *<a name="line.9"></a>
+<FONT color="green">010</FONT>     *  Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<FONT color="green">011</FONT>     *  distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<FONT color="green">012</FONT>     *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<FONT color="green">013</FONT>     *  See the License for the specific language governing permissions and<a name="line.13"></a>
+<FONT color="green">014</FONT>     *  limitations under the License.<a name="line.14"></a>
+<FONT color="green">015</FONT>     */<a name="line.15"></a>
+<FONT color="green">016</FONT>    package org.joda.time.convert;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    import org.joda.time.Chronology;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import org.joda.time.ReadWritableInterval;<a name="line.19"></a>
+<FONT color="green">020</FONT>    <a name="line.20"></a>
+<FONT color="green">021</FONT>    /**<a name="line.21"></a>
+<FONT color="green">022</FONT>     * IntervalConverter defines how an object is converted to an interval.<a name="line.22"></a>
+<FONT color="green">023</FONT>     *<a name="line.23"></a>
+<FONT color="green">024</FONT>     * @author Brian S O'Neill<a name="line.24"></a>
+<FONT color="green">025</FONT>     * @author Stephen Colebourne<a name="line.25"></a>
+<FONT color="green">026</FONT>     * @since 1.0<a name="line.26"></a>
+<FONT color="green">027</FONT>     */<a name="line.27"></a>
+<FONT color="green">028</FONT>    public interface IntervalConverter extends Converter {<a name="line.28"></a>
+<FONT color="green">029</FONT>    <a name="line.29"></a>
+<FONT color="green">030</FONT>        /**<a name="line.30"></a>
+<FONT color="green">031</FONT>         * Checks if the input is a ReadableInterval.<a name="line.31"></a>
+<FONT color="green">032</FONT>         * &lt;p><a name="line.32"></a>
+<FONT color="green">033</FONT>         * If it is, then the calling code should cast and copy the fields directly.<a name="line.33"></a>
+<FONT color="green">034</FONT>         *<a name="line.34"></a>
+<FONT color="green">035</FONT>         * @param object  the object to convert, must not be null<a name="line.35"></a>
+<FONT color="green">036</FONT>         * @param chrono  the chronology to use, may be null<a name="line.36"></a>
+<FONT color="green">037</FONT>         * @return true if the input is a ReadableInterval<a name="line.37"></a>
+<FONT color="green">038</FONT>         * @throws ClassCastException if the object is invalid<a name="line.38"></a>
+<FONT color="green">039</FONT>         */<a name="line.39"></a>
+<FONT color="green">040</FONT>        boolean isReadableInterval(Object object, Chronology chrono);<a name="line.40"></a>
+<FONT color="green">041</FONT>    <a name="line.41"></a>
+<FONT color="green">042</FONT>        /**<a name="line.42"></a>
+<FONT color="green">043</FONT>         * Extracts interval endpoint values from an object of this converter's<a name="line.43"></a>
+<FONT color="green">044</FONT>         * type, and sets them into the given ReadWritableInterval.<a name="line.44"></a>
+<FONT color="green">045</FONT>         *<a name="line.45"></a>
+<FONT color="green">046</FONT>         * @param writableInterval  interval to get modified, not null<a name="line.46"></a>
+<FONT color="green">047</FONT>         * @param object  the object to convert, must not be null<a name="line.47"></a>
+<FONT color="green">048</FONT>         * @param chrono  the chronology to use, may be null<a name="line.48"></a>
+<FONT color="green">049</FONT>         * @throws ClassCastException if the object is invalid<a name="line.49"></a>
+<FONT color="green">050</FONT>         */<a name="line.50"></a>
+<FONT color="green">051</FONT>        void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono);<a name="line.51"></a>
+<FONT color="green">052</FONT>    <a name="line.52"></a>
+<FONT color="green">053</FONT>    }<a name="line.53"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

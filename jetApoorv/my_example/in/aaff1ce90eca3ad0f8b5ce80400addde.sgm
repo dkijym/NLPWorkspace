@@ -1,0 +1,1 @@
+<query query-id="aaff1ce90eca3ad0f8b5ce80400addde" template-number="5"><query-text>Find statements made by or attributed to [Zawahiri] on [pakistan]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Zawahiri</arg-value></query-arg><query-arg arg-num="2" arg-type="Organization"><arg-value>pakistan</arg-value></query-arg><context/></query>

@@ -1,0 +1,42 @@
+<query template-number="9" query-id="GNG035">
+		<query-text>How did [Serbia] react to [Bill Clinton's visit to Pristina]</query-text>
+		<query-arg arg-num="1" arg-type="Country">
+			<arg-value>Serbia</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Event">
+			<arg-value>Bill Clinton's visit to Pristina</arg-value>
+		</query-arg>
+		<query-date date-type="Activity">
+			<start-date>01 September 2003</start-date>
+			<end-date>30 September 2003</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<equivalent-terms>
+				<term>Bill Clinton</term>
+				<term>United States President</term>
+			</equivalent-terms>
+			<related-words>
+				<term>ethnic Albanians</term>
+				<term>Kosovo</term>
+			</related-words>
+		</context>
+	</query>

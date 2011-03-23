@@ -1,0 +1,1 @@
+<query query-id="b42118015a6e5a3ce8df4f4efac73ec5" template-number="6"><query-text>Describe the relationship of [Charles Taylor] to [Terrorist]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Charles Taylor</arg-value></query-arg><query-arg arg-num="2" arg-type="Person"><arg-value>Terrorist</arg-value></query-arg><context/></query>

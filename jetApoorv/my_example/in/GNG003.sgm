@@ -1,0 +1,14 @@
+<query template-number="5" query-id="GNG003">
+		<query-text>Find statements made by or attributed to [Isabelle Dinoire] on [her successful face transplant]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Isabelle Dinoire</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Topic">
+			<arg-value>her successful face transplant</arg-value>
+		</query-arg>
+		<context>
+			<source-type>
+				<source>NBC</source>
+			</source-type>
+		</context>
+	</query>

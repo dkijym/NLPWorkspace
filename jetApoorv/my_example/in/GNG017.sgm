@@ -1,0 +1,33 @@
+<query template-number="8" query-id="GNG017">
+		<query-text>Describe the prosecution of [Khaled Jubran] for [terrorism]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Khaled Jubran</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Crime">
+			<arg-value>terrorism</arg-value>
+		</query-arg>
+		<context>
+			<location>
+				<loc>Jordan</loc>
+			</location>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+		</context>
+	</query>

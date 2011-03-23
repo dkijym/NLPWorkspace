@@ -1,0 +1,31 @@
+<query template-number="1" query-id="GNG001">
+		<query-text>List facts about event [Vice President Dick Cheney's shooting of Harry Whittington]</query-text>
+		<query-arg arg-num="1" arg-type="Event">
+			<arg-value>Vice President Dick Cheney's shooting of Harry Whittington</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>11 February 2006</start-date>
+			<end-date>15 February 2006</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+		</context>
+	</query>

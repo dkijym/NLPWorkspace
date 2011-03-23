@@ -1,0 +1,128 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     *  Copyright 2001-2007 Stephen Colebourne<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     *  Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<FONT color="green">005</FONT>     *  you may not use this file except in compliance with the License.<a name="line.5"></a>
+<FONT color="green">006</FONT>     *  You may obtain a copy of the License at<a name="line.6"></a>
+<FONT color="green">007</FONT>     *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<FONT color="green">009</FONT>     *<a name="line.9"></a>
+<FONT color="green">010</FONT>     *  Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<FONT color="green">011</FONT>     *  distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<FONT color="green">012</FONT>     *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<FONT color="green">013</FONT>     *  See the License for the specific language governing permissions and<a name="line.13"></a>
+<FONT color="green">014</FONT>     *  limitations under the License.<a name="line.14"></a>
+<FONT color="green">015</FONT>     */<a name="line.15"></a>
+<FONT color="green">016</FONT>    package org.joda.time.base;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    /**<a name="line.18"></a>
+<FONT color="green">019</FONT>     * BaseLocal is an abstract implementation of ReadablePartial that<a name="line.19"></a>
+<FONT color="green">020</FONT>     * use a local milliseconds internal representation.<a name="line.20"></a>
+<FONT color="green">021</FONT>     * &lt;p><a name="line.21"></a>
+<FONT color="green">022</FONT>     * This class should generally not be used directly by API users.<a name="line.22"></a>
+<FONT color="green">023</FONT>     * The {@link org.joda.time.ReadablePartial} interface should be used when different <a name="line.23"></a>
+<FONT color="green">024</FONT>     * kinds of partial objects are to be referenced.<a name="line.24"></a>
+<FONT color="green">025</FONT>     * &lt;p><a name="line.25"></a>
+<FONT color="green">026</FONT>     * BasePartial subclasses may be mutable and not thread-safe.<a name="line.26"></a>
+<FONT color="green">027</FONT>     *<a name="line.27"></a>
+<FONT color="green">028</FONT>     * @author Stephen Colebourne<a name="line.28"></a>
+<FONT color="green">029</FONT>     * @since 1.5<a name="line.29"></a>
+<FONT color="green">030</FONT>     */<a name="line.30"></a>
+<FONT color="green">031</FONT>    public abstract class BaseLocal<a name="line.31"></a>
+<FONT color="green">032</FONT>            extends AbstractPartial {<a name="line.32"></a>
+<FONT color="green">033</FONT>    <a name="line.33"></a>
+<FONT color="green">034</FONT>        /** Serialization version */<a name="line.34"></a>
+<FONT color="green">035</FONT>        private static final long serialVersionUID = 276453175381783L;<a name="line.35"></a>
+<FONT color="green">036</FONT>    <a name="line.36"></a>
+<FONT color="green">037</FONT>        //-----------------------------------------------------------------------<a name="line.37"></a>
+<FONT color="green">038</FONT>        /**<a name="line.38"></a>
+<FONT color="green">039</FONT>         * Constructs a partial with the current time, using ISOChronology in<a name="line.39"></a>
+<FONT color="green">040</FONT>         * the default zone to extract the fields.<a name="line.40"></a>
+<FONT color="green">041</FONT>         * &lt;p><a name="line.41"></a>
+<FONT color="green">042</FONT>         * The constructor uses the default time zone, resulting in the local time<a name="line.42"></a>
+<FONT color="green">043</FONT>         * being initialised. Once the constructor is complete, all further calculations<a name="line.43"></a>
+<FONT color="green">044</FONT>         * are performed without reference to a timezone (by switching to UTC).<a name="line.44"></a>
+<FONT color="green">045</FONT>         */<a name="line.45"></a>
+<FONT color="green">046</FONT>        protected BaseLocal() {<a name="line.46"></a>
+<FONT color="green">047</FONT>            super();<a name="line.47"></a>
+<FONT color="green">048</FONT>        }<a name="line.48"></a>
+<FONT color="green">049</FONT>    <a name="line.49"></a>
+<FONT color="green">050</FONT>        //-----------------------------------------------------------------------<a name="line.50"></a>
+<FONT color="green">051</FONT>        /**<a name="line.51"></a>
+<FONT color="green">052</FONT>         * Gets the local milliseconds from the Java epoch<a name="line.52"></a>
+<FONT color="green">053</FONT>         * of 1970-01-01T00:00:00 (not fixed to any specific time zone).<a name="line.53"></a>
+<FONT color="green">054</FONT>         * &lt;p><a name="line.54"></a>
+<FONT color="green">055</FONT>         * This method is useful in certain circustances for high performance<a name="line.55"></a>
+<FONT color="green">056</FONT>         * access to the datetime fields.<a name="line.56"></a>
+<FONT color="green">057</FONT>         * <a name="line.57"></a>
+<FONT color="green">058</FONT>         * @return the number of milliseconds since 1970-01-01T00:00:00<a name="line.58"></a>
+<FONT color="green">059</FONT>         */<a name="line.59"></a>
+<FONT color="green">060</FONT>        protected abstract long getLocalMillis();<a name="line.60"></a>
+<FONT color="green">061</FONT>    <a name="line.61"></a>
+<FONT color="green">062</FONT>    }<a name="line.62"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

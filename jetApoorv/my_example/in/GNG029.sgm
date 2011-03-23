@@ -1,0 +1,29 @@
+<query template-number="4" query-id="GNG029">
+		<query-text>Provide information on [the Un's International Criminal Tribunal for the Former Yugoslavia]</query-text>
+		<query-arg arg-num="1" arg-type="Organization">
+			<arg-value>the Un's International Criminal Tribunal for the Former Yugoslavia</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>01 April 2003</start-date>
+			<end-date>01 May 2003</end-date>
+		</query-date>
+		<context>
+			<location>
+				<loc>TheHague</loc>
+			</location>
+			<source-type>
+				<source>AFE</source>
+			</source-type>
+			<equivalent-terms>
+				<term>UN</term>
+				<term>United Nations</term>
+			</equivalent-terms>
+			<equivalent-terms>
+				<term>International Criminal Tribunal for the Former Yugoslavia</term>
+				<term>ICTY</term>
+			</equivalent-terms>
+			<related-words>
+				<term>war crimes</term>
+			</related-words>
+		</context>
+	</query>

@@ -1,0 +1,34 @@
+<query template-number="9" query-id="GNG018">
+		<query-text>How did [Israel] react to [the Hamas election victory]</query-text>
+		<query-arg arg-num="1" arg-type="Country">
+			<arg-value>Israel</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Event">
+			<arg-value>the Hamas election victory</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>01 January 2006</start-date>
+			<end-date>01 May 2006</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+		</context>
+	</query>

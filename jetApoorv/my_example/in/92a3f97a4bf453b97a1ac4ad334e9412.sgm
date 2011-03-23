@@ -1,0 +1,1 @@
+<query query-id="92a3f97a4bf453b97a1ac4ad334e9412" template-number="3"><query-text>Produce a biography of [Bush, Cheney]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Bush, Cheney</arg-value></query-arg><context><location><loc>usa</loc></location></context></query>

@@ -1,0 +1,35 @@
+<query template-number="3" query-id="GNG008">
+		<query-text>Produce a biography of [Jamal al-Khudairi]</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Jamal al-Khudairi</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>01 January 2006</start-date>
+			<end-date>30 May 2006</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<related-words>
+				<term>Prime Minister Candidate</term>
+				<term>Hamas</term>
+			</related-words>
+		</context>
+	</query>

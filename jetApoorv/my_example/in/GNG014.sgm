@@ -1,0 +1,37 @@
+<query template-number="6" query-id="GNG014">
+		<query-text>Describe the relationship of [the Islamic Jihad] to [Hamas]</query-text>
+		<query-arg arg-num="1" arg-type="Organization">
+			<arg-value>the Islamic Jihad</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Organization">
+			<arg-value>Hamas</arg-value>
+		</query-arg>
+		<query-date date-type="Source">
+			<start-date>01 January 2006</start-date>
+			<end-date>01 June 2006</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<related-words>
+				<term>Islamic Resistance Movement</term>
+			</related-words>
+		</context>
+	</query>

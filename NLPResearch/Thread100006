@@ -1,0 +1,298 @@
+<?xml version="1.0"?>
+<!DOCTYPE source_file SYSTEM "apf.v5.1.1.dtd">
+<source_file URI="Thread100006.sgm" SOURCE="news" TYPE="text" AUTHOR="NYU">
+<document DOCID="Thread100006">
+  <entity ID="null-1" TYPE="LOC" SUBTYPE="Region-General" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-1-0">
+      <extent>
+        <charseq START="189" END="195">Midwest</charseq>
+      </extent>
+      <head>
+        <charseq START="189" END="195">Midwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-1">
+      <extent>
+        <charseq START="569" END="575">Midwest</charseq>
+      </extent>
+      <head>
+        <charseq START="569" END="575">Midwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-2">
+      <extent>
+        <charseq START="1271" END="1277">Midwest</charseq>
+      </extent>
+      <head>
+        <charseq START="1271" END="1277">Midwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-3">
+      <extent>
+        <charseq START="1680" END="1686">Midwest</charseq>
+      </extent>
+      <head>
+        <charseq START="1680" END="1686">Midwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-4">
+      <extent>
+        <charseq START="2060" END="2066">Midwest</charseq>
+      </extent>
+      <head>
+        <charseq START="2060" END="2066">Midwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-1-5">
+      <extent>
+        <charseq START="2762" END="2768">Midwest</charseq>
+      </extent>
+      <head>
+        <charseq START="2762" END="2768">Midwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Midwest">
+        <charseq START="189" END="195">Midwest</charseq>
+      </name>
+      <name NAME="Midwest">
+        <charseq START="569" END="575">Midwest</charseq>
+      </name>
+      <name NAME="Midwest">
+        <charseq START="1271" END="1277">Midwest</charseq>
+      </name>
+      <name NAME="Midwest">
+        <charseq START="1680" END="1686">Midwest</charseq>
+      </name>
+      <name NAME="Midwest">
+        <charseq START="2060" END="2066">Midwest</charseq>
+      </name>
+      <name NAME="Midwest">
+        <charseq START="2762" END="2768">Midwest</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-2" TYPE="LOC" SUBTYPE="Region-International" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-2-0">
+      <extent>
+        <charseq START="205" END="208">East</charseq>
+      </extent>
+      <head>
+        <charseq START="205" END="208">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-1">
+      <extent>
+        <charseq START="380" END="383">East</charseq>
+      </extent>
+      <head>
+        <charseq START="380" END="383">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-2">
+      <extent>
+        <charseq START="560" END="563">East</charseq>
+      </extent>
+      <head>
+        <charseq START="560" END="563">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-3">
+      <extent>
+        <charseq START="1280" END="1283">East</charseq>
+      </extent>
+      <head>
+        <charseq START="1280" END="1283">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-4">
+      <extent>
+        <charseq START="1696" END="1699">East</charseq>
+      </extent>
+      <head>
+        <charseq START="1696" END="1699">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-5">
+      <extent>
+        <charseq START="1871" END="1874">East</charseq>
+      </extent>
+      <head>
+        <charseq START="1871" END="1874">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-6">
+      <extent>
+        <charseq START="2051" END="2054">East</charseq>
+      </extent>
+      <head>
+        <charseq START="2051" END="2054">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-2-7">
+      <extent>
+        <charseq START="2771" END="2774">East</charseq>
+      </extent>
+      <head>
+        <charseq START="2771" END="2774">East</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="East">
+        <charseq START="205" END="208">East</charseq>
+      </name>
+      <name NAME="East">
+        <charseq START="380" END="383">East</charseq>
+      </name>
+      <name NAME="East">
+        <charseq START="560" END="563">East</charseq>
+      </name>
+      <name NAME="East">
+        <charseq START="1280" END="1283">East</charseq>
+      </name>
+      <name NAME="East">
+        <charseq START="1696" END="1699">East</charseq>
+      </name>
+      <name NAME="East">
+        <charseq START="1871" END="1874">East</charseq>
+      </name>
+      <name NAME="East">
+        <charseq START="2051" END="2054">East</charseq>
+      </name>
+      <name NAME="East">
+        <charseq START="2771" END="2774">East</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-3" TYPE="LOC" SUBTYPE="Region-General" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-3-0">
+      <extent>
+        <charseq START="257" END="267">Great Lakes</charseq>
+      </extent>
+      <head>
+        <charseq START="257" END="267">Great Lakes</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-3-1">
+      <extent>
+        <charseq START="1748" END="1758">Great Lakes</charseq>
+      </extent>
+      <head>
+        <charseq START="1748" END="1758">Great Lakes</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Great Lakes">
+        <charseq START="257" END="267">Great Lakes</charseq>
+      </name>
+      <name NAME="Great Lakes">
+        <charseq START="1748" END="1758">Great Lakes</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-4" TYPE="ORG" SUBTYPE="Commercial" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-4-0">
+      <extent>
+        <charseq START="463" END="471">Southwest</charseq>
+      </extent>
+      <head>
+        <charseq START="463" END="471">Southwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-4-1">
+      <extent>
+        <charseq START="1954" END="1962">Southwest</charseq>
+      </extent>
+      <head>
+        <charseq START="1954" END="1962">Southwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Southwest">
+        <charseq START="463" END="471">Southwest</charseq>
+      </name>
+      <name NAME="Southwest">
+        <charseq START="1954" END="1962">Southwest</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-5" TYPE="LOC" SUBTYPE="Region-General" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-5-0">
+      <extent>
+        <charseq START="621" END="630">West Coast</charseq>
+      </extent>
+      <head>
+        <charseq START="621" END="630">West Coast</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-5-1">
+      <extent>
+        <charseq START="2112" END="2121">West Coast</charseq>
+      </extent>
+      <head>
+        <charseq START="2112" END="2121">West Coast</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="West Coast">
+        <charseq START="621" END="630">West Coast</charseq>
+      </name>
+      <name NAME="West Coast">
+        <charseq START="2112" END="2121">West Coast</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-6" TYPE="ORG" SUBTYPE="Commercial" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-6-0">
+      <extent>
+        <charseq START="852" END="860">Northwest</charseq>
+      </extent>
+      <head>
+        <charseq START="852" END="860">Northwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-6-1">
+      <extent>
+        <charseq START="2343" END="2351">Northwest</charseq>
+      </extent>
+      <head>
+        <charseq START="2343" END="2351">Northwest</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Northwest">
+        <charseq START="852" END="860">Northwest</charseq>
+      </name>
+      <name NAME="Northwest">
+        <charseq START="2343" END="2351">Northwest</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+  <entity ID="null-7" TYPE="PER" SUBTYPE="Individual" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-7-0">
+      <extent>
+        <charseq START="1095" END="1102">Password</charseq>
+      </extent>
+      <head>
+        <charseq START="1095" END="1102">Password</charseq>
+      </head>
+    </entity_mention>
+    <entity_mention TYPE="NAM" ID="null-7-1">
+      <extent>
+        <charseq START="2586" END="2593">Password</charseq>
+      </extent>
+      <head>
+        <charseq START="2586" END="2593">Password</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Password">
+        <charseq START="1095" END="1102">Password</charseq>
+      </name>
+      <name NAME="Password">
+        <charseq START="2586" END="2593">Password</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+</document>
+</source_file>

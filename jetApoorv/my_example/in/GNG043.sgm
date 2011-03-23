@@ -1,0 +1,33 @@
+<query template-number="5" query-id="GNG043">
+		<query-text>Find statements made by or attributed to [Ismail al-Hadidi] on [the transfer of power in Iraq from the US to Iraq].</query-text>
+		<query-arg arg-num="1" arg-type="Person">
+			<arg-value>Ismail al-Hadidi</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Topic">
+			<arg-value>the transfer of power in Iraq from the US to Iraq</arg-value>
+		</query-arg>
+		<context>
+			<source-type>
+				<source>ALJ</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>LAT</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+				<source>AFA</source>
+				<source>ANN</source>
+				<source>UMM</source>
+				<source>XIA</source>
+			</source-type>
+			<equivalent-terms>
+				<term>Ismail al-Hadidi</term>
+				<term>Deputy Mayor or Kirkuk</term>
+			</equivalent-terms>
+			<equivalent-terms>
+				<term>US</term>
+				<term>United States</term>
+			</equivalent-terms>
+		</context>
+	</query>

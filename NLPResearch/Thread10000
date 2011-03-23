@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE source_file SYSTEM "apf.v5.1.1.dtd">
+<source_file URI="Thread10000.sgm" SOURCE="news" TYPE="text" AUTHOR="NYU">
+<document DOCID="Thread10000">
+  <entity ID="null-1" TYPE="PER" SUBTYPE="Individual" CLASS="SPC">
+    <entity_mention TYPE="NAM" ID="null-1-0">
+      <extent>
+        <charseq START="263" END="264">Ed</charseq>
+      </extent>
+      <head>
+        <charseq START="263" END="264">Ed</charseq>
+      </head>
+    </entity_mention>
+    <entity_attributes>
+      <name NAME="Ed">
+        <charseq START="263" END="264">Ed</charseq>
+      </name>
+    </entity_attributes>
+  </entity>
+</document>
+</source_file>

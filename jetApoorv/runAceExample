@@ -1,0 +1,2 @@
+#!/bin/bash
+./runAce props/MEace06.properties example/sgmlist example/sgm/ example/out/

@@ -1,0 +1,37 @@
+<query template-number="9" query-id="GNG036">
+		<query-text>How did [Serbia] react to [the assassination of Prime Minister Djindjic]</query-text>
+		<query-arg arg-num="1" arg-type="Country">
+			<arg-value>Serbia</arg-value>
+		</query-arg>
+		<query-arg arg-num="2" arg-type="Event">
+			<arg-value>the assassination of Prime Minister Djindjic</arg-value>
+		</query-arg>
+		<query-date date-type="Activity">
+			<start-date>12 March 2003</start-date>
+			<end-date>12 March 2003</end-date>
+		</query-date>
+		<context>
+			<source-type>
+				<source>AFA</source>
+				<source>ALR</source>
+				<source>ALJ</source>
+				<source>ANN</source>
+				<source>LBC</source>
+				<source>UMM</source>
+				<source>XIA</source>
+				<source>AFE</source>
+				<source>APE</source>
+				<source>CNE</source>
+				<source>CNN</source>
+				<source>LAT</source>
+				<source>MNB</source>
+				<source>NBC</source>
+				<source>NYT</source>
+				<source>UME</source>
+				<source>XIE</source>
+			</source-type>
+			<related-words>
+				<term>organized crime</term>
+			</related-words>
+		</context>
+	</query>

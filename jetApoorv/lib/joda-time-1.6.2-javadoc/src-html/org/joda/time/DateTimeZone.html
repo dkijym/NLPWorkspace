@@ -1,0 +1,1276 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     *  Copyright 2001-2006 Stephen Colebourne<a name="line.2"></a>
+<FONT color="green">003</FONT>     *<a name="line.3"></a>
+<FONT color="green">004</FONT>     *  Licensed under the Apache License, Version 2.0 (the "License");<a name="line.4"></a>
+<FONT color="green">005</FONT>     *  you may not use this file except in compliance with the License.<a name="line.5"></a>
+<FONT color="green">006</FONT>     *  You may obtain a copy of the License at<a name="line.6"></a>
+<FONT color="green">007</FONT>     *<a name="line.7"></a>
+<FONT color="green">008</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.8"></a>
+<FONT color="green">009</FONT>     *<a name="line.9"></a>
+<FONT color="green">010</FONT>     *  Unless required by applicable law or agreed to in writing, software<a name="line.10"></a>
+<FONT color="green">011</FONT>     *  distributed under the License is distributed on an "AS IS" BASIS,<a name="line.11"></a>
+<FONT color="green">012</FONT>     *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.12"></a>
+<FONT color="green">013</FONT>     *  See the License for the specific language governing permissions and<a name="line.13"></a>
+<FONT color="green">014</FONT>     *  limitations under the License.<a name="line.14"></a>
+<FONT color="green">015</FONT>     */<a name="line.15"></a>
+<FONT color="green">016</FONT>    package org.joda.time;<a name="line.16"></a>
+<FONT color="green">017</FONT>    <a name="line.17"></a>
+<FONT color="green">018</FONT>    import java.io.IOException;<a name="line.18"></a>
+<FONT color="green">019</FONT>    import java.io.ObjectInputStream;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import java.io.ObjectOutputStream;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import java.io.ObjectStreamException;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import java.io.Serializable;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import java.lang.ref.Reference;<a name="line.23"></a>
+<FONT color="green">024</FONT>    import java.lang.ref.SoftReference;<a name="line.24"></a>
+<FONT color="green">025</FONT>    import java.util.HashMap;<a name="line.25"></a>
+<FONT color="green">026</FONT>    import java.util.Locale;<a name="line.26"></a>
+<FONT color="green">027</FONT>    import java.util.Map;<a name="line.27"></a>
+<FONT color="green">028</FONT>    import java.util.Set;<a name="line.28"></a>
+<FONT color="green">029</FONT>    import java.util.TimeZone;<a name="line.29"></a>
+<FONT color="green">030</FONT>    <a name="line.30"></a>
+<FONT color="green">031</FONT>    import org.joda.time.chrono.BaseChronology;<a name="line.31"></a>
+<FONT color="green">032</FONT>    import org.joda.time.field.FieldUtils;<a name="line.32"></a>
+<FONT color="green">033</FONT>    import org.joda.time.format.DateTimeFormat;<a name="line.33"></a>
+<FONT color="green">034</FONT>    import org.joda.time.format.DateTimeFormatter;<a name="line.34"></a>
+<FONT color="green">035</FONT>    import org.joda.time.format.DateTimeFormatterBuilder;<a name="line.35"></a>
+<FONT color="green">036</FONT>    import org.joda.time.format.FormatUtils;<a name="line.36"></a>
+<FONT color="green">037</FONT>    import org.joda.time.tz.DefaultNameProvider;<a name="line.37"></a>
+<FONT color="green">038</FONT>    import org.joda.time.tz.FixedDateTimeZone;<a name="line.38"></a>
+<FONT color="green">039</FONT>    import org.joda.time.tz.NameProvider;<a name="line.39"></a>
+<FONT color="green">040</FONT>    import org.joda.time.tz.Provider;<a name="line.40"></a>
+<FONT color="green">041</FONT>    import org.joda.time.tz.UTCProvider;<a name="line.41"></a>
+<FONT color="green">042</FONT>    import org.joda.time.tz.ZoneInfoProvider;<a name="line.42"></a>
+<FONT color="green">043</FONT>    <a name="line.43"></a>
+<FONT color="green">044</FONT>    /**<a name="line.44"></a>
+<FONT color="green">045</FONT>     * DateTimeZone represents a time zone.<a name="line.45"></a>
+<FONT color="green">046</FONT>     * &lt;p><a name="line.46"></a>
+<FONT color="green">047</FONT>     * A time zone is a system of rules to convert time from one geographic <a name="line.47"></a>
+<FONT color="green">048</FONT>     * location to another. For example, Paris, France is one hour ahead of<a name="line.48"></a>
+<FONT color="green">049</FONT>     * London, England. Thus when it is 10:00 in London, it is 11:00 in Paris.<a name="line.49"></a>
+<FONT color="green">050</FONT>     * &lt;p><a name="line.50"></a>
+<FONT color="green">051</FONT>     * All time zone rules are expressed, for historical reasons, relative to<a name="line.51"></a>
+<FONT color="green">052</FONT>     * Greenwich, London. Local time in Greenwich is referred to as Greenwich Mean<a name="line.52"></a>
+<FONT color="green">053</FONT>     * Time (GMT).  This is similar, but not precisely identical, to Universal <a name="line.53"></a>
+<FONT color="green">054</FONT>     * Coordinated Time, or UTC. This library only uses the term UTC.<a name="line.54"></a>
+<FONT color="green">055</FONT>     * &lt;p><a name="line.55"></a>
+<FONT color="green">056</FONT>     * Using this system, America/Los_Angeles is expressed as UTC-08:00, or UTC-07:00<a name="line.56"></a>
+<FONT color="green">057</FONT>     * in the summer. The offset -08:00 indicates that America/Los_Angeles time is<a name="line.57"></a>
+<FONT color="green">058</FONT>     * obtained from UTC by adding -08:00, that is, by subtracting 8 hours.<a name="line.58"></a>
+<FONT color="green">059</FONT>     * &lt;p><a name="line.59"></a>
+<FONT color="green">060</FONT>     * The offset differs in the summer because of daylight saving time, or DST.<a name="line.60"></a>
+<FONT color="green">061</FONT>     * The folowing definitions of time are generally used:<a name="line.61"></a>
+<FONT color="green">062</FONT>     * &lt;ul><a name="line.62"></a>
+<FONT color="green">063</FONT>     * &lt;li>UTC - The reference time.<a name="line.63"></a>
+<FONT color="green">064</FONT>     * &lt;li>Standard Time - The local time without a daylight saving time offset.<a name="line.64"></a>
+<FONT color="green">065</FONT>     * For example, in Paris, standard time is UTC+01:00.<a name="line.65"></a>
+<FONT color="green">066</FONT>     * &lt;li>Daylight Saving Time - The local time with a daylight saving time <a name="line.66"></a>
+<FONT color="green">067</FONT>     * offset. This offset is typically one hour, but not always. It is typically<a name="line.67"></a>
+<FONT color="green">068</FONT>     * used in most countries away from the equator.  In Paris, daylight saving <a name="line.68"></a>
+<FONT color="green">069</FONT>     * time is UTC+02:00.<a name="line.69"></a>
+<FONT color="green">070</FONT>     * &lt;li>Wall Time - This is what a local clock on the wall reads. This will be<a name="line.70"></a>
+<FONT color="green">071</FONT>     * either Standard Time or Daylight Saving Time depending on the time of year<a name="line.71"></a>
+<FONT color="green">072</FONT>     * and whether the location uses Daylight Saving Time.<a name="line.72"></a>
+<FONT color="green">073</FONT>     * &lt;/ul><a name="line.73"></a>
+<FONT color="green">074</FONT>     * &lt;p><a name="line.74"></a>
+<FONT color="green">075</FONT>     * Unlike the Java TimeZone class, DateTimeZone is immutable. It also only<a name="line.75"></a>
+<FONT color="green">076</FONT>     * supports long format time zone ids. Thus EST and ECT are not accepted.<a name="line.76"></a>
+<FONT color="green">077</FONT>     * However, the factory that accepts a TimeZone will attempt to convert from<a name="line.77"></a>
+<FONT color="green">078</FONT>     * the old short id to a suitable long id.<a name="line.78"></a>
+<FONT color="green">079</FONT>     * &lt;p><a name="line.79"></a>
+<FONT color="green">080</FONT>     * DateTimeZone is thread-safe and immutable, and all subclasses must be as<a name="line.80"></a>
+<FONT color="green">081</FONT>     * well.<a name="line.81"></a>
+<FONT color="green">082</FONT>     * <a name="line.82"></a>
+<FONT color="green">083</FONT>     * @author Brian S O'Neill<a name="line.83"></a>
+<FONT color="green">084</FONT>     * @author Stephen Colebourne<a name="line.84"></a>
+<FONT color="green">085</FONT>     * @since 1.0<a name="line.85"></a>
+<FONT color="green">086</FONT>     */<a name="line.86"></a>
+<FONT color="green">087</FONT>    public abstract class DateTimeZone implements Serializable {<a name="line.87"></a>
+<FONT color="green">088</FONT>        <a name="line.88"></a>
+<FONT color="green">089</FONT>        /** Serialization version. */<a name="line.89"></a>
+<FONT color="green">090</FONT>        private static final long serialVersionUID = 5546345482340108586L;<a name="line.90"></a>
+<FONT color="green">091</FONT>    <a name="line.91"></a>
+<FONT color="green">092</FONT>        /** The time zone for Universal Coordinated Time */<a name="line.92"></a>
+<FONT color="green">093</FONT>        public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);<a name="line.93"></a>
+<FONT color="green">094</FONT>    <a name="line.94"></a>
+<FONT color="green">095</FONT>        /** The instance that is providing time zones. */<a name="line.95"></a>
+<FONT color="green">096</FONT>        private static Provider cProvider;<a name="line.96"></a>
+<FONT color="green">097</FONT>        /** The instance that is providing time zone names. */<a name="line.97"></a>
+<FONT color="green">098</FONT>        private static NameProvider cNameProvider;<a name="line.98"></a>
+<FONT color="green">099</FONT>        /** The set of ID strings. */<a name="line.99"></a>
+<FONT color="green">100</FONT>        private static Set cAvailableIDs;<a name="line.100"></a>
+<FONT color="green">101</FONT>        /** The default time zone. */<a name="line.101"></a>
+<FONT color="green">102</FONT>        private static volatile DateTimeZone cDefault;<a name="line.102"></a>
+<FONT color="green">103</FONT>        /** A formatter for printing and parsing zones. */<a name="line.103"></a>
+<FONT color="green">104</FONT>        private static DateTimeFormatter cOffsetFormatter;<a name="line.104"></a>
+<FONT color="green">105</FONT>    <a name="line.105"></a>
+<FONT color="green">106</FONT>        /** Cache that maps fixed offset strings to softly referenced DateTimeZones */<a name="line.106"></a>
+<FONT color="green">107</FONT>        private static Map iFixedOffsetCache;<a name="line.107"></a>
+<FONT color="green">108</FONT>    <a name="line.108"></a>
+<FONT color="green">109</FONT>        /** Cache of old zone IDs to new zone IDs */<a name="line.109"></a>
+<FONT color="green">110</FONT>        private static Map cZoneIdConversion;<a name="line.110"></a>
+<FONT color="green">111</FONT>    <a name="line.111"></a>
+<FONT color="green">112</FONT>        static {<a name="line.112"></a>
+<FONT color="green">113</FONT>            setProvider0(null);<a name="line.113"></a>
+<FONT color="green">114</FONT>            setNameProvider0(null);<a name="line.114"></a>
+<FONT color="green">115</FONT>        }<a name="line.115"></a>
+<FONT color="green">116</FONT>    <a name="line.116"></a>
+<FONT color="green">117</FONT>        //-----------------------------------------------------------------------<a name="line.117"></a>
+<FONT color="green">118</FONT>        /**<a name="line.118"></a>
+<FONT color="green">119</FONT>         * Gets the default time zone.<a name="line.119"></a>
+<FONT color="green">120</FONT>         * &lt;p><a name="line.120"></a>
+<FONT color="green">121</FONT>         * The default time zone is derived from the system property {@code user.timezone}.<a name="line.121"></a>
+<FONT color="green">122</FONT>         * If that is {@code null} or is not a valid identifier, then the value of the<a name="line.122"></a>
+<FONT color="green">123</FONT>         * JDK {@code TimeZone} default is converted. If that fails, {@code UTC} is used.<a name="line.123"></a>
+<FONT color="green">124</FONT>         * <a name="line.124"></a>
+<FONT color="green">125</FONT>         * @return the default datetime zone object<a name="line.125"></a>
+<FONT color="green">126</FONT>         */<a name="line.126"></a>
+<FONT color="green">127</FONT>        public static DateTimeZone getDefault() {<a name="line.127"></a>
+<FONT color="green">128</FONT>            DateTimeZone zone = cDefault;<a name="line.128"></a>
+<FONT color="green">129</FONT>            if (zone == null) {<a name="line.129"></a>
+<FONT color="green">130</FONT>                synchronized(DateTimeZone.class) {<a name="line.130"></a>
+<FONT color="green">131</FONT>                    zone = cDefault;<a name="line.131"></a>
+<FONT color="green">132</FONT>                    if (zone == null) {<a name="line.132"></a>
+<FONT color="green">133</FONT>                        DateTimeZone temp = null;<a name="line.133"></a>
+<FONT color="green">134</FONT>                        try {<a name="line.134"></a>
+<FONT color="green">135</FONT>                            try {<a name="line.135"></a>
+<FONT color="green">136</FONT>                                String id = System.getProperty("user.timezone");<a name="line.136"></a>
+<FONT color="green">137</FONT>                                if (id != null) {  // null check avoids stack overflow<a name="line.137"></a>
+<FONT color="green">138</FONT>                                    temp = forID(id);<a name="line.138"></a>
+<FONT color="green">139</FONT>                                }<a name="line.139"></a>
+<FONT color="green">140</FONT>                            } catch (RuntimeException ex) {<a name="line.140"></a>
+<FONT color="green">141</FONT>                                // ignored<a name="line.141"></a>
+<FONT color="green">142</FONT>                            }<a name="line.142"></a>
+<FONT color="green">143</FONT>                            if (temp == null) {<a name="line.143"></a>
+<FONT color="green">144</FONT>                                temp = forTimeZone(TimeZone.getDefault());<a name="line.144"></a>
+<FONT color="green">145</FONT>                            }<a name="line.145"></a>
+<FONT color="green">146</FONT>                        } catch (IllegalArgumentException ex) {<a name="line.146"></a>
+<FONT color="green">147</FONT>                            // ignored<a name="line.147"></a>
+<FONT color="green">148</FONT>                        }<a name="line.148"></a>
+<FONT color="green">149</FONT>                        if (temp == null) {<a name="line.149"></a>
+<FONT color="green">150</FONT>                            temp = UTC;<a name="line.150"></a>
+<FONT color="green">151</FONT>                        }<a name="line.151"></a>
+<FONT color="green">152</FONT>                        cDefault = zone = temp;<a name="line.152"></a>
+<FONT color="green">153</FONT>                    }<a name="line.153"></a>
+<FONT color="green">154</FONT>                }<a name="line.154"></a>
+<FONT color="green">155</FONT>            }<a name="line.155"></a>
+<FONT color="green">156</FONT>            return zone;<a name="line.156"></a>
+<FONT color="green">157</FONT>        }<a name="line.157"></a>
+<FONT color="green">158</FONT>    <a name="line.158"></a>
+<FONT color="green">159</FONT>        /**<a name="line.159"></a>
+<FONT color="green">160</FONT>         * Sets the default time zone.<a name="line.160"></a>
+<FONT color="green">161</FONT>         * <a name="line.161"></a>
+<FONT color="green">162</FONT>         * @param zone  the default datetime zone object, must not be null<a name="line.162"></a>
+<FONT color="green">163</FONT>         * @throws IllegalArgumentException if the zone is null<a name="line.163"></a>
+<FONT color="green">164</FONT>         * @throws SecurityException if the application has insufficient security rights<a name="line.164"></a>
+<FONT color="green">165</FONT>         */<a name="line.165"></a>
+<FONT color="green">166</FONT>        public static void setDefault(DateTimeZone zone) throws SecurityException {<a name="line.166"></a>
+<FONT color="green">167</FONT>            SecurityManager sm = System.getSecurityManager();<a name="line.167"></a>
+<FONT color="green">168</FONT>            if (sm != null) {<a name="line.168"></a>
+<FONT color="green">169</FONT>                sm.checkPermission(new JodaTimePermission("DateTimeZone.setDefault"));<a name="line.169"></a>
+<FONT color="green">170</FONT>            }<a name="line.170"></a>
+<FONT color="green">171</FONT>            if (zone == null) {<a name="line.171"></a>
+<FONT color="green">172</FONT>                throw new IllegalArgumentException("The datetime zone must not be null");<a name="line.172"></a>
+<FONT color="green">173</FONT>            }<a name="line.173"></a>
+<FONT color="green">174</FONT>            synchronized(DateTimeZone.class) {<a name="line.174"></a>
+<FONT color="green">175</FONT>                cDefault = zone;<a name="line.175"></a>
+<FONT color="green">176</FONT>            }<a name="line.176"></a>
+<FONT color="green">177</FONT>        }<a name="line.177"></a>
+<FONT color="green">178</FONT>    <a name="line.178"></a>
+<FONT color="green">179</FONT>        //-----------------------------------------------------------------------<a name="line.179"></a>
+<FONT color="green">180</FONT>        /**<a name="line.180"></a>
+<FONT color="green">181</FONT>         * Gets a time zone instance for the specified time zone id.<a name="line.181"></a>
+<FONT color="green">182</FONT>         * &lt;p><a name="line.182"></a>
+<FONT color="green">183</FONT>         * The time zone id may be one of those returned by getAvailableIDs.<a name="line.183"></a>
+<FONT color="green">184</FONT>         * Short ids, as accepted by {@link java.util.TimeZone}, are not accepted.<a name="line.184"></a>
+<FONT color="green">185</FONT>         * All IDs must be specified in the long format.<a name="line.185"></a>
+<FONT color="green">186</FONT>         * The exception is UTC, which is an acceptable id.<a name="line.186"></a>
+<FONT color="green">187</FONT>         * &lt;p><a name="line.187"></a>
+<FONT color="green">188</FONT>         * Alternatively a locale independent, fixed offset, datetime zone can<a name="line.188"></a>
+<FONT color="green">189</FONT>         * be specified. The form &lt;code>[+-]hh:mm&lt;/code> can be used.<a name="line.189"></a>
+<FONT color="green">190</FONT>         * <a name="line.190"></a>
+<FONT color="green">191</FONT>         * @param id  the ID of the datetime zone, null means default<a name="line.191"></a>
+<FONT color="green">192</FONT>         * @return the DateTimeZone object for the ID<a name="line.192"></a>
+<FONT color="green">193</FONT>         * @throws IllegalArgumentException if the ID is not recognised<a name="line.193"></a>
+<FONT color="green">194</FONT>         */<a name="line.194"></a>
+<FONT color="green">195</FONT>        public static DateTimeZone forID(String id) {<a name="line.195"></a>
+<FONT color="green">196</FONT>            if (id == null) {<a name="line.196"></a>
+<FONT color="green">197</FONT>                return getDefault();<a name="line.197"></a>
+<FONT color="green">198</FONT>            }<a name="line.198"></a>
+<FONT color="green">199</FONT>            if (id.equals("UTC")) {<a name="line.199"></a>
+<FONT color="green">200</FONT>                return DateTimeZone.UTC;<a name="line.200"></a>
+<FONT color="green">201</FONT>            }<a name="line.201"></a>
+<FONT color="green">202</FONT>            DateTimeZone zone = cProvider.getZone(id);<a name="line.202"></a>
+<FONT color="green">203</FONT>            if (zone != null) {<a name="line.203"></a>
+<FONT color="green">204</FONT>                return zone;<a name="line.204"></a>
+<FONT color="green">205</FONT>            }<a name="line.205"></a>
+<FONT color="green">206</FONT>            if (id.startsWith("+") || id.startsWith("-")) {<a name="line.206"></a>
+<FONT color="green">207</FONT>                int offset = parseOffset(id);<a name="line.207"></a>
+<FONT color="green">208</FONT>                if (offset == 0L) {<a name="line.208"></a>
+<FONT color="green">209</FONT>                    return DateTimeZone.UTC;<a name="line.209"></a>
+<FONT color="green">210</FONT>                } else {<a name="line.210"></a>
+<FONT color="green">211</FONT>                    id = printOffset(offset);<a name="line.211"></a>
+<FONT color="green">212</FONT>                    return fixedOffsetZone(id, offset);<a name="line.212"></a>
+<FONT color="green">213</FONT>                }<a name="line.213"></a>
+<FONT color="green">214</FONT>            }<a name="line.214"></a>
+<FONT color="green">215</FONT>            throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");<a name="line.215"></a>
+<FONT color="green">216</FONT>        }<a name="line.216"></a>
+<FONT color="green">217</FONT>    <a name="line.217"></a>
+<FONT color="green">218</FONT>        /**<a name="line.218"></a>
+<FONT color="green">219</FONT>         * Gets a time zone instance for the specified offset to UTC in hours.<a name="line.219"></a>
+<FONT color="green">220</FONT>         * This method assumes standard length hours.<a name="line.220"></a>
+<FONT color="green">221</FONT>         * &lt;p><a name="line.221"></a>
+<FONT color="green">222</FONT>         * This factory is a convenient way of constructing zones with a fixed offset.<a name="line.222"></a>
+<FONT color="green">223</FONT>         * <a name="line.223"></a>
+<FONT color="green">224</FONT>         * @param hoursOffset  the offset in hours from UTC<a name="line.224"></a>
+<FONT color="green">225</FONT>         * @return the DateTimeZone object for the offset<a name="line.225"></a>
+<FONT color="green">226</FONT>         * @throws IllegalArgumentException if the offset is too large or too small<a name="line.226"></a>
+<FONT color="green">227</FONT>         */<a name="line.227"></a>
+<FONT color="green">228</FONT>        public static DateTimeZone forOffsetHours(int hoursOffset) throws IllegalArgumentException {<a name="line.228"></a>
+<FONT color="green">229</FONT>            return forOffsetHoursMinutes(hoursOffset, 0);<a name="line.229"></a>
+<FONT color="green">230</FONT>        }<a name="line.230"></a>
+<FONT color="green">231</FONT>    <a name="line.231"></a>
+<FONT color="green">232</FONT>        /**<a name="line.232"></a>
+<FONT color="green">233</FONT>         * Gets a time zone instance for the specified offset to UTC in hours and minutes.<a name="line.233"></a>
+<FONT color="green">234</FONT>         * This method assumes 60 minutes in an hour, and standard length minutes.<a name="line.234"></a>
+<FONT color="green">235</FONT>         * &lt;p><a name="line.235"></a>
+<FONT color="green">236</FONT>         * This factory is a convenient way of constructing zones with a fixed offset.<a name="line.236"></a>
+<FONT color="green">237</FONT>         * The minutes value is always positive and in the range 0 to 59.<a name="line.237"></a>
+<FONT color="green">238</FONT>         * If constructed with the values (-2, 30), the resulting zone is '-02:30'.<a name="line.238"></a>
+<FONT color="green">239</FONT>         * <a name="line.239"></a>
+<FONT color="green">240</FONT>         * @param hoursOffset  the offset in hours from UTC<a name="line.240"></a>
+<FONT color="green">241</FONT>         * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive<a name="line.241"></a>
+<FONT color="green">242</FONT>         * @return the DateTimeZone object for the offset<a name="line.242"></a>
+<FONT color="green">243</FONT>         * @throws IllegalArgumentException if the offset or minute is too large or too small<a name="line.243"></a>
+<FONT color="green">244</FONT>         */<a name="line.244"></a>
+<FONT color="green">245</FONT>        public static DateTimeZone forOffsetHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {<a name="line.245"></a>
+<FONT color="green">246</FONT>            if (hoursOffset == 0 && minutesOffset == 0) {<a name="line.246"></a>
+<FONT color="green">247</FONT>                return DateTimeZone.UTC;<a name="line.247"></a>
+<FONT color="green">248</FONT>            }<a name="line.248"></a>
+<FONT color="green">249</FONT>            if (minutesOffset &lt; 0 || minutesOffset > 59) {<a name="line.249"></a>
+<FONT color="green">250</FONT>                throw new IllegalArgumentException("Minutes out of range: " + minutesOffset);<a name="line.250"></a>
+<FONT color="green">251</FONT>            }<a name="line.251"></a>
+<FONT color="green">252</FONT>            int offset = 0;<a name="line.252"></a>
+<FONT color="green">253</FONT>            try {<a name="line.253"></a>
+<FONT color="green">254</FONT>                int hoursInMinutes = FieldUtils.safeMultiply(hoursOffset, 60);<a name="line.254"></a>
+<FONT color="green">255</FONT>                if (hoursInMinutes &lt; 0) {<a name="line.255"></a>
+<FONT color="green">256</FONT>                    minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);<a name="line.256"></a>
+<FONT color="green">257</FONT>                } else {<a name="line.257"></a>
+<FONT color="green">258</FONT>                    minutesOffset = FieldUtils.safeAdd(hoursInMinutes, minutesOffset);<a name="line.258"></a>
+<FONT color="green">259</FONT>                }<a name="line.259"></a>
+<FONT color="green">260</FONT>                offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);<a name="line.260"></a>
+<FONT color="green">261</FONT>            } catch (ArithmeticException ex) {<a name="line.261"></a>
+<FONT color="green">262</FONT>                throw new IllegalArgumentException("Offset is too large");<a name="line.262"></a>
+<FONT color="green">263</FONT>            }<a name="line.263"></a>
+<FONT color="green">264</FONT>            return forOffsetMillis(offset);<a name="line.264"></a>
+<FONT color="green">265</FONT>        }<a name="line.265"></a>
+<FONT color="green">266</FONT>    <a name="line.266"></a>
+<FONT color="green">267</FONT>        /**<a name="line.267"></a>
+<FONT color="green">268</FONT>         * Gets a time zone instance for the specified offset to UTC in milliseconds.<a name="line.268"></a>
+<FONT color="green">269</FONT>         *<a name="line.269"></a>
+<FONT color="green">270</FONT>         * @param millisOffset  the offset in millis from UTC<a name="line.270"></a>
+<FONT color="green">271</FONT>         * @return the DateTimeZone object for the offset<a name="line.271"></a>
+<FONT color="green">272</FONT>         */<a name="line.272"></a>
+<FONT color="green">273</FONT>        public static DateTimeZone forOffsetMillis(int millisOffset) {<a name="line.273"></a>
+<FONT color="green">274</FONT>            String id = printOffset(millisOffset);<a name="line.274"></a>
+<FONT color="green">275</FONT>            return fixedOffsetZone(id, millisOffset);<a name="line.275"></a>
+<FONT color="green">276</FONT>        }<a name="line.276"></a>
+<FONT color="green">277</FONT>    <a name="line.277"></a>
+<FONT color="green">278</FONT>        /**<a name="line.278"></a>
+<FONT color="green">279</FONT>         * Gets a time zone instance for a JDK TimeZone.<a name="line.279"></a>
+<FONT color="green">280</FONT>         * &lt;p><a name="line.280"></a>
+<FONT color="green">281</FONT>         * DateTimeZone only accepts a subset of the IDs from TimeZone. The<a name="line.281"></a>
+<FONT color="green">282</FONT>         * excluded IDs are the short three letter form (except UTC). This <a name="line.282"></a>
+<FONT color="green">283</FONT>         * method will attempt to convert between time zones created using the<a name="line.283"></a>
+<FONT color="green">284</FONT>         * short IDs and the full version.<a name="line.284"></a>
+<FONT color="green">285</FONT>         * &lt;p><a name="line.285"></a>
+<FONT color="green">286</FONT>         * This method is not designed to parse time zones with rules created by<a name="line.286"></a>
+<FONT color="green">287</FONT>         * applications using &lt;code>SimpleTimeZone&lt;/code> directly.<a name="line.287"></a>
+<FONT color="green">288</FONT>         * <a name="line.288"></a>
+<FONT color="green">289</FONT>         * @param zone  the zone to convert, null means default<a name="line.289"></a>
+<FONT color="green">290</FONT>         * @return the DateTimeZone object for the zone<a name="line.290"></a>
+<FONT color="green">291</FONT>         * @throws IllegalArgumentException if the zone is not recognised<a name="line.291"></a>
+<FONT color="green">292</FONT>         */<a name="line.292"></a>
+<FONT color="green">293</FONT>        public static DateTimeZone forTimeZone(TimeZone zone) {<a name="line.293"></a>
+<FONT color="green">294</FONT>            if (zone == null) {<a name="line.294"></a>
+<FONT color="green">295</FONT>                return getDefault();<a name="line.295"></a>
+<FONT color="green">296</FONT>            }<a name="line.296"></a>
+<FONT color="green">297</FONT>            final String id = zone.getID();<a name="line.297"></a>
+<FONT color="green">298</FONT>            if (id.equals("UTC")) {<a name="line.298"></a>
+<FONT color="green">299</FONT>                return DateTimeZone.UTC;<a name="line.299"></a>
+<FONT color="green">300</FONT>            }<a name="line.300"></a>
+<FONT color="green">301</FONT>    <a name="line.301"></a>
+<FONT color="green">302</FONT>            // Convert from old alias before consulting provider since they may differ.<a name="line.302"></a>
+<FONT color="green">303</FONT>            DateTimeZone dtz = null;<a name="line.303"></a>
+<FONT color="green">304</FONT>            String convId = getConvertedId(id);<a name="line.304"></a>
+<FONT color="green">305</FONT>            if (convId != null) {<a name="line.305"></a>
+<FONT color="green">306</FONT>                dtz = cProvider.getZone(convId);<a name="line.306"></a>
+<FONT color="green">307</FONT>            }<a name="line.307"></a>
+<FONT color="green">308</FONT>            if (dtz == null) {<a name="line.308"></a>
+<FONT color="green">309</FONT>                dtz = cProvider.getZone(id);<a name="line.309"></a>
+<FONT color="green">310</FONT>            }<a name="line.310"></a>
+<FONT color="green">311</FONT>            if (dtz != null) {<a name="line.311"></a>
+<FONT color="green">312</FONT>                return dtz;<a name="line.312"></a>
+<FONT color="green">313</FONT>            }<a name="line.313"></a>
+<FONT color="green">314</FONT>    <a name="line.314"></a>
+<FONT color="green">315</FONT>            // Support GMT+/-hh:mm formats<a name="line.315"></a>
+<FONT color="green">316</FONT>            if (convId == null) {<a name="line.316"></a>
+<FONT color="green">317</FONT>                convId = zone.getDisplayName();<a name="line.317"></a>
+<FONT color="green">318</FONT>                if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {<a name="line.318"></a>
+<FONT color="green">319</FONT>                    convId = convId.substring(3);<a name="line.319"></a>
+<FONT color="green">320</FONT>                    int offset = parseOffset(convId);<a name="line.320"></a>
+<FONT color="green">321</FONT>                    if (offset == 0L) {<a name="line.321"></a>
+<FONT color="green">322</FONT>                        return DateTimeZone.UTC;<a name="line.322"></a>
+<FONT color="green">323</FONT>                    } else {<a name="line.323"></a>
+<FONT color="green">324</FONT>                        convId = printOffset(offset);<a name="line.324"></a>
+<FONT color="green">325</FONT>                        return fixedOffsetZone(convId, offset);<a name="line.325"></a>
+<FONT color="green">326</FONT>                    }<a name="line.326"></a>
+<FONT color="green">327</FONT>                }<a name="line.327"></a>
+<FONT color="green">328</FONT>            }<a name="line.328"></a>
+<FONT color="green">329</FONT>            throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");<a name="line.329"></a>
+<FONT color="green">330</FONT>        }<a name="line.330"></a>
+<FONT color="green">331</FONT>    <a name="line.331"></a>
+<FONT color="green">332</FONT>        //-----------------------------------------------------------------------<a name="line.332"></a>
+<FONT color="green">333</FONT>        /**<a name="line.333"></a>
+<FONT color="green">334</FONT>         * Gets the zone using a fixed offset amount.<a name="line.334"></a>
+<FONT color="green">335</FONT>         * <a name="line.335"></a>
+<FONT color="green">336</FONT>         * @param id  the zone id<a name="line.336"></a>
+<FONT color="green">337</FONT>         * @param offset  the offset in millis<a name="line.337"></a>
+<FONT color="green">338</FONT>         * @return the zone<a name="line.338"></a>
+<FONT color="green">339</FONT>         */<a name="line.339"></a>
+<FONT color="green">340</FONT>        private static synchronized DateTimeZone fixedOffsetZone(String id, int offset) {<a name="line.340"></a>
+<FONT color="green">341</FONT>            if (offset == 0) {<a name="line.341"></a>
+<FONT color="green">342</FONT>                return DateTimeZone.UTC;<a name="line.342"></a>
+<FONT color="green">343</FONT>            }<a name="line.343"></a>
+<FONT color="green">344</FONT>            if (iFixedOffsetCache == null) {<a name="line.344"></a>
+<FONT color="green">345</FONT>                iFixedOffsetCache = new HashMap();<a name="line.345"></a>
+<FONT color="green">346</FONT>            }<a name="line.346"></a>
+<FONT color="green">347</FONT>            DateTimeZone zone;<a name="line.347"></a>
+<FONT color="green">348</FONT>            Reference ref = (Reference) iFixedOffsetCache.get(id);<a name="line.348"></a>
+<FONT color="green">349</FONT>            if (ref != null) {<a name="line.349"></a>
+<FONT color="green">350</FONT>                zone = (DateTimeZone) ref.get();<a name="line.350"></a>
+<FONT color="green">351</FONT>                if (zone != null) {<a name="line.351"></a>
+<FONT color="green">352</FONT>                    return zone;<a name="line.352"></a>
+<FONT color="green">353</FONT>                }<a name="line.353"></a>
+<FONT color="green">354</FONT>            }<a name="line.354"></a>
+<FONT color="green">355</FONT>            zone = new FixedDateTimeZone(id, null, offset, offset);<a name="line.355"></a>
+<FONT color="green">356</FONT>            iFixedOffsetCache.put(id, new SoftReference(zone));<a name="line.356"></a>
+<FONT color="green">357</FONT>            return zone;<a name="line.357"></a>
+<FONT color="green">358</FONT>        }<a name="line.358"></a>
+<FONT color="green">359</FONT>    <a name="line.359"></a>
+<FONT color="green">360</FONT>        /**<a name="line.360"></a>
+<FONT color="green">361</FONT>         * Gets all the available IDs supported.<a name="line.361"></a>
+<FONT color="green">362</FONT>         * <a name="line.362"></a>
+<FONT color="green">363</FONT>         * @return an unmodifiable Set of String IDs<a name="line.363"></a>
+<FONT color="green">364</FONT>         */<a name="line.364"></a>
+<FONT color="green">365</FONT>        public static Set getAvailableIDs() {<a name="line.365"></a>
+<FONT color="green">366</FONT>            return cAvailableIDs;<a name="line.366"></a>
+<FONT color="green">367</FONT>        }<a name="line.367"></a>
+<FONT color="green">368</FONT>    <a name="line.368"></a>
+<FONT color="green">369</FONT>        //-----------------------------------------------------------------------<a name="line.369"></a>
+<FONT color="green">370</FONT>        /**<a name="line.370"></a>
+<FONT color="green">371</FONT>         * Gets the zone provider factory.<a name="line.371"></a>
+<FONT color="green">372</FONT>         * &lt;p><a name="line.372"></a>
+<FONT color="green">373</FONT>         * The zone provider is a pluggable instance factory that supplies the<a name="line.373"></a>
+<FONT color="green">374</FONT>         * actual instances of DateTimeZone.<a name="line.374"></a>
+<FONT color="green">375</FONT>         * <a name="line.375"></a>
+<FONT color="green">376</FONT>         * @return the provider<a name="line.376"></a>
+<FONT color="green">377</FONT>         */<a name="line.377"></a>
+<FONT color="green">378</FONT>        public static Provider getProvider() {<a name="line.378"></a>
+<FONT color="green">379</FONT>            return cProvider;<a name="line.379"></a>
+<FONT color="green">380</FONT>        }<a name="line.380"></a>
+<FONT color="green">381</FONT>    <a name="line.381"></a>
+<FONT color="green">382</FONT>        /**<a name="line.382"></a>
+<FONT color="green">383</FONT>         * Sets the zone provider factory.<a name="line.383"></a>
+<FONT color="green">384</FONT>         * &lt;p><a name="line.384"></a>
+<FONT color="green">385</FONT>         * The zone provider is a pluggable instance factory that supplies the<a name="line.385"></a>
+<FONT color="green">386</FONT>         * actual instances of DateTimeZone.<a name="line.386"></a>
+<FONT color="green">387</FONT>         * <a name="line.387"></a>
+<FONT color="green">388</FONT>         * @param provider  provider to use, or null for default<a name="line.388"></a>
+<FONT color="green">389</FONT>         * @throws SecurityException if you do not have the permission DateTimeZone.setProvider<a name="line.389"></a>
+<FONT color="green">390</FONT>         * @throws IllegalArgumentException if the provider is invalid<a name="line.390"></a>
+<FONT color="green">391</FONT>         */<a name="line.391"></a>
+<FONT color="green">392</FONT>        public static void setProvider(Provider provider) throws SecurityException {<a name="line.392"></a>
+<FONT color="green">393</FONT>            SecurityManager sm = System.getSecurityManager();<a name="line.393"></a>
+<FONT color="green">394</FONT>            if (sm != null) {<a name="line.394"></a>
+<FONT color="green">395</FONT>                sm.checkPermission(new JodaTimePermission("DateTimeZone.setProvider"));<a name="line.395"></a>
+<FONT color="green">396</FONT>            }<a name="line.396"></a>
+<FONT color="green">397</FONT>            setProvider0(provider);<a name="line.397"></a>
+<FONT color="green">398</FONT>        }<a name="line.398"></a>
+<FONT color="green">399</FONT>    <a name="line.399"></a>
+<FONT color="green">400</FONT>        /**<a name="line.400"></a>
+<FONT color="green">401</FONT>         * Sets the zone provider factory without performing the security check.<a name="line.401"></a>
+<FONT color="green">402</FONT>         * <a name="line.402"></a>
+<FONT color="green">403</FONT>         * @param provider  provider to use, or null for default<a name="line.403"></a>
+<FONT color="green">404</FONT>         * @throws IllegalArgumentException if the provider is invalid<a name="line.404"></a>
+<FONT color="green">405</FONT>         */<a name="line.405"></a>
+<FONT color="green">406</FONT>        private static void setProvider0(Provider provider) {<a name="line.406"></a>
+<FONT color="green">407</FONT>            if (provider == null) {<a name="line.407"></a>
+<FONT color="green">408</FONT>                provider = getDefaultProvider();<a name="line.408"></a>
+<FONT color="green">409</FONT>            }<a name="line.409"></a>
+<FONT color="green">410</FONT>            Set ids = provider.getAvailableIDs();<a name="line.410"></a>
+<FONT color="green">411</FONT>            if (ids == null || ids.size() == 0) {<a name="line.411"></a>
+<FONT color="green">412</FONT>                throw new IllegalArgumentException<a name="line.412"></a>
+<FONT color="green">413</FONT>                    ("The provider doesn't have any available ids");<a name="line.413"></a>
+<FONT color="green">414</FONT>            }<a name="line.414"></a>
+<FONT color="green">415</FONT>            if (!ids.contains("UTC")) {<a name="line.415"></a>
+<FONT color="green">416</FONT>                throw new IllegalArgumentException("The provider doesn't support UTC");<a name="line.416"></a>
+<FONT color="green">417</FONT>            }<a name="line.417"></a>
+<FONT color="green">418</FONT>            if (!UTC.equals(provider.getZone("UTC"))) {<a name="line.418"></a>
+<FONT color="green">419</FONT>                throw new IllegalArgumentException("Invalid UTC zone provided");<a name="line.419"></a>
+<FONT color="green">420</FONT>            }<a name="line.420"></a>
+<FONT color="green">421</FONT>            cProvider = provider;<a name="line.421"></a>
+<FONT color="green">422</FONT>            cAvailableIDs = ids;<a name="line.422"></a>
+<FONT color="green">423</FONT>        }<a name="line.423"></a>
+<FONT color="green">424</FONT>    <a name="line.424"></a>
+<FONT color="green">425</FONT>        /**<a name="line.425"></a>
+<FONT color="green">426</FONT>         * Gets the default zone provider.<a name="line.426"></a>
+<FONT color="green">427</FONT>         * &lt;p><a name="line.427"></a>
+<FONT color="green">428</FONT>         * Tries the system property &lt;code>org.joda.time.DateTimeZone.Provider&lt;/code>.<a name="line.428"></a>
+<FONT color="green">429</FONT>         * Then tries a &lt;code>ZoneInfoProvider&lt;/code> using the data in &lt;code>org/joda/time/tz/data&lt;/code>.<a name="line.429"></a>
+<FONT color="green">430</FONT>         * Then uses &lt;code>UTCProvider&lt;/code>.<a name="line.430"></a>
+<FONT color="green">431</FONT>         * <a name="line.431"></a>
+<FONT color="green">432</FONT>         * @return the default name provider<a name="line.432"></a>
+<FONT color="green">433</FONT>         */<a name="line.433"></a>
+<FONT color="green">434</FONT>        private static Provider getDefaultProvider() {<a name="line.434"></a>
+<FONT color="green">435</FONT>            Provider provider = null;<a name="line.435"></a>
+<FONT color="green">436</FONT>    <a name="line.436"></a>
+<FONT color="green">437</FONT>            try {<a name="line.437"></a>
+<FONT color="green">438</FONT>                String providerClass =<a name="line.438"></a>
+<FONT color="green">439</FONT>                    System.getProperty("org.joda.time.DateTimeZone.Provider");<a name="line.439"></a>
+<FONT color="green">440</FONT>                if (providerClass != null) {<a name="line.440"></a>
+<FONT color="green">441</FONT>                    try {<a name="line.441"></a>
+<FONT color="green">442</FONT>                        provider = (Provider) Class.forName(providerClass).newInstance();<a name="line.442"></a>
+<FONT color="green">443</FONT>                    } catch (Exception ex) {<a name="line.443"></a>
+<FONT color="green">444</FONT>                        Thread thread = Thread.currentThread();<a name="line.444"></a>
+<FONT color="green">445</FONT>                        thread.getThreadGroup().uncaughtException(thread, ex);<a name="line.445"></a>
+<FONT color="green">446</FONT>                    }<a name="line.446"></a>
+<FONT color="green">447</FONT>                }<a name="line.447"></a>
+<FONT color="green">448</FONT>            } catch (SecurityException ex) {<a name="line.448"></a>
+<FONT color="green">449</FONT>                // ignored<a name="line.449"></a>
+<FONT color="green">450</FONT>            }<a name="line.450"></a>
+<FONT color="green">451</FONT>    <a name="line.451"></a>
+<FONT color="green">452</FONT>            if (provider == null) {<a name="line.452"></a>
+<FONT color="green">453</FONT>                try {<a name="line.453"></a>
+<FONT color="green">454</FONT>                    provider = new ZoneInfoProvider("org/joda/time/tz/data");<a name="line.454"></a>
+<FONT color="green">455</FONT>                } catch (Exception ex) {<a name="line.455"></a>
+<FONT color="green">456</FONT>                    Thread thread = Thread.currentThread();<a name="line.456"></a>
+<FONT color="green">457</FONT>                    thread.getThreadGroup().uncaughtException(thread, ex);<a name="line.457"></a>
+<FONT color="green">458</FONT>                }<a name="line.458"></a>
+<FONT color="green">459</FONT>            }<a name="line.459"></a>
+<FONT color="green">460</FONT>    <a name="line.460"></a>
+<FONT color="green">461</FONT>            if (provider == null) {<a name="line.461"></a>
+<FONT color="green">462</FONT>                provider = new UTCProvider();<a name="line.462"></a>
+<FONT color="green">463</FONT>            }<a name="line.463"></a>
+<FONT color="green">464</FONT>    <a name="line.464"></a>
+<FONT color="green">465</FONT>            return provider;<a name="line.465"></a>
+<FONT color="green">466</FONT>        }<a name="line.466"></a>
+<FONT color="green">467</FONT>    <a name="line.467"></a>
+<FONT color="green">468</FONT>        //-----------------------------------------------------------------------<a name="line.468"></a>
+<FONT color="green">469</FONT>        /**<a name="line.469"></a>
+<FONT color="green">470</FONT>         * Gets the name provider factory.<a name="line.470"></a>
+<FONT color="green">471</FONT>         * &lt;p><a name="line.471"></a>
+<FONT color="green">472</FONT>         * The name provider is a pluggable instance factory that supplies the<a name="line.472"></a>
+<FONT color="green">473</FONT>         * names of each DateTimeZone.<a name="line.473"></a>
+<FONT color="green">474</FONT>         * <a name="line.474"></a>
+<FONT color="green">475</FONT>         * @return the provider<a name="line.475"></a>
+<FONT color="green">476</FONT>         */<a name="line.476"></a>
+<FONT color="green">477</FONT>        public static NameProvider getNameProvider() {<a name="line.477"></a>
+<FONT color="green">478</FONT>            return cNameProvider;<a name="line.478"></a>
+<FONT color="green">479</FONT>        }<a name="line.479"></a>
+<FONT color="green">480</FONT>    <a name="line.480"></a>
+<FONT color="green">481</FONT>        /**<a name="line.481"></a>
+<FONT color="green">482</FONT>         * Sets the name provider factory.<a name="line.482"></a>
+<FONT color="green">483</FONT>         * &lt;p><a name="line.483"></a>
+<FONT color="green">484</FONT>         * The name provider is a pluggable instance factory that supplies the<a name="line.484"></a>
+<FONT color="green">485</FONT>         * names of each DateTimeZone.<a name="line.485"></a>
+<FONT color="green">486</FONT>         * <a name="line.486"></a>
+<FONT color="green">487</FONT>         * @param nameProvider  provider to use, or null for default<a name="line.487"></a>
+<FONT color="green">488</FONT>         * @throws SecurityException if you do not have the permission DateTimeZone.setNameProvider<a name="line.488"></a>
+<FONT color="green">489</FONT>         * @throws IllegalArgumentException if the provider is invalid<a name="line.489"></a>
+<FONT color="green">490</FONT>         */<a name="line.490"></a>
+<FONT color="green">491</FONT>        public static void setNameProvider(NameProvider nameProvider) throws SecurityException {<a name="line.491"></a>
+<FONT color="green">492</FONT>            SecurityManager sm = System.getSecurityManager();<a name="line.492"></a>
+<FONT color="green">493</FONT>            if (sm != null) {<a name="line.493"></a>
+<FONT color="green">494</FONT>                sm.checkPermission(new JodaTimePermission("DateTimeZone.setNameProvider"));<a name="line.494"></a>
+<FONT color="green">495</FONT>            }<a name="line.495"></a>
+<FONT color="green">496</FONT>            setNameProvider0(nameProvider);<a name="line.496"></a>
+<FONT color="green">497</FONT>        }<a name="line.497"></a>
+<FONT color="green">498</FONT>    <a name="line.498"></a>
+<FONT color="green">499</FONT>        /**<a name="line.499"></a>
+<FONT color="green">500</FONT>         * Sets the name provider factory without performing the security check.<a name="line.500"></a>
+<FONT color="green">501</FONT>         * <a name="line.501"></a>
+<FONT color="green">502</FONT>         * @param nameProvider  provider to use, or null for default<a name="line.502"></a>
+<FONT color="green">503</FONT>         * @throws IllegalArgumentException if the provider is invalid<a name="line.503"></a>
+<FONT color="green">504</FONT>         */<a name="line.504"></a>
+<FONT color="green">505</FONT>        private static void setNameProvider0(NameProvider nameProvider) {<a name="line.505"></a>
+<FONT color="green">506</FONT>            if (nameProvider == null) {<a name="line.506"></a>
+<FONT color="green">507</FONT>                nameProvider = getDefaultNameProvider();<a name="line.507"></a>
+<FONT color="green">508</FONT>            }<a name="line.508"></a>
+<FONT color="green">509</FONT>            cNameProvider = nameProvider;<a name="line.509"></a>
+<FONT color="green">510</FONT>        }<a name="line.510"></a>
+<FONT color="green">511</FONT>    <a name="line.511"></a>
+<FONT color="green">512</FONT>        /**<a name="line.512"></a>
+<FONT color="green">513</FONT>         * Gets the default name provider.<a name="line.513"></a>
+<FONT color="green">514</FONT>         * &lt;p><a name="line.514"></a>
+<FONT color="green">515</FONT>         * Tries the system property &lt;code>org.joda.time.DateTimeZone.NameProvider&lt;/code>.<a name="line.515"></a>
+<FONT color="green">516</FONT>         * Then uses &lt;code>DefaultNameProvider&lt;/code>.<a name="line.516"></a>
+<FONT color="green">517</FONT>         * <a name="line.517"></a>
+<FONT color="green">518</FONT>         * @return the default name provider<a name="line.518"></a>
+<FONT color="green">519</FONT>         */<a name="line.519"></a>
+<FONT color="green">520</FONT>        private static NameProvider getDefaultNameProvider() {<a name="line.520"></a>
+<FONT color="green">521</FONT>            NameProvider nameProvider = null;<a name="line.521"></a>
+<FONT color="green">522</FONT>            try {<a name="line.522"></a>
+<FONT color="green">523</FONT>                String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");<a name="line.523"></a>
+<FONT color="green">524</FONT>                if (providerClass != null) {<a name="line.524"></a>
+<FONT color="green">525</FONT>                    try {<a name="line.525"></a>
+<FONT color="green">526</FONT>                        nameProvider = (NameProvider) Class.forName(providerClass).newInstance();<a name="line.526"></a>
+<FONT color="green">527</FONT>                    } catch (Exception ex) {<a name="line.527"></a>
+<FONT color="green">528</FONT>                        Thread thread = Thread.currentThread();<a name="line.528"></a>
+<FONT color="green">529</FONT>                        thread.getThreadGroup().uncaughtException(thread, ex);<a name="line.529"></a>
+<FONT color="green">530</FONT>                    }<a name="line.530"></a>
+<FONT color="green">531</FONT>                }<a name="line.531"></a>
+<FONT color="green">532</FONT>            } catch (SecurityException ex) {<a name="line.532"></a>
+<FONT color="green">533</FONT>                // ignore<a name="line.533"></a>
+<FONT color="green">534</FONT>            }<a name="line.534"></a>
+<FONT color="green">535</FONT>    <a name="line.535"></a>
+<FONT color="green">536</FONT>            if (nameProvider == null) {<a name="line.536"></a>
+<FONT color="green">537</FONT>                nameProvider = new DefaultNameProvider();<a name="line.537"></a>
+<FONT color="green">538</FONT>            }<a name="line.538"></a>
+<FONT color="green">539</FONT>    <a name="line.539"></a>
+<FONT color="green">540</FONT>            return nameProvider;<a name="line.540"></a>
+<FONT color="green">541</FONT>        }<a name="line.541"></a>
+<FONT color="green">542</FONT>    <a name="line.542"></a>
+<FONT color="green">543</FONT>        //-----------------------------------------------------------------------<a name="line.543"></a>
+<FONT color="green">544</FONT>        /**<a name="line.544"></a>
+<FONT color="green">545</FONT>         * Converts an old style id to a new style id.<a name="line.545"></a>
+<FONT color="green">546</FONT>         * <a name="line.546"></a>
+<FONT color="green">547</FONT>         * @param id  the old style id<a name="line.547"></a>
+<FONT color="green">548</FONT>         * @return the new style id, null if not found<a name="line.548"></a>
+<FONT color="green">549</FONT>         */<a name="line.549"></a>
+<FONT color="green">550</FONT>        private static synchronized String getConvertedId(String id) {<a name="line.550"></a>
+<FONT color="green">551</FONT>            Map map = cZoneIdConversion;<a name="line.551"></a>
+<FONT color="green">552</FONT>            if (map == null) {<a name="line.552"></a>
+<FONT color="green">553</FONT>                // Backwards compatibility with TimeZone.<a name="line.553"></a>
+<FONT color="green">554</FONT>                map = new HashMap();<a name="line.554"></a>
+<FONT color="green">555</FONT>                map.put("GMT", "UTC");<a name="line.555"></a>
+<FONT color="green">556</FONT>                map.put("MIT", "Pacific/Apia");<a name="line.556"></a>
+<FONT color="green">557</FONT>                map.put("HST", "Pacific/Honolulu");<a name="line.557"></a>
+<FONT color="green">558</FONT>                map.put("AST", "America/Anchorage");<a name="line.558"></a>
+<FONT color="green">559</FONT>                map.put("PST", "America/Los_Angeles");<a name="line.559"></a>
+<FONT color="green">560</FONT>                map.put("MST", "America/Denver");<a name="line.560"></a>
+<FONT color="green">561</FONT>                map.put("PNT", "America/Phoenix");<a name="line.561"></a>
+<FONT color="green">562</FONT>                map.put("CST", "America/Chicago");<a name="line.562"></a>
+<FONT color="green">563</FONT>                map.put("EST", "America/New_York");<a name="line.563"></a>
+<FONT color="green">564</FONT>                map.put("IET", "America/Indianapolis");<a name="line.564"></a>
+<FONT color="green">565</FONT>                map.put("PRT", "America/Puerto_Rico");<a name="line.565"></a>
+<FONT color="green">566</FONT>                map.put("CNT", "America/St_Johns");<a name="line.566"></a>
+<FONT color="green">567</FONT>                map.put("AGT", "America/Buenos_Aires");<a name="line.567"></a>
+<FONT color="green">568</FONT>                map.put("BET", "America/Sao_Paulo");<a name="line.568"></a>
+<FONT color="green">569</FONT>                map.put("WET", "Europe/London");<a name="line.569"></a>
+<FONT color="green">570</FONT>                map.put("ECT", "Europe/Paris");<a name="line.570"></a>
+<FONT color="green">571</FONT>                map.put("ART", "Africa/Cairo");<a name="line.571"></a>
+<FONT color="green">572</FONT>                map.put("CAT", "Africa/Harare");<a name="line.572"></a>
+<FONT color="green">573</FONT>                map.put("EET", "Europe/Bucharest");<a name="line.573"></a>
+<FONT color="green">574</FONT>                map.put("EAT", "Africa/Addis_Ababa");<a name="line.574"></a>
+<FONT color="green">575</FONT>                map.put("MET", "Asia/Tehran");<a name="line.575"></a>
+<FONT color="green">576</FONT>                map.put("NET", "Asia/Yerevan");<a name="line.576"></a>
+<FONT color="green">577</FONT>                map.put("PLT", "Asia/Karachi");<a name="line.577"></a>
+<FONT color="green">578</FONT>                map.put("IST", "Asia/Calcutta");<a name="line.578"></a>
+<FONT color="green">579</FONT>                map.put("BST", "Asia/Dhaka");<a name="line.579"></a>
+<FONT color="green">580</FONT>                map.put("VST", "Asia/Saigon");<a name="line.580"></a>
+<FONT color="green">581</FONT>                map.put("CTT", "Asia/Shanghai");<a name="line.581"></a>
+<FONT color="green">582</FONT>                map.put("JST", "Asia/Tokyo");<a name="line.582"></a>
+<FONT color="green">583</FONT>                map.put("ACT", "Australia/Darwin");<a name="line.583"></a>
+<FONT color="green">584</FONT>                map.put("AET", "Australia/Sydney");<a name="line.584"></a>
+<FONT color="green">585</FONT>                map.put("SST", "Pacific/Guadalcanal");<a name="line.585"></a>
+<FONT color="green">586</FONT>                map.put("NST", "Pacific/Auckland");<a name="line.586"></a>
+<FONT color="green">587</FONT>                cZoneIdConversion = map;<a name="line.587"></a>
+<FONT color="green">588</FONT>            }<a name="line.588"></a>
+<FONT color="green">589</FONT>            return (String) map.get(id);<a name="line.589"></a>
+<FONT color="green">590</FONT>        }<a name="line.590"></a>
+<FONT color="green">591</FONT>    <a name="line.591"></a>
+<FONT color="green">592</FONT>        private static int parseOffset(String str) {<a name="line.592"></a>
+<FONT color="green">593</FONT>            // Can't use a real chronology if called during class<a name="line.593"></a>
+<FONT color="green">594</FONT>            // initialization. Offset parser doesn't need it anyhow.<a name="line.594"></a>
+<FONT color="green">595</FONT>            Chronology chrono = new BaseChronology() {<a name="line.595"></a>
+<FONT color="green">596</FONT>                public DateTimeZone getZone() {<a name="line.596"></a>
+<FONT color="green">597</FONT>                    return null;<a name="line.597"></a>
+<FONT color="green">598</FONT>                }<a name="line.598"></a>
+<FONT color="green">599</FONT>                public Chronology withUTC() {<a name="line.599"></a>
+<FONT color="green">600</FONT>                    return this;<a name="line.600"></a>
+<FONT color="green">601</FONT>                }<a name="line.601"></a>
+<FONT color="green">602</FONT>                public Chronology withZone(DateTimeZone zone) {<a name="line.602"></a>
+<FONT color="green">603</FONT>                    return this;<a name="line.603"></a>
+<FONT color="green">604</FONT>                }<a name="line.604"></a>
+<FONT color="green">605</FONT>                public String toString() {<a name="line.605"></a>
+<FONT color="green">606</FONT>                    return getClass().getName();<a name="line.606"></a>
+<FONT color="green">607</FONT>                }<a name="line.607"></a>
+<FONT color="green">608</FONT>            };<a name="line.608"></a>
+<FONT color="green">609</FONT>            return -(int) offsetFormatter().withChronology(chrono).parseMillis(str);<a name="line.609"></a>
+<FONT color="green">610</FONT>        }<a name="line.610"></a>
+<FONT color="green">611</FONT>    <a name="line.611"></a>
+<FONT color="green">612</FONT>        /**<a name="line.612"></a>
+<FONT color="green">613</FONT>         * Formats a timezone offset string.<a name="line.613"></a>
+<FONT color="green">614</FONT>         * &lt;p><a name="line.614"></a>
+<FONT color="green">615</FONT>         * This method is kept separate from the formatting classes to speed and<a name="line.615"></a>
+<FONT color="green">616</FONT>         * simplify startup and classloading.<a name="line.616"></a>
+<FONT color="green">617</FONT>         * <a name="line.617"></a>
+<FONT color="green">618</FONT>         * @param offset  the offset in milliseconds<a name="line.618"></a>
+<FONT color="green">619</FONT>         * @return the time zone string<a name="line.619"></a>
+<FONT color="green">620</FONT>         */<a name="line.620"></a>
+<FONT color="green">621</FONT>        private static String printOffset(int offset) {<a name="line.621"></a>
+<FONT color="green">622</FONT>            StringBuffer buf = new StringBuffer();<a name="line.622"></a>
+<FONT color="green">623</FONT>            if (offset >= 0) {<a name="line.623"></a>
+<FONT color="green">624</FONT>                buf.append('+');<a name="line.624"></a>
+<FONT color="green">625</FONT>            } else {<a name="line.625"></a>
+<FONT color="green">626</FONT>                buf.append('-');<a name="line.626"></a>
+<FONT color="green">627</FONT>                offset = -offset;<a name="line.627"></a>
+<FONT color="green">628</FONT>            }<a name="line.628"></a>
+<FONT color="green">629</FONT>    <a name="line.629"></a>
+<FONT color="green">630</FONT>            int hours = offset / DateTimeConstants.MILLIS_PER_HOUR;<a name="line.630"></a>
+<FONT color="green">631</FONT>            FormatUtils.appendPaddedInteger(buf, hours, 2);<a name="line.631"></a>
+<FONT color="green">632</FONT>            offset -= hours * (int) DateTimeConstants.MILLIS_PER_HOUR;<a name="line.632"></a>
+<FONT color="green">633</FONT>    <a name="line.633"></a>
+<FONT color="green">634</FONT>            int minutes = offset / DateTimeConstants.MILLIS_PER_MINUTE;<a name="line.634"></a>
+<FONT color="green">635</FONT>            buf.append(':');<a name="line.635"></a>
+<FONT color="green">636</FONT>            FormatUtils.appendPaddedInteger(buf, minutes, 2);<a name="line.636"></a>
+<FONT color="green">637</FONT>            offset -= minutes * DateTimeConstants.MILLIS_PER_MINUTE;<a name="line.637"></a>
+<FONT color="green">638</FONT>            if (offset == 0) {<a name="line.638"></a>
+<FONT color="green">639</FONT>                return buf.toString();<a name="line.639"></a>
+<FONT color="green">640</FONT>            }<a name="line.640"></a>
+<FONT color="green">641</FONT>    <a name="line.641"></a>
+<FONT color="green">642</FONT>            int seconds = offset / DateTimeConstants.MILLIS_PER_SECOND;<a name="line.642"></a>
+<FONT color="green">643</FONT>            buf.append(':');<a name="line.643"></a>
+<FONT color="green">644</FONT>            FormatUtils.appendPaddedInteger(buf, seconds, 2);<a name="line.644"></a>
+<FONT color="green">645</FONT>            offset -= seconds * DateTimeConstants.MILLIS_PER_SECOND;<a name="line.645"></a>
+<FONT color="green">646</FONT>            if (offset == 0) {<a name="line.646"></a>
+<FONT color="green">647</FONT>                return buf.toString();<a name="line.647"></a>
+<FONT color="green">648</FONT>            }<a name="line.648"></a>
+<FONT color="green">649</FONT>    <a name="line.649"></a>
+<FONT color="green">650</FONT>            buf.append('.');<a name="line.650"></a>
+<FONT color="green">651</FONT>            FormatUtils.appendPaddedInteger(buf, offset, 3);<a name="line.651"></a>
+<FONT color="green">652</FONT>            return buf.toString();<a name="line.652"></a>
+<FONT color="green">653</FONT>        }<a name="line.653"></a>
+<FONT color="green">654</FONT>    <a name="line.654"></a>
+<FONT color="green">655</FONT>        /**<a name="line.655"></a>
+<FONT color="green">656</FONT>         * Gets a printer/parser for managing the offset id formatting.<a name="line.656"></a>
+<FONT color="green">657</FONT>         * <a name="line.657"></a>
+<FONT color="green">658</FONT>         * @return the formatter<a name="line.658"></a>
+<FONT color="green">659</FONT>         */<a name="line.659"></a>
+<FONT color="green">660</FONT>        private static synchronized DateTimeFormatter offsetFormatter() {<a name="line.660"></a>
+<FONT color="green">661</FONT>            if (cOffsetFormatter == null) {<a name="line.661"></a>
+<FONT color="green">662</FONT>                cOffsetFormatter = new DateTimeFormatterBuilder()<a name="line.662"></a>
+<FONT color="green">663</FONT>                    .appendTimeZoneOffset(null, true, 2, 4)<a name="line.663"></a>
+<FONT color="green">664</FONT>                    .toFormatter();<a name="line.664"></a>
+<FONT color="green">665</FONT>            }<a name="line.665"></a>
+<FONT color="green">666</FONT>            return cOffsetFormatter;<a name="line.666"></a>
+<FONT color="green">667</FONT>        }<a name="line.667"></a>
+<FONT color="green">668</FONT>    <a name="line.668"></a>
+<FONT color="green">669</FONT>        // Instance fields and methods<a name="line.669"></a>
+<FONT color="green">670</FONT>        //--------------------------------------------------------------------<a name="line.670"></a>
+<FONT color="green">671</FONT>    <a name="line.671"></a>
+<FONT color="green">672</FONT>        private final String iID;<a name="line.672"></a>
+<FONT color="green">673</FONT>    <a name="line.673"></a>
+<FONT color="green">674</FONT>        /**<a name="line.674"></a>
+<FONT color="green">675</FONT>         * Constructor.<a name="line.675"></a>
+<FONT color="green">676</FONT>         * <a name="line.676"></a>
+<FONT color="green">677</FONT>         * @param id  the id to use<a name="line.677"></a>
+<FONT color="green">678</FONT>         * @throws IllegalArgumentException if the id is null<a name="line.678"></a>
+<FONT color="green">679</FONT>         */<a name="line.679"></a>
+<FONT color="green">680</FONT>        protected DateTimeZone(String id) {<a name="line.680"></a>
+<FONT color="green">681</FONT>            if (id == null) {<a name="line.681"></a>
+<FONT color="green">682</FONT>                throw new IllegalArgumentException("Id must not be null");<a name="line.682"></a>
+<FONT color="green">683</FONT>            }<a name="line.683"></a>
+<FONT color="green">684</FONT>            iID = id;<a name="line.684"></a>
+<FONT color="green">685</FONT>        }<a name="line.685"></a>
+<FONT color="green">686</FONT>    <a name="line.686"></a>
+<FONT color="green">687</FONT>        // Principal methods<a name="line.687"></a>
+<FONT color="green">688</FONT>        //--------------------------------------------------------------------<a name="line.688"></a>
+<FONT color="green">689</FONT>    <a name="line.689"></a>
+<FONT color="green">690</FONT>        /**<a name="line.690"></a>
+<FONT color="green">691</FONT>         * Gets the ID of this datetime zone.<a name="line.691"></a>
+<FONT color="green">692</FONT>         * <a name="line.692"></a>
+<FONT color="green">693</FONT>         * @return the ID of this datetime zone<a name="line.693"></a>
+<FONT color="green">694</FONT>         */<a name="line.694"></a>
+<FONT color="green">695</FONT>        public final String getID() {<a name="line.695"></a>
+<FONT color="green">696</FONT>            return iID;<a name="line.696"></a>
+<FONT color="green">697</FONT>        }<a name="line.697"></a>
+<FONT color="green">698</FONT>    <a name="line.698"></a>
+<FONT color="green">699</FONT>        /**<a name="line.699"></a>
+<FONT color="green">700</FONT>         * Returns a non-localized name that is unique to this time zone. It can be<a name="line.700"></a>
+<FONT color="green">701</FONT>         * combined with id to form a unique key for fetching localized names.<a name="line.701"></a>
+<FONT color="green">702</FONT>         *<a name="line.702"></a>
+<FONT color="green">703</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for<a name="line.703"></a>
+<FONT color="green">704</FONT>         * @return name key or null if id should be used for names<a name="line.704"></a>
+<FONT color="green">705</FONT>         */<a name="line.705"></a>
+<FONT color="green">706</FONT>        public abstract String getNameKey(long instant);<a name="line.706"></a>
+<FONT color="green">707</FONT>    <a name="line.707"></a>
+<FONT color="green">708</FONT>        /**<a name="line.708"></a>
+<FONT color="green">709</FONT>         * Gets the short name of this datetime zone suitable for display using<a name="line.709"></a>
+<FONT color="green">710</FONT>         * the default locale.<a name="line.710"></a>
+<FONT color="green">711</FONT>         * &lt;p><a name="line.711"></a>
+<FONT color="green">712</FONT>         * If the name is not available for the locale, then this method returns a<a name="line.712"></a>
+<FONT color="green">713</FONT>         * string in the format &lt;code>[+-]hh:mm&lt;/code>.<a name="line.713"></a>
+<FONT color="green">714</FONT>         * <a name="line.714"></a>
+<FONT color="green">715</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for<a name="line.715"></a>
+<FONT color="green">716</FONT>         * @return the human-readable short name in the default locale<a name="line.716"></a>
+<FONT color="green">717</FONT>         */<a name="line.717"></a>
+<FONT color="green">718</FONT>        public final String getShortName(long instant) {<a name="line.718"></a>
+<FONT color="green">719</FONT>            return getShortName(instant, null);<a name="line.719"></a>
+<FONT color="green">720</FONT>        }<a name="line.720"></a>
+<FONT color="green">721</FONT>    <a name="line.721"></a>
+<FONT color="green">722</FONT>        /**<a name="line.722"></a>
+<FONT color="green">723</FONT>         * Gets the short name of this datetime zone suitable for display using<a name="line.723"></a>
+<FONT color="green">724</FONT>         * the specified locale.<a name="line.724"></a>
+<FONT color="green">725</FONT>         * &lt;p><a name="line.725"></a>
+<FONT color="green">726</FONT>         * If the name is not available for the locale, then this method returns a<a name="line.726"></a>
+<FONT color="green">727</FONT>         * string in the format &lt;code>[+-]hh:mm&lt;/code>.<a name="line.727"></a>
+<FONT color="green">728</FONT>         * <a name="line.728"></a>
+<FONT color="green">729</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for<a name="line.729"></a>
+<FONT color="green">730</FONT>         * @param locale  the locale to get the name for<a name="line.730"></a>
+<FONT color="green">731</FONT>         * @return the human-readable short name in the specified locale<a name="line.731"></a>
+<FONT color="green">732</FONT>         */<a name="line.732"></a>
+<FONT color="green">733</FONT>        public String getShortName(long instant, Locale locale) {<a name="line.733"></a>
+<FONT color="green">734</FONT>            if (locale == null) {<a name="line.734"></a>
+<FONT color="green">735</FONT>                locale = Locale.getDefault();<a name="line.735"></a>
+<FONT color="green">736</FONT>            }<a name="line.736"></a>
+<FONT color="green">737</FONT>            String nameKey = getNameKey(instant);<a name="line.737"></a>
+<FONT color="green">738</FONT>            if (nameKey == null) {<a name="line.738"></a>
+<FONT color="green">739</FONT>                return iID;<a name="line.739"></a>
+<FONT color="green">740</FONT>            }<a name="line.740"></a>
+<FONT color="green">741</FONT>            String name = cNameProvider.getShortName(locale, iID, nameKey);<a name="line.741"></a>
+<FONT color="green">742</FONT>            if (name != null) {<a name="line.742"></a>
+<FONT color="green">743</FONT>                return name;<a name="line.743"></a>
+<FONT color="green">744</FONT>            }<a name="line.744"></a>
+<FONT color="green">745</FONT>            return printOffset(getOffset(instant));<a name="line.745"></a>
+<FONT color="green">746</FONT>        }<a name="line.746"></a>
+<FONT color="green">747</FONT>    <a name="line.747"></a>
+<FONT color="green">748</FONT>        /**<a name="line.748"></a>
+<FONT color="green">749</FONT>         * Gets the long name of this datetime zone suitable for display using<a name="line.749"></a>
+<FONT color="green">750</FONT>         * the default locale.<a name="line.750"></a>
+<FONT color="green">751</FONT>         * &lt;p><a name="line.751"></a>
+<FONT color="green">752</FONT>         * If the name is not available for the locale, then this method returns a<a name="line.752"></a>
+<FONT color="green">753</FONT>         * string in the format &lt;code>[+-]hh:mm&lt;/code>.<a name="line.753"></a>
+<FONT color="green">754</FONT>         * <a name="line.754"></a>
+<FONT color="green">755</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for<a name="line.755"></a>
+<FONT color="green">756</FONT>         * @return the human-readable long name in the default locale<a name="line.756"></a>
+<FONT color="green">757</FONT>         */<a name="line.757"></a>
+<FONT color="green">758</FONT>        public final String getName(long instant) {<a name="line.758"></a>
+<FONT color="green">759</FONT>            return getName(instant, null);<a name="line.759"></a>
+<FONT color="green">760</FONT>        }<a name="line.760"></a>
+<FONT color="green">761</FONT>    <a name="line.761"></a>
+<FONT color="green">762</FONT>        /**<a name="line.762"></a>
+<FONT color="green">763</FONT>         * Gets the long name of this datetime zone suitable for display using<a name="line.763"></a>
+<FONT color="green">764</FONT>         * the specified locale.<a name="line.764"></a>
+<FONT color="green">765</FONT>         * &lt;p><a name="line.765"></a>
+<FONT color="green">766</FONT>         * If the name is not available for the locale, then this method returns a<a name="line.766"></a>
+<FONT color="green">767</FONT>         * string in the format &lt;code>[+-]hh:mm&lt;/code>.<a name="line.767"></a>
+<FONT color="green">768</FONT>         * <a name="line.768"></a>
+<FONT color="green">769</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for<a name="line.769"></a>
+<FONT color="green">770</FONT>         * @param locale  the locale to get the name for<a name="line.770"></a>
+<FONT color="green">771</FONT>         * @return the human-readable long name in the specified locale<a name="line.771"></a>
+<FONT color="green">772</FONT>         */<a name="line.772"></a>
+<FONT color="green">773</FONT>        public String getName(long instant, Locale locale) {<a name="line.773"></a>
+<FONT color="green">774</FONT>            if (locale == null) {<a name="line.774"></a>
+<FONT color="green">775</FONT>                locale = Locale.getDefault();<a name="line.775"></a>
+<FONT color="green">776</FONT>            }<a name="line.776"></a>
+<FONT color="green">777</FONT>            String nameKey = getNameKey(instant);<a name="line.777"></a>
+<FONT color="green">778</FONT>            if (nameKey == null) {<a name="line.778"></a>
+<FONT color="green">779</FONT>                return iID;<a name="line.779"></a>
+<FONT color="green">780</FONT>            }<a name="line.780"></a>
+<FONT color="green">781</FONT>            String name = cNameProvider.getName(locale, iID, nameKey);<a name="line.781"></a>
+<FONT color="green">782</FONT>            if (name != null) {<a name="line.782"></a>
+<FONT color="green">783</FONT>                return name;<a name="line.783"></a>
+<FONT color="green">784</FONT>            }<a name="line.784"></a>
+<FONT color="green">785</FONT>            return printOffset(getOffset(instant));<a name="line.785"></a>
+<FONT color="green">786</FONT>        }<a name="line.786"></a>
+<FONT color="green">787</FONT>    <a name="line.787"></a>
+<FONT color="green">788</FONT>        /**<a name="line.788"></a>
+<FONT color="green">789</FONT>         * Gets the millisecond offset to add to UTC to get local time.<a name="line.789"></a>
+<FONT color="green">790</FONT>         * <a name="line.790"></a>
+<FONT color="green">791</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for<a name="line.791"></a>
+<FONT color="green">792</FONT>         * @return the millisecond offset to add to UTC to get local time<a name="line.792"></a>
+<FONT color="green">793</FONT>         */<a name="line.793"></a>
+<FONT color="green">794</FONT>        public abstract int getOffset(long instant);<a name="line.794"></a>
+<FONT color="green">795</FONT>    <a name="line.795"></a>
+<FONT color="green">796</FONT>        /**<a name="line.796"></a>
+<FONT color="green">797</FONT>         * Gets the millisecond offset to add to UTC to get local time.<a name="line.797"></a>
+<FONT color="green">798</FONT>         * <a name="line.798"></a>
+<FONT color="green">799</FONT>         * @param instant  instant to get the offset for, null means now<a name="line.799"></a>
+<FONT color="green">800</FONT>         * @return the millisecond offset to add to UTC to get local time<a name="line.800"></a>
+<FONT color="green">801</FONT>         */<a name="line.801"></a>
+<FONT color="green">802</FONT>        public final int getOffset(ReadableInstant instant) {<a name="line.802"></a>
+<FONT color="green">803</FONT>            if (instant == null) {<a name="line.803"></a>
+<FONT color="green">804</FONT>                return getOffset(DateTimeUtils.currentTimeMillis());<a name="line.804"></a>
+<FONT color="green">805</FONT>            }<a name="line.805"></a>
+<FONT color="green">806</FONT>            return getOffset(instant.getMillis());<a name="line.806"></a>
+<FONT color="green">807</FONT>        }<a name="line.807"></a>
+<FONT color="green">808</FONT>    <a name="line.808"></a>
+<FONT color="green">809</FONT>        /**<a name="line.809"></a>
+<FONT color="green">810</FONT>         * Gets the standard millisecond offset to add to UTC to get local time,<a name="line.810"></a>
+<FONT color="green">811</FONT>         * when standard time is in effect.<a name="line.811"></a>
+<FONT color="green">812</FONT>         * <a name="line.812"></a>
+<FONT color="green">813</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for<a name="line.813"></a>
+<FONT color="green">814</FONT>         * @return the millisecond offset to add to UTC to get local time<a name="line.814"></a>
+<FONT color="green">815</FONT>         */<a name="line.815"></a>
+<FONT color="green">816</FONT>        public abstract int getStandardOffset(long instant);<a name="line.816"></a>
+<FONT color="green">817</FONT>    <a name="line.817"></a>
+<FONT color="green">818</FONT>        /**<a name="line.818"></a>
+<FONT color="green">819</FONT>         * Checks whether, at a particular instant, the offset is standard or not.<a name="line.819"></a>
+<FONT color="green">820</FONT>         * &lt;p><a name="line.820"></a>
+<FONT color="green">821</FONT>         * This method can be used to determine whether Summer Time (DST) applies.<a name="line.821"></a>
+<FONT color="green">822</FONT>         * As a general rule, if the offset at the specified instant is standard,<a name="line.822"></a>
+<FONT color="green">823</FONT>         * then either Winter time applies, or there is no Summer Time. If the<a name="line.823"></a>
+<FONT color="green">824</FONT>         * instant is not standard, then Summer Time applies.<a name="line.824"></a>
+<FONT color="green">825</FONT>         * &lt;p><a name="line.825"></a>
+<FONT color="green">826</FONT>         * The implementation of the method is simply whether {@link #getOffset(long)}<a name="line.826"></a>
+<FONT color="green">827</FONT>         * equals {@link #getStandardOffset(long)} at the specified instant.<a name="line.827"></a>
+<FONT color="green">828</FONT>         * <a name="line.828"></a>
+<FONT color="green">829</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for<a name="line.829"></a>
+<FONT color="green">830</FONT>         * @return true if the offset at the given instant is the standard offset<a name="line.830"></a>
+<FONT color="green">831</FONT>         * @since 1.5<a name="line.831"></a>
+<FONT color="green">832</FONT>         */<a name="line.832"></a>
+<FONT color="green">833</FONT>        public boolean isStandardOffset(long instant) {<a name="line.833"></a>
+<FONT color="green">834</FONT>            return getOffset(instant) == getStandardOffset(instant);<a name="line.834"></a>
+<FONT color="green">835</FONT>        }<a name="line.835"></a>
+<FONT color="green">836</FONT>    <a name="line.836"></a>
+<FONT color="green">837</FONT>        /**<a name="line.837"></a>
+<FONT color="green">838</FONT>         * Gets the millisecond offset to subtract from local time to get UTC time.<a name="line.838"></a>
+<FONT color="green">839</FONT>         * This offset can be used to undo adding the offset obtained by getOffset.<a name="line.839"></a>
+<FONT color="green">840</FONT>         *<a name="line.840"></a>
+<FONT color="green">841</FONT>         * &lt;pre><a name="line.841"></a>
+<FONT color="green">842</FONT>         * millisLocal == millisUTC   + getOffset(millisUTC)<a name="line.842"></a>
+<FONT color="green">843</FONT>         * millisUTC   == millisLocal - getOffsetFromLocal(millisLocal)<a name="line.843"></a>
+<FONT color="green">844</FONT>         * &lt;/pre><a name="line.844"></a>
+<FONT color="green">845</FONT>         *<a name="line.845"></a>
+<FONT color="green">846</FONT>         * NOTE: After calculating millisLocal, some error may be introduced. At<a name="line.846"></a>
+<FONT color="green">847</FONT>         * offset transitions (due to DST or other historical changes), ranges of<a name="line.847"></a>
+<FONT color="green">848</FONT>         * local times may map to different UTC times.<a name="line.848"></a>
+<FONT color="green">849</FONT>         * &lt;p><a name="line.849"></a>
+<FONT color="green">850</FONT>         * This method will return an offset suitable for calculating an instant<a name="line.850"></a>
+<FONT color="green">851</FONT>         * after any DST gap. For example, consider a zone with a cutover<a name="line.851"></a>
+<FONT color="green">852</FONT>         * from 01:00 to 01:59:&lt;br /><a name="line.852"></a>
+<FONT color="green">853</FONT>         * Input: 00:00  Output: 00:00&lt;br /><a name="line.853"></a>
+<FONT color="green">854</FONT>         * Input: 00:30  Output: 00:30&lt;br /><a name="line.854"></a>
+<FONT color="green">855</FONT>         * Input: 01:00  Output: 02:00&lt;br /><a name="line.855"></a>
+<FONT color="green">856</FONT>         * Input: 01:30  Output: 02:30&lt;br /><a name="line.856"></a>
+<FONT color="green">857</FONT>         * Input: 02:00  Output: 02:00&lt;br /><a name="line.857"></a>
+<FONT color="green">858</FONT>         * Input: 02:30  Output: 02:30&lt;br /><a name="line.858"></a>
+<FONT color="green">859</FONT>         * &lt;p><a name="line.859"></a>
+<FONT color="green">860</FONT>         * NOTE: The behaviour of this method changed in v1.5, with the emphasis<a name="line.860"></a>
+<FONT color="green">861</FONT>         * on returning a consistent result later along the time-line (shown above).<a name="line.861"></a>
+<FONT color="green">862</FONT>         *<a name="line.862"></a>
+<FONT color="green">863</FONT>         * @param instantLocal  the millisecond instant, relative to this time zone, to<a name="line.863"></a>
+<FONT color="green">864</FONT>         * get the offset for<a name="line.864"></a>
+<FONT color="green">865</FONT>         * @return the millisecond offset to subtract from local time to get UTC time<a name="line.865"></a>
+<FONT color="green">866</FONT>         */<a name="line.866"></a>
+<FONT color="green">867</FONT>        public int getOffsetFromLocal(long instantLocal) {<a name="line.867"></a>
+<FONT color="green">868</FONT>            // get the offset at instantLocal (first estimate)<a name="line.868"></a>
+<FONT color="green">869</FONT>            int offsetLocal = getOffset(instantLocal);<a name="line.869"></a>
+<FONT color="green">870</FONT>            // adjust instantLocal using the estimate and recalc the offset<a name="line.870"></a>
+<FONT color="green">871</FONT>            int offsetAdjusted = getOffset(instantLocal - offsetLocal);<a name="line.871"></a>
+<FONT color="green">872</FONT>            // if the offsets differ, we must be near a DST boundary<a name="line.872"></a>
+<FONT color="green">873</FONT>            if (offsetLocal != offsetAdjusted) {<a name="line.873"></a>
+<FONT color="green">874</FONT>                // we need to ensure that time is always after the DST gap<a name="line.874"></a>
+<FONT color="green">875</FONT>                // this happens naturally for positive offsets, but not for negative<a name="line.875"></a>
+<FONT color="green">876</FONT>                if ((offsetLocal - offsetAdjusted) &lt; 0) {<a name="line.876"></a>
+<FONT color="green">877</FONT>                    // if we just return offsetAdjusted then the time is pushed<a name="line.877"></a>
+<FONT color="green">878</FONT>                    // back before the transition, whereas it should be<a name="line.878"></a>
+<FONT color="green">879</FONT>                    // on or after the transition<a name="line.879"></a>
+<FONT color="green">880</FONT>                    long nextLocal = nextTransition(instantLocal - offsetLocal);<a name="line.880"></a>
+<FONT color="green">881</FONT>                    long nextAdjusted = nextTransition(instantLocal - offsetAdjusted);<a name="line.881"></a>
+<FONT color="green">882</FONT>                    if (nextLocal != nextAdjusted) {<a name="line.882"></a>
+<FONT color="green">883</FONT>                        return offsetLocal;<a name="line.883"></a>
+<FONT color="green">884</FONT>                    }<a name="line.884"></a>
+<FONT color="green">885</FONT>                }<a name="line.885"></a>
+<FONT color="green">886</FONT>            }<a name="line.886"></a>
+<FONT color="green">887</FONT>            return offsetAdjusted;<a name="line.887"></a>
+<FONT color="green">888</FONT>        }<a name="line.888"></a>
+<FONT color="green">889</FONT>    <a name="line.889"></a>
+<FONT color="green">890</FONT>        /**<a name="line.890"></a>
+<FONT color="green">891</FONT>         * Converts a standard UTC instant to a local instant with the same<a name="line.891"></a>
+<FONT color="green">892</FONT>         * local time. This conversion is used before performing a calculation<a name="line.892"></a>
+<FONT color="green">893</FONT>         * so that the calculation can be done using a simple local zone.<a name="line.893"></a>
+<FONT color="green">894</FONT>         *<a name="line.894"></a>
+<FONT color="green">895</FONT>         * @param instantUTC  the UTC instant to convert to local<a name="line.895"></a>
+<FONT color="green">896</FONT>         * @return the local instant with the same local time<a name="line.896"></a>
+<FONT color="green">897</FONT>         * @throws ArithmeticException if the result overflows a long<a name="line.897"></a>
+<FONT color="green">898</FONT>         * @since 1.5<a name="line.898"></a>
+<FONT color="green">899</FONT>         */<a name="line.899"></a>
+<FONT color="green">900</FONT>        public long convertUTCToLocal(long instantUTC) {<a name="line.900"></a>
+<FONT color="green">901</FONT>            int offset = getOffset(instantUTC);<a name="line.901"></a>
+<FONT color="green">902</FONT>            long instantLocal = instantUTC + offset;<a name="line.902"></a>
+<FONT color="green">903</FONT>            // If there is a sign change, but the two values have the same sign...<a name="line.903"></a>
+<FONT color="green">904</FONT>            if ((instantUTC ^ instantLocal) &lt; 0 && (instantUTC ^ offset) >= 0) {<a name="line.904"></a>
+<FONT color="green">905</FONT>                throw new ArithmeticException("Adding time zone offset caused overflow");<a name="line.905"></a>
+<FONT color="green">906</FONT>            }<a name="line.906"></a>
+<FONT color="green">907</FONT>            return instantLocal;<a name="line.907"></a>
+<FONT color="green">908</FONT>        }<a name="line.908"></a>
+<FONT color="green">909</FONT>    <a name="line.909"></a>
+<FONT color="green">910</FONT>        /**<a name="line.910"></a>
+<FONT color="green">911</FONT>         * Converts a local instant to a standard UTC instant with the same<a name="line.911"></a>
+<FONT color="green">912</FONT>         * local time. This conversion is used after performing a calculation<a name="line.912"></a>
+<FONT color="green">913</FONT>         * where the calculation was done using a simple local zone.<a name="line.913"></a>
+<FONT color="green">914</FONT>         *<a name="line.914"></a>
+<FONT color="green">915</FONT>         * @param instantLocal  the local instant to convert to UTC<a name="line.915"></a>
+<FONT color="green">916</FONT>         * @param strict  whether the conversion should reject non-existent local times<a name="line.916"></a>
+<FONT color="green">917</FONT>         * @return the UTC instant with the same local time, <a name="line.917"></a>
+<FONT color="green">918</FONT>         * @throws ArithmeticException if the result overflows a long<a name="line.918"></a>
+<FONT color="green">919</FONT>         * @throws IllegalArgumentException if the zone has no eqivalent local time<a name="line.919"></a>
+<FONT color="green">920</FONT>         * @since 1.5<a name="line.920"></a>
+<FONT color="green">921</FONT>         */<a name="line.921"></a>
+<FONT color="green">922</FONT>        public long convertLocalToUTC(long instantLocal, boolean strict) {<a name="line.922"></a>
+<FONT color="green">923</FONT>            // get the offset at instantLocal (first estimate)<a name="line.923"></a>
+<FONT color="green">924</FONT>            int offsetLocal = getOffset(instantLocal);<a name="line.924"></a>
+<FONT color="green">925</FONT>            // adjust instantLocal using the estimate and recalc the offset<a name="line.925"></a>
+<FONT color="green">926</FONT>            int offset = getOffset(instantLocal - offsetLocal);<a name="line.926"></a>
+<FONT color="green">927</FONT>            // if the offsets differ, we must be near a DST boundary<a name="line.927"></a>
+<FONT color="green">928</FONT>            if (offsetLocal != offset) {<a name="line.928"></a>
+<FONT color="green">929</FONT>                // if strict then always check if in DST gap<a name="line.929"></a>
+<FONT color="green">930</FONT>                // otherwise only check if zone in Western hemisphere (as the<a name="line.930"></a>
+<FONT color="green">931</FONT>                // value of offset is already correct for Eastern hemisphere)<a name="line.931"></a>
+<FONT color="green">932</FONT>                if (strict || offsetLocal &lt; 0) {<a name="line.932"></a>
+<FONT color="green">933</FONT>                    // determine if we are in the DST gap<a name="line.933"></a>
+<FONT color="green">934</FONT>                    long nextLocal = nextTransition(instantLocal - offsetLocal);<a name="line.934"></a>
+<FONT color="green">935</FONT>                    if (nextLocal == (instantLocal - offsetLocal)) {<a name="line.935"></a>
+<FONT color="green">936</FONT>                        nextLocal = Long.MAX_VALUE;<a name="line.936"></a>
+<FONT color="green">937</FONT>                    }<a name="line.937"></a>
+<FONT color="green">938</FONT>                    long nextAdjusted = nextTransition(instantLocal - offset);<a name="line.938"></a>
+<FONT color="green">939</FONT>                    if (nextAdjusted == (instantLocal - offset)) {<a name="line.939"></a>
+<FONT color="green">940</FONT>                        nextAdjusted = Long.MAX_VALUE;<a name="line.940"></a>
+<FONT color="green">941</FONT>                    }<a name="line.941"></a>
+<FONT color="green">942</FONT>                    if (nextLocal != nextAdjusted) {<a name="line.942"></a>
+<FONT color="green">943</FONT>                        // yes we are in the DST gap<a name="line.943"></a>
+<FONT color="green">944</FONT>                        if (strict) {<a name="line.944"></a>
+<FONT color="green">945</FONT>                            // DST gap is not acceptable<a name="line.945"></a>
+<FONT color="green">946</FONT>                            throw new IllegalArgumentException("Illegal instant due to time zone offset transition: " +<a name="line.946"></a>
+<FONT color="green">947</FONT>                                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(instantLocal)) +<a name="line.947"></a>
+<FONT color="green">948</FONT>                                    " (" + getID() + ")");<a name="line.948"></a>
+<FONT color="green">949</FONT>                        } else {<a name="line.949"></a>
+<FONT color="green">950</FONT>                            // DST gap is acceptable, but for the Western hemisphere<a name="line.950"></a>
+<FONT color="green">951</FONT>                            // the offset is wrong and will result in local times<a name="line.951"></a>
+<FONT color="green">952</FONT>                            // before the cutover so use the offsetLocal instead<a name="line.952"></a>
+<FONT color="green">953</FONT>                            offset = offsetLocal;<a name="line.953"></a>
+<FONT color="green">954</FONT>                        }<a name="line.954"></a>
+<FONT color="green">955</FONT>                    }<a name="line.955"></a>
+<FONT color="green">956</FONT>                }<a name="line.956"></a>
+<FONT color="green">957</FONT>            }<a name="line.957"></a>
+<FONT color="green">958</FONT>            // check for overflow<a name="line.958"></a>
+<FONT color="green">959</FONT>            long instantUTC = instantLocal - offset;<a name="line.959"></a>
+<FONT color="green">960</FONT>            // If there is a sign change, but the two values have different signs...<a name="line.960"></a>
+<FONT color="green">961</FONT>            if ((instantLocal ^ instantUTC) &lt; 0 && (instantLocal ^ offset) &lt; 0) {<a name="line.961"></a>
+<FONT color="green">962</FONT>                throw new ArithmeticException("Subtracting time zone offset caused overflow");<a name="line.962"></a>
+<FONT color="green">963</FONT>            }<a name="line.963"></a>
+<FONT color="green">964</FONT>            return instantUTC;<a name="line.964"></a>
+<FONT color="green">965</FONT>        }<a name="line.965"></a>
+<FONT color="green">966</FONT>    <a name="line.966"></a>
+<FONT color="green">967</FONT>        /**<a name="line.967"></a>
+<FONT color="green">968</FONT>         * Gets the millisecond instant in another zone keeping the same local time.<a name="line.968"></a>
+<FONT color="green">969</FONT>         * &lt;p><a name="line.969"></a>
+<FONT color="green">970</FONT>         * The conversion is performed by converting the specified UTC millis to local<a name="line.970"></a>
+<FONT color="green">971</FONT>         * millis in this zone, then converting back to UTC millis in the new zone.<a name="line.971"></a>
+<FONT color="green">972</FONT>         *<a name="line.972"></a>
+<FONT color="green">973</FONT>         * @param newZone  the new zone, null means default<a name="line.973"></a>
+<FONT color="green">974</FONT>         * @param oldInstant  the UTC millisecond instant to convert<a name="line.974"></a>
+<FONT color="green">975</FONT>         * @return the UTC millisecond instant with the same local time in the new zone<a name="line.975"></a>
+<FONT color="green">976</FONT>         */<a name="line.976"></a>
+<FONT color="green">977</FONT>        public long getMillisKeepLocal(DateTimeZone newZone, long oldInstant) {<a name="line.977"></a>
+<FONT color="green">978</FONT>            if (newZone == null) {<a name="line.978"></a>
+<FONT color="green">979</FONT>                newZone = DateTimeZone.getDefault();<a name="line.979"></a>
+<FONT color="green">980</FONT>            }<a name="line.980"></a>
+<FONT color="green">981</FONT>            if (newZone == this) {<a name="line.981"></a>
+<FONT color="green">982</FONT>                return oldInstant;<a name="line.982"></a>
+<FONT color="green">983</FONT>            }<a name="line.983"></a>
+<FONT color="green">984</FONT>            long instantLocal = oldInstant + getOffset(oldInstant);<a name="line.984"></a>
+<FONT color="green">985</FONT>            return instantLocal - newZone.getOffsetFromLocal(instantLocal);<a name="line.985"></a>
+<FONT color="green">986</FONT>        }<a name="line.986"></a>
+<FONT color="green">987</FONT>    <a name="line.987"></a>
+<FONT color="green">988</FONT>    //    //-----------------------------------------------------------------------<a name="line.988"></a>
+<FONT color="green">989</FONT>    //    /**<a name="line.989"></a>
+<FONT color="green">990</FONT>    //     * Checks if the given {@link LocalDateTime} is within an overlap.<a name="line.990"></a>
+<FONT color="green">991</FONT>    //     * &lt;p><a name="line.991"></a>
+<FONT color="green">992</FONT>    //     * When switching from Daylight Savings Time to standard time there is<a name="line.992"></a>
+<FONT color="green">993</FONT>    //     * typically an overlap where the same clock hour occurs twice. This<a name="line.993"></a>
+<FONT color="green">994</FONT>    //     * method identifies whether the local datetime refers to such an overlap.<a name="line.994"></a>
+<FONT color="green">995</FONT>    //     * <a name="line.995"></a>
+<FONT color="green">996</FONT>    //     * @param localDateTime  the time to check, not null<a name="line.996"></a>
+<FONT color="green">997</FONT>    //     * @return true if the given datetime refers to an overlap<a name="line.997"></a>
+<FONT color="green">998</FONT>    //     */<a name="line.998"></a>
+<FONT color="green">999</FONT>    //    public boolean isLocalDateTimeOverlap(LocalDateTime localDateTime) {<a name="line.999"></a>
+<FONT color="green">1000</FONT>    //        if (isFixed()) {<a name="line.1000"></a>
+<FONT color="green">1001</FONT>    //            return false;<a name="line.1001"></a>
+<FONT color="green">1002</FONT>    //        }<a name="line.1002"></a>
+<FONT color="green">1003</FONT>    //        long instantLocal = localDateTime.toDateTime(DateTimeZone.UTC).getMillis();<a name="line.1003"></a>
+<FONT color="green">1004</FONT>    //        // get the offset at instantLocal (first estimate)<a name="line.1004"></a>
+<FONT color="green">1005</FONT>    //        int offsetLocal = getOffset(instantLocal);<a name="line.1005"></a>
+<FONT color="green">1006</FONT>    //        // adjust instantLocal using the estimate and recalc the offset<a name="line.1006"></a>
+<FONT color="green">1007</FONT>    //        int offset = getOffset(instantLocal - offsetLocal);<a name="line.1007"></a>
+<FONT color="green">1008</FONT>    //        // if the offsets differ, we must be near a DST boundary<a name="line.1008"></a>
+<FONT color="green">1009</FONT>    //        if (offsetLocal != offset) {<a name="line.1009"></a>
+<FONT color="green">1010</FONT>    //            long nextLocal = nextTransition(instantLocal - offsetLocal);<a name="line.1010"></a>
+<FONT color="green">1011</FONT>    //            long nextAdjusted = nextTransition(instantLocal - offset);<a name="line.1011"></a>
+<FONT color="green">1012</FONT>    //            if (nextLocal != nextAdjusted) {<a name="line.1012"></a>
+<FONT color="green">1013</FONT>    //                // in DST gap<a name="line.1013"></a>
+<FONT color="green">1014</FONT>    //                return false;<a name="line.1014"></a>
+<FONT color="green">1015</FONT>    //            }<a name="line.1015"></a>
+<FONT color="green">1016</FONT>    //            long diff = Math.abs(offset - offsetLocal);<a name="line.1016"></a>
+<FONT color="green">1017</FONT>    //            DateTime dateTime = localDateTime.toDateTime(this);<a name="line.1017"></a>
+<FONT color="green">1018</FONT>    //            DateTime adjusted = dateTime.plus(diff);<a name="line.1018"></a>
+<FONT color="green">1019</FONT>    //            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&<a name="line.1019"></a>
+<FONT color="green">1020</FONT>    //                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&<a name="line.1020"></a>
+<FONT color="green">1021</FONT>    //                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {<a name="line.1021"></a>
+<FONT color="green">1022</FONT>    //                return true;<a name="line.1022"></a>
+<FONT color="green">1023</FONT>    //            }<a name="line.1023"></a>
+<FONT color="green">1024</FONT>    //            adjusted = dateTime.minus(diff);<a name="line.1024"></a>
+<FONT color="green">1025</FONT>    //            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&<a name="line.1025"></a>
+<FONT color="green">1026</FONT>    //                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&<a name="line.1026"></a>
+<FONT color="green">1027</FONT>    //                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {<a name="line.1027"></a>
+<FONT color="green">1028</FONT>    //                return true;<a name="line.1028"></a>
+<FONT color="green">1029</FONT>    //            }<a name="line.1029"></a>
+<FONT color="green">1030</FONT>    //            return false;<a name="line.1030"></a>
+<FONT color="green">1031</FONT>    //        }<a name="line.1031"></a>
+<FONT color="green">1032</FONT>    //        return false;<a name="line.1032"></a>
+<FONT color="green">1033</FONT>    //    }<a name="line.1033"></a>
+<FONT color="green">1034</FONT>    //        <a name="line.1034"></a>
+<FONT color="green">1035</FONT>    //        <a name="line.1035"></a>
+<FONT color="green">1036</FONT>    //        DateTime dateTime = null;<a name="line.1036"></a>
+<FONT color="green">1037</FONT>    //        try {<a name="line.1037"></a>
+<FONT color="green">1038</FONT>    //            dateTime = localDateTime.toDateTime(this);<a name="line.1038"></a>
+<FONT color="green">1039</FONT>    //        } catch (IllegalArgumentException ex) {<a name="line.1039"></a>
+<FONT color="green">1040</FONT>    //            return false;  // it is a gap, not an overlap<a name="line.1040"></a>
+<FONT color="green">1041</FONT>    //        }<a name="line.1041"></a>
+<FONT color="green">1042</FONT>    //        long offset1 = Math.abs(getOffset(dateTime.getMillis() + 1) - getStandardOffset(dateTime.getMillis() + 1));<a name="line.1042"></a>
+<FONT color="green">1043</FONT>    //        long offset2 = Math.abs(getOffset(dateTime.getMillis() - 1) - getStandardOffset(dateTime.getMillis() - 1));<a name="line.1043"></a>
+<FONT color="green">1044</FONT>    //        long offset = Math.max(offset1, offset2);<a name="line.1044"></a>
+<FONT color="green">1045</FONT>    //        if (offset == 0) {<a name="line.1045"></a>
+<FONT color="green">1046</FONT>    //            return false;<a name="line.1046"></a>
+<FONT color="green">1047</FONT>    //        }<a name="line.1047"></a>
+<FONT color="green">1048</FONT>    //        DateTime adjusted = dateTime.plus(offset);<a name="line.1048"></a>
+<FONT color="green">1049</FONT>    //        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&<a name="line.1049"></a>
+<FONT color="green">1050</FONT>    //                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&<a name="line.1050"></a>
+<FONT color="green">1051</FONT>    //                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {<a name="line.1051"></a>
+<FONT color="green">1052</FONT>    //            return true;<a name="line.1052"></a>
+<FONT color="green">1053</FONT>    //        }<a name="line.1053"></a>
+<FONT color="green">1054</FONT>    //        adjusted = dateTime.minus(offset);<a name="line.1054"></a>
+<FONT color="green">1055</FONT>    //        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&<a name="line.1055"></a>
+<FONT color="green">1056</FONT>    //                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&<a name="line.1056"></a>
+<FONT color="green">1057</FONT>    //                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {<a name="line.1057"></a>
+<FONT color="green">1058</FONT>    //            return true;<a name="line.1058"></a>
+<FONT color="green">1059</FONT>    //        }<a name="line.1059"></a>
+<FONT color="green">1060</FONT>    //        return false;<a name="line.1060"></a>
+<FONT color="green">1061</FONT>            <a name="line.1061"></a>
+<FONT color="green">1062</FONT>    //        long millis = dateTime.getMillis();<a name="line.1062"></a>
+<FONT color="green">1063</FONT>    //        long nextTransition = nextTransition(millis);<a name="line.1063"></a>
+<FONT color="green">1064</FONT>    //        long previousTransition = previousTransition(millis);<a name="line.1064"></a>
+<FONT color="green">1065</FONT>    //        long deltaToPreviousTransition = millis - previousTransition;<a name="line.1065"></a>
+<FONT color="green">1066</FONT>    //        long deltaToNextTransition = nextTransition - millis;<a name="line.1066"></a>
+<FONT color="green">1067</FONT>    //        if (deltaToNextTransition &lt; deltaToPreviousTransition) {<a name="line.1067"></a>
+<FONT color="green">1068</FONT>    //            int offset = getOffset(nextTransition);<a name="line.1068"></a>
+<FONT color="green">1069</FONT>    //            int standardOffset = getStandardOffset(nextTransition);<a name="line.1069"></a>
+<FONT color="green">1070</FONT>    //            if (Math.abs(offset - standardOffset) >= deltaToNextTransition) {<a name="line.1070"></a>
+<FONT color="green">1071</FONT>    //                return true;<a name="line.1071"></a>
+<FONT color="green">1072</FONT>    //            }<a name="line.1072"></a>
+<FONT color="green">1073</FONT>    //        } else  {<a name="line.1073"></a>
+<FONT color="green">1074</FONT>    //            int offset = getOffset(previousTransition);<a name="line.1074"></a>
+<FONT color="green">1075</FONT>    //            int standardOffset = getStandardOffset(previousTransition);<a name="line.1075"></a>
+<FONT color="green">1076</FONT>    //            if (Math.abs(offset - standardOffset) >= deltaToPreviousTransition) {<a name="line.1076"></a>
+<FONT color="green">1077</FONT>    //                return true;<a name="line.1077"></a>
+<FONT color="green">1078</FONT>    //            }<a name="line.1078"></a>
+<FONT color="green">1079</FONT>    //        }<a name="line.1079"></a>
+<FONT color="green">1080</FONT>    //        return false;<a name="line.1080"></a>
+<FONT color="green">1081</FONT>    //    }<a name="line.1081"></a>
+<FONT color="green">1082</FONT>    <a name="line.1082"></a>
+<FONT color="green">1083</FONT>        /**<a name="line.1083"></a>
+<FONT color="green">1084</FONT>         * Checks if the given {@link LocalDateTime} is within a gap.<a name="line.1084"></a>
+<FONT color="green">1085</FONT>         * &lt;p><a name="line.1085"></a>
+<FONT color="green">1086</FONT>         * When switching from standard time to Daylight Savings Time there is<a name="line.1086"></a>
+<FONT color="green">1087</FONT>         * typically a gap where a clock hour is missing. This method identifies<a name="line.1087"></a>
+<FONT color="green">1088</FONT>         * whether the local datetime refers to such a gap.<a name="line.1088"></a>
+<FONT color="green">1089</FONT>         * <a name="line.1089"></a>
+<FONT color="green">1090</FONT>         * @param localDateTime  the time to check, not null<a name="line.1090"></a>
+<FONT color="green">1091</FONT>         * @return true if the given datetime refers to a gap<a name="line.1091"></a>
+<FONT color="green">1092</FONT>         * @since 1.6<a name="line.1092"></a>
+<FONT color="green">1093</FONT>         */<a name="line.1093"></a>
+<FONT color="green">1094</FONT>        public boolean isLocalDateTimeGap(LocalDateTime localDateTime) {<a name="line.1094"></a>
+<FONT color="green">1095</FONT>            if (isFixed()) {<a name="line.1095"></a>
+<FONT color="green">1096</FONT>                return false;<a name="line.1096"></a>
+<FONT color="green">1097</FONT>            }<a name="line.1097"></a>
+<FONT color="green">1098</FONT>            try {<a name="line.1098"></a>
+<FONT color="green">1099</FONT>                localDateTime.toDateTime(this);<a name="line.1099"></a>
+<FONT color="green">1100</FONT>                return false;<a name="line.1100"></a>
+<FONT color="green">1101</FONT>            } catch (IllegalArgumentException ex) {<a name="line.1101"></a>
+<FONT color="green">1102</FONT>                return true;<a name="line.1102"></a>
+<FONT color="green">1103</FONT>            }<a name="line.1103"></a>
+<FONT color="green">1104</FONT>        }<a name="line.1104"></a>
+<FONT color="green">1105</FONT>    <a name="line.1105"></a>
+<FONT color="green">1106</FONT>        //-----------------------------------------------------------------------<a name="line.1106"></a>
+<FONT color="green">1107</FONT>        /**<a name="line.1107"></a>
+<FONT color="green">1108</FONT>         * Returns true if this time zone has no transitions.<a name="line.1108"></a>
+<FONT color="green">1109</FONT>         *<a name="line.1109"></a>
+<FONT color="green">1110</FONT>         * @return true if no transitions<a name="line.1110"></a>
+<FONT color="green">1111</FONT>         */<a name="line.1111"></a>
+<FONT color="green">1112</FONT>        public abstract boolean isFixed();<a name="line.1112"></a>
+<FONT color="green">1113</FONT>    <a name="line.1113"></a>
+<FONT color="green">1114</FONT>        /**<a name="line.1114"></a>
+<FONT color="green">1115</FONT>         * Advances the given instant to where the time zone offset or name changes.<a name="line.1115"></a>
+<FONT color="green">1116</FONT>         * If the instant returned is exactly the same as passed in, then<a name="line.1116"></a>
+<FONT color="green">1117</FONT>         * no changes occur after the given instant.<a name="line.1117"></a>
+<FONT color="green">1118</FONT>         *<a name="line.1118"></a>
+<FONT color="green">1119</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z<a name="line.1119"></a>
+<FONT color="green">1120</FONT>         * @return milliseconds from 1970-01-01T00:00:00Z<a name="line.1120"></a>
+<FONT color="green">1121</FONT>         */<a name="line.1121"></a>
+<FONT color="green">1122</FONT>        public abstract long nextTransition(long instant);<a name="line.1122"></a>
+<FONT color="green">1123</FONT>    <a name="line.1123"></a>
+<FONT color="green">1124</FONT>        /**<a name="line.1124"></a>
+<FONT color="green">1125</FONT>         * Retreats the given instant to where the time zone offset or name changes.<a name="line.1125"></a>
+<FONT color="green">1126</FONT>         * If the instant returned is exactly the same as passed in, then<a name="line.1126"></a>
+<FONT color="green">1127</FONT>         * no changes occur before the given instant.<a name="line.1127"></a>
+<FONT color="green">1128</FONT>         *<a name="line.1128"></a>
+<FONT color="green">1129</FONT>         * @param instant  milliseconds from 1970-01-01T00:00:00Z<a name="line.1129"></a>
+<FONT color="green">1130</FONT>         * @return milliseconds from 1970-01-01T00:00:00Z<a name="line.1130"></a>
+<FONT color="green">1131</FONT>         */<a name="line.1131"></a>
+<FONT color="green">1132</FONT>        public abstract long previousTransition(long instant);<a name="line.1132"></a>
+<FONT color="green">1133</FONT>    <a name="line.1133"></a>
+<FONT color="green">1134</FONT>        // Basic methods<a name="line.1134"></a>
+<FONT color="green">1135</FONT>        //--------------------------------------------------------------------<a name="line.1135"></a>
+<FONT color="green">1136</FONT>    <a name="line.1136"></a>
+<FONT color="green">1137</FONT>        /**<a name="line.1137"></a>
+<FONT color="green">1138</FONT>         * Get the datetime zone as a {@link java.util.TimeZone}.<a name="line.1138"></a>
+<FONT color="green">1139</FONT>         * <a name="line.1139"></a>
+<FONT color="green">1140</FONT>         * @return the closest matching TimeZone object<a name="line.1140"></a>
+<FONT color="green">1141</FONT>         */<a name="line.1141"></a>
+<FONT color="green">1142</FONT>        public java.util.TimeZone toTimeZone() {<a name="line.1142"></a>
+<FONT color="green">1143</FONT>            return java.util.TimeZone.getTimeZone(iID);<a name="line.1143"></a>
+<FONT color="green">1144</FONT>        }<a name="line.1144"></a>
+<FONT color="green">1145</FONT>    <a name="line.1145"></a>
+<FONT color="green">1146</FONT>        /**<a name="line.1146"></a>
+<FONT color="green">1147</FONT>         * Compare this datetime zone with another.<a name="line.1147"></a>
+<FONT color="green">1148</FONT>         * <a name="line.1148"></a>
+<FONT color="green">1149</FONT>         * @param object the object to compare with<a name="line.1149"></a>
+<FONT color="green">1150</FONT>         * @return true if equal, based on the ID and all internal rules<a name="line.1150"></a>
+<FONT color="green">1151</FONT>         */<a name="line.1151"></a>
+<FONT color="green">1152</FONT>        public abstract boolean equals(Object object);<a name="line.1152"></a>
+<FONT color="green">1153</FONT>    <a name="line.1153"></a>
+<FONT color="green">1154</FONT>        /**<a name="line.1154"></a>
+<FONT color="green">1155</FONT>         * Gets a hash code compatable with equals.<a name="line.1155"></a>
+<FONT color="green">1156</FONT>         * <a name="line.1156"></a>
+<FONT color="green">1157</FONT>         * @return suitable hashcode<a name="line.1157"></a>
+<FONT color="green">1158</FONT>         */<a name="line.1158"></a>
+<FONT color="green">1159</FONT>        public int hashCode() {<a name="line.1159"></a>
+<FONT color="green">1160</FONT>            return 57 + getID().hashCode();<a name="line.1160"></a>
+<FONT color="green">1161</FONT>        }<a name="line.1161"></a>
+<FONT color="green">1162</FONT>    <a name="line.1162"></a>
+<FONT color="green">1163</FONT>        /**<a name="line.1163"></a>
+<FONT color="green">1164</FONT>         * Gets the datetime zone as a string, which is simply its ID.<a name="line.1164"></a>
+<FONT color="green">1165</FONT>         * @return the id of the zone<a name="line.1165"></a>
+<FONT color="green">1166</FONT>         */<a name="line.1166"></a>
+<FONT color="green">1167</FONT>        public String toString() {<a name="line.1167"></a>
+<FONT color="green">1168</FONT>            return getID();<a name="line.1168"></a>
+<FONT color="green">1169</FONT>        }<a name="line.1169"></a>
+<FONT color="green">1170</FONT>    <a name="line.1170"></a>
+<FONT color="green">1171</FONT>        /**<a name="line.1171"></a>
+<FONT color="green">1172</FONT>         * By default, when DateTimeZones are serialized, only a "stub" object<a name="line.1172"></a>
+<FONT color="green">1173</FONT>         * referring to the id is written out. When the stub is read in, it<a name="line.1173"></a>
+<FONT color="green">1174</FONT>         * replaces itself with a DateTimeZone object.<a name="line.1174"></a>
+<FONT color="green">1175</FONT>         * @return a stub object to go in the stream<a name="line.1175"></a>
+<FONT color="green">1176</FONT>         */<a name="line.1176"></a>
+<FONT color="green">1177</FONT>        protected Object writeReplace() throws ObjectStreamException {<a name="line.1177"></a>
+<FONT color="green">1178</FONT>            return new Stub(iID);<a name="line.1178"></a>
+<FONT color="green">1179</FONT>        }<a name="line.1179"></a>
+<FONT color="green">1180</FONT>    <a name="line.1180"></a>
+<FONT color="green">1181</FONT>        /**<a name="line.1181"></a>
+<FONT color="green">1182</FONT>         * Used to serialize DateTimeZones by id.<a name="line.1182"></a>
+<FONT color="green">1183</FONT>         */<a name="line.1183"></a>
+<FONT color="green">1184</FONT>        private static final class Stub implements Serializable {<a name="line.1184"></a>
+<FONT color="green">1185</FONT>            /** Serialization lock. */<a name="line.1185"></a>
+<FONT color="green">1186</FONT>            private static final long serialVersionUID = -6471952376487863581L;<a name="line.1186"></a>
+<FONT color="green">1187</FONT>            /** The ID of the zone. */<a name="line.1187"></a>
+<FONT color="green">1188</FONT>            private transient String iID;<a name="line.1188"></a>
+<FONT color="green">1189</FONT>    <a name="line.1189"></a>
+<FONT color="green">1190</FONT>            /**<a name="line.1190"></a>
+<FONT color="green">1191</FONT>             * Constructor.<a name="line.1191"></a>
+<FONT color="green">1192</FONT>             * @param id  the id of the zone<a name="line.1192"></a>
+<FONT color="green">1193</FONT>             */<a name="line.1193"></a>
+<FONT color="green">1194</FONT>            Stub(String id) {<a name="line.1194"></a>
+<FONT color="green">1195</FONT>                iID = id;<a name="line.1195"></a>
+<FONT color="green">1196</FONT>            }<a name="line.1196"></a>
+<FONT color="green">1197</FONT>    <a name="line.1197"></a>
+<FONT color="green">1198</FONT>            private void writeObject(ObjectOutputStream out) throws IOException {<a name="line.1198"></a>
+<FONT color="green">1199</FONT>                out.writeUTF(iID);<a name="line.1199"></a>
+<FONT color="green">1200</FONT>            }<a name="line.1200"></a>
+<FONT color="green">1201</FONT>    <a name="line.1201"></a>
+<FONT color="green">1202</FONT>            private void readObject(ObjectInputStream in) throws IOException {<a name="line.1202"></a>
+<FONT color="green">1203</FONT>                iID = in.readUTF();<a name="line.1203"></a>
+<FONT color="green">1204</FONT>            }<a name="line.1204"></a>
+<FONT color="green">1205</FONT>    <a name="line.1205"></a>
+<FONT color="green">1206</FONT>            private Object readResolve() throws ObjectStreamException {<a name="line.1206"></a>
+<FONT color="green">1207</FONT>                return forID(iID);<a name="line.1207"></a>
+<FONT color="green">1208</FONT>            }<a name="line.1208"></a>
+<FONT color="green">1209</FONT>        }<a name="line.1209"></a>
+<FONT color="green">1210</FONT>    }<a name="line.1210"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

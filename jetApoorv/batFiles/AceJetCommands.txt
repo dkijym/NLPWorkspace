@@ -1,0 +1,19 @@
+Jet.Zoner.SentenceWriter - generate sentence list for a list of documents
+	/**
+	 *  generate ACE annotation files (in APF) format for a list of documents.
+	 *  Takes four to seven command line parameters:                             <BR>
+	 *  propertyFile:  Jet properties file                                     <BR>
+	 *  filelist:  a list of the files to be processed                         <BR>
+	 *  docDirectory:  the path of the directory containing the input files    <BR>
+	 *  outDirectory:  the path of the directory in which APF files are to
+	 *                 be written                                              <BR>
+	 *  timexDir:      the path of the directory containing TIMEX info
+	 *                 [optional]                                              <BR>
+	 *  glarfDir:      the path of the directory containing GLARF tuples
+	 *                 [optional]                                              <BR>
+	 *  glarfSuffix:   the file suffix for GLARF files                         <BR>
+	 *  For each <I>file</I> in <I>filelist</I>, the document is read from
+	 *  <I>docDirectory</file</I>.sgm and the APF file is written to
+	 *  <I>outDirectory</file</I>.sgm.apf
+	 */
+AceJet.Ace

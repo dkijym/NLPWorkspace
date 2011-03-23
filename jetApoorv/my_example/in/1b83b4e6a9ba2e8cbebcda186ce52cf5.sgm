@@ -1,0 +1,1 @@
+<query query-id="1b83b4e6a9ba2e8cbebcda186ce52cf5" template-number="5"><query-text>Find statements made by or attributed to [Attacks Colombia] on [anything]</query-text><query-arg arg-num="1" arg-type="Person"><arg-value>Attacks Colombia</arg-value></query-arg><query-arg arg-num="2" arg-type="Organization"><arg-value>anything</arg-value></query-arg><context/></query>
